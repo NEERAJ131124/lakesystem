@@ -3,6 +3,7 @@ import { useAuth } from "../contexts/AuthContext";
 import { Edit } from "lucide-react";
 import { toast } from "react-toastify";
 import axios from "axios";
+import { baseUrl } from "../../constants/APIs";
 
 function UserProfile({ user }) {
   const {
@@ -52,16 +53,12 @@ function UserProfile({ user }) {
       setIsSubmitting(true);
       const token = localStorage.getItem("token");
 
-      const response = await axios.put(
-        "http://localhost:5000/api/users",
-        editedUser,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await axios.put(`${baseUrl}/api/users`, editedUser, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       setShowEditModal(false);
       toast.success("Profile updated successfully!");

@@ -3,6 +3,7 @@ import { useAuth } from "../contexts/AuthContext";
 import { PlusCircle } from "lucide-react";
 import { toast } from "react-toastify";
 import axios from "axios";
+import { baseUrl } from "../../constants/APIs";
 
 function CreateLake({ onLakeCreated }) {
   const [newLake, setNewLake] = useState({
@@ -51,16 +52,12 @@ function CreateLake({ onLakeCreated }) {
       console.log("Form data:", Object.fromEntries(formData));
       console.log("Token:", token);
 
-      const response = await axios.post(
-        "http://localhost:5000/api/lakes",
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await axios.post(`${baseUrl}/api/lakes`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       console.log("Response received:", response.data);
 

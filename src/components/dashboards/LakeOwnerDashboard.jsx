@@ -5,6 +5,7 @@ import { PlusCircle, User, Map, LogOut } from "lucide-react";
 import CreateLake from "./CreateLake";
 import ManageLakes from "./manageLakes";
 import Profile from "./Profile";
+import { baseUrl } from "../../constants/APIs";
 
 function LakeOwnerDashboard() {
   const [activeSection, setActiveSection] = useState("profile");
@@ -14,7 +15,7 @@ function LakeOwnerDashboard() {
   const fetchLakes = useCallback(async () => {
     console.log("user", user);
     try {
-      const response = await axios.get("http://localhost:5000/api/lakes", {
+      const response = await axios.get(`${baseUrl}/api/lakes`, {
         params: { ownerId: user?.id },
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
