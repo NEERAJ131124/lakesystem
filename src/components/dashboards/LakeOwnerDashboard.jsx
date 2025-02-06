@@ -10,32 +10,13 @@ import { baseUrl } from "../../constants/APIs";
 function LakeOwnerDashboard() {
   const [activeSection, setActiveSection] = useState("profile");
   const { user, logout } = useAuth();
-  const [lakes, setLakes] = useState([]);
-
-  const fetchLakes = useCallback(async () => {
-    console.log("user", user);
-    try {
-      const response = await axios.get(`${baseUrl}/api/lakes`, {
-        params: { ownerId: user?.id },
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
-      setLakes(response.data);
-    } catch (error) {
-      console.error("Error fetching lakes:", error);
-    }
-  }, [user?.id]);
-
-  useEffect(() => {
-    fetchLakes();
-  }, [fetchLakes]);
+  // const [lakes, setLakes] = useState([]);
 
   const handleDeleteLake = async (lakeId) => {
     if (window.confirm("Are you sure you want to delete this lake?")) {
       try {
         await axios.delete(`/api/lakes/${lakeId}`);
-        fetchLakes();
+        // fetchLakes();
       } catch (error) {
         console.error("Error deleting lake:", error);
       }
@@ -45,12 +26,17 @@ function LakeOwnerDashboard() {
   const renderContent = () => {
     switch (activeSection) {
       case "createLake":
-        return <CreateLake onLakeCreated={fetchLakes} />;
+        return <CreateLake setActiveSection={setActiveSection} />;
       case "profile":
-        return <Profile user={user} />;
+        return <Profile user={user} setActiveSection={setActiveSection} />;
       case "manageLakes":
       default:
-        return <ManageLakes lakes={lakes} onDeleteLake={handleDeleteLake} />;
+        return (
+          <ManageLakes
+            onDeleteLake={handleDeleteLake}
+            setActiveSection={setActiveSection}
+          />
+        );
     }
   };
 
