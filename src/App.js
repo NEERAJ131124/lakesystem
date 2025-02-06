@@ -16,6 +16,11 @@ import Login from "./components/auth/Login.js";
 import Register from "./components/auth/Register.js";
 import AboutUs from "./pages/AboutUs";
 import { Toaster } from "react-hot-toast";
+import UserProfile from "./components/dashboards/Profile.jsx";
+import ManageLakes from "./components/dashboards/manageLakes.jsx";
+import EditLake from "./components/dashboards/ManageLakes/EditLake.jsx";
+import CreateLake from "./components/dashboards/ManageLakes/CreateLake.jsx";
+import AddFishStock from "./components/dashboards/ManageFishStock/AddFishStock.jsx";
 
 const PrivateRoute = ({ children, allowedUserTypes }) => {
   const { user } = useAuth();
@@ -77,7 +82,14 @@ const App = () => {
                     <LakeOwnerDashboard />
                   </PrivateRoute>
                 }
-              />
+              >
+                <Route index element={<Navigate to="profile" replace />} />
+                <Route path="profile" element={<UserProfile />} />
+                <Route path="manage-lakes" element={<ManageLakes />} />
+                <Route path="create-lake" element={<CreateLake />} />
+                <Route path="edit-lake/:lakeId" element={<EditLake />} />
+                <Route path="add-fish-stock/:id" element={<AddFishStock />} />
+              </Route>
 
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>

@@ -1,44 +1,12 @@
-import React, { useState, useEffect, useCallback } from "react";
-import axios from "axios";
-import { useAuth } from "../../components/contexts/AuthContext";
+import React from "react";
 import { PlusCircle, User, Map, LogOut } from "lucide-react";
-import CreateLake from "./CreateLake";
-import ManageLakes from "./manageLakes";
-import Profile from "./Profile";
-import { baseUrl } from "../../constants/APIs";
+import { Link, Outlet, useLocation } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
 
 function LakeOwnerDashboard() {
-  const [activeSection, setActiveSection] = useState("profile");
   const { user, logout } = useAuth();
-  // const [lakes, setLakes] = useState([]);
-
-  const handleDeleteLake = async (lakeId) => {
-    if (window.confirm("Are you sure you want to delete this lake?")) {
-      try {
-        await axios.delete(`/api/lakes/${lakeId}`);
-        // fetchLakes();
-      } catch (error) {
-        console.error("Error deleting lake:", error);
-      }
-    }
-  };
-
-  const renderContent = () => {
-    switch (activeSection) {
-      case "createLake":
-        return <CreateLake setActiveSection={setActiveSection} />;
-      case "profile":
-        return <Profile user={user} setActiveSection={setActiveSection} />;
-      case "manageLakes":
-      default:
-        return (
-          <ManageLakes
-            onDeleteLake={handleDeleteLake}
-            setActiveSection={setActiveSection}
-          />
-        );
-    }
-  };
+  const location = useLocation();
+  const currentPath = location.pathname.split("/").pop();
 
   return (
     <div className="flex min-h-screen bg-gray-100">
@@ -49,39 +17,51 @@ function LakeOwnerDashboard() {
           <p className="text-sm mt-1 text-gray-300">Lake Owner Dashboard</p>
         </div>
         <nav className="mt-8">
-          <button
+          <Link
+            to="profile"
             className={`flex items-center py-3 px-5 transition-colors duration-200 w-full text-left ${
-              activeSection === "profile"
+              currentPath === "profile"
                 ? "bg-[#8e6429] text-white"
                 : "text-gray-300 hover:bg-[#8e6429] hover:text-white"
             }`}
-            onClick={() => setActiveSection("profile")}
           >
             <User className="mr-3 h-5 w-5" />
             Profile
-          </button>
-          <button
+          </Link>
+          <Link
+            to="manage-lakes"
             className={`flex items-center py-3 px-5 transition-colors duration-200 w-full text-left ${
-              activeSection === "manageLakes"
+              currentPath === "manage-lakes"
                 ? "bg-[#8e6429] text-white"
                 : "text-gray-300 hover:bg-[#8e6429] hover:text-white"
             }`}
-            onClick={() => setActiveSection("manageLakes")}
           >
             <Map className="mr-3 h-5 w-5" />
             Manage Lakes
-          </button>
-          <button
+          </Link>
+          <Link
+            to="create-lake"
             className={`flex items-center py-3 px-5 transition-colors duration-200 w-full text-left ${
-              activeSection === "createLake"
+              currentPath === "create-lake"
                 ? "bg-[#8e6429] text-white"
                 : "text-gray-300 hover:bg-[#8e6429] hover:text-white"
             }`}
-            onClick={() => setActiveSection("createLake")}
           >
             <PlusCircle className="mr-3 h-5 w-5" />
             Create Lake
-          </button>
+          </Link>
+          {/* <Link
+            aria-disabled="true"
+            to="edit-lake"
+            className={`flex items-center py-3 px-5 transition-colors duration-200 w-full text-left ${
+              currentPath === "edit-lake"
+                ? "bg-[#8e6429] text-white"
+                : "text-gray-300 hover:bg-[#8e6429] hover:text-white"
+            }`}
+          >
+            <PlusCircle className="mr-3 h-5 w-5" />
+            Edit Lake
+          </Link> */}
         </nav>
         <div className="absolute bottom-0 w-64 p-5">
           <button
@@ -104,7 +84,7 @@ function LakeOwnerDashboard() {
           </div>
         </header>
         <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-          {renderContent()}
+          <Outlet />
         </main>
       </div>
     </div>

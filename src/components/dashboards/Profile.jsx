@@ -1,33 +1,54 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { Edit } from "lucide-react";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { baseUrl } from "../../constants/APIs";
+import Loader from "../Loader";
 
-function UserProfile({ user }) {
-  const {
-    complexName,
-    createdAt,
-    email,
-    firstName,
-    lastName,
-    mobileNumber,
-    updatedAt,
-    userType,
-  } = user;
-  console.log("User Profile Props:", user);
+function UserProfile() {
+  const [user, setUser] = useState(null);
   const [showEditModal, setShowEditModal] = useState(false);
   const [editedUser, setEditedUser] = useState({
-    firstName,
-    lastName,
-    email,
-    mobileNumber: mobileNumber || "",
-    complexName: complexName || "",
-    userType,
+    firstName: "",
+    lastName: "",
+    email: "",
+    mobileNumber: "",
+    complexName: "",
+    userType: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   useAuth();
+
+  useEffect(() => {
+    const fetchUserDetails = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const response = await axios.get(`${baseUrl}/api/users/me`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setUser(response.data);
+        setEditedUser({
+          firstName: response.data.firstName,
+          lastName: response.data.lastName,
+          email: response.data.email,
+          mobileNumber: response.data.mobileNumber || "",
+          complexName: response.data.complexName || "",
+          userType: response.data.userType,
+        });
+        setIsLoading(false);
+      } catch (error) {
+        console.error("Error fetching user details:", error);
+        toast.error("Failed to load user details");
+        setIsLoading(false);
+      }
+    };
+
+    fetchUserDetails();
+  }, []);
 
   const handleInputChange = (e) => {
     setEditedUser({ ...editedUser, [e.target.name]: e.target.value });
@@ -35,12 +56,12 @@ function UserProfile({ user }) {
 
   const handleEditClick = () => {
     setEditedUser({
-      firstName,
-      lastName,
-      email,
-      mobileNumber: mobileNumber || "",
-      complexName: complexName || "",
-      userType,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      mobileNumber: user.mobileNumber || "",
+      complexName: user.complexName || "",
+      userType: user.userType,
     });
     setShowEditModal(true);
   };
@@ -60,6 +81,7 @@ function UserProfile({ user }) {
         },
       });
 
+      setUser({ ...user, ...editedUser });
       setShowEditModal(false);
       toast.success("Profile updated successfully!");
     } catch (error) {
@@ -69,6 +91,25 @@ function UserProfile({ user }) {
       setIsSubmitting(false);
     }
   };
+
+  if (isLoading) {
+    return <Loader />;
+  }
+
+  if (!user) {
+    return <div>Error loading user profile</div>;
+  }
+
+  const {
+    complexName,
+    createdAt,
+    email,
+    firstName,
+    lastName,
+    mobileNumber,
+    updatedAt,
+    userType,
+  } = user;
 
   return (
     <div className="bg-white rounded-lg shadow p-6">

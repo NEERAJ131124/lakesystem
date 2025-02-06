@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { useAuth } from "../contexts/AuthContext";
 import { PlusCircle } from "lucide-react";
-import { toast } from "react-toastify";
+import toast from "react-hot-toast";
 import axios from "axios";
-import { baseUrl } from "../../constants/APIs";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { useAuth } from "../../contexts/AuthContext";
+import { baseUrl } from "../../../constants/APIs";
 
-function CreateLake({ setActiveSection }) {
+export default function EditLake() {
   const params = useParams();
-  const id = localStorage.getItem("id");
-  const [newLake, setNewLake] = useState({
+  const id = params.lakeId;
+  const navigate = useNavigate();
+  const [lake, setLake] = useState({
     name: "",
     description: "",
     location: "",
@@ -22,55 +23,102 @@ function CreateLake({ setActiveSection }) {
   });
   const [previewImage, setPreviewImage] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const { user } = useAuth();
 
   const fishTypeOptions = ["Carp", "Mirror Carp", "Common Carp"];
   const facilityOptions = ["Parking", "Toilets", "Cafe"];
-  console.log(params);
+
   useEffect(() => {
-    const fetchLakeDetails = async () => {
-      if (id) {
-        try {
-          const token = localStorage.getItem("token");
-          const response = await axios.get(`${baseUrl}/api/lakes/${id}`, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          });
-          console.log(response.data);
-          const lakeData = response.data;
-          setNewLake({
-            name: lakeData.name,
-            description: lakeData.description,
-            location: lakeData.location,
-            currentStock: lakeData.currentStock,
-            maxWeight: lakeData.maxWeight,
-            fishTypes: lakeData.fishTypes,
-            facilities: lakeData.facilities,
-            pricing: lakeData.pricing,
-            image: null,
-          });
-          if (lakeData.image) {
-            setPreviewImage(lakeData.image);
-          }
-        } catch (error) {
-          toast.error("Error fetching lake details");
+    const fetchLake = async () => {
+      try {
+        console.log("Fetching lake details...", params);
+        const token = localStorage.getItem("token");
+        const response = await axios.get(`${baseUrl}/api/lakes/${id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        const lakeData = response.data;
+        setLake(lakeData);
+        if (lakeData.image) {
+          setPreviewImage(lakeData.image);
         }
+        setIsLoading(false);
+      } catch (error) {
+        console.error("Error fetching lake:", error);
+        toast.error("Failed to load lake details. Please try again.");
+        setIsLoading(false);
       }
     };
 
-    fetchLakeDetails();
-  });
+    fetchLake();
+  }, [id]);
+
+  const validateInputs = () => {
+    if (!lake.name.trim()) {
+      toast.error("Lake name is required");
+      return false;
+    }
+
+    if (!lake.location.trim()) {
+      toast.error("Location is required");
+      return false;
+    }
+
+    if (!lake.description.trim()) {
+      toast.error("Description is required");
+      return false;
+    }
+
+    if (!lake.currentStock || lake.currentStock < 0) {
+      toast.error("Current stock must be a positive number");
+      return false;
+    }
+
+    if (!lake.maxWeight || lake.maxWeight < 0) {
+      toast.error("Maximum weight must be a positive number");
+      return false;
+    }
+
+    if (!lake.pricing || lake.pricing < 0) {
+      toast.error("Price must be a positive number");
+      return false;
+    }
+
+    if (lake.fishTypes.length === 0) {
+      toast.error("Please select at least one fish type");
+      return false;
+    }
+
+    if (lake.facilities.length === 0) {
+      toast.error("Please select at least one facility");
+      return false;
+    }
+
+    return true;
+  };
 
   const handleInputChange = (e) => {
-    setNewLake({ ...newLake, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+
+    // Validate numeric inputs
+    if (["currentStock", "maxWeight", "pricing"].includes(name)) {
+      if (value < 0) {
+        toast.error(`${name} cannot be negative`);
+        return;
+      }
+    }
+
+    setLake({ ...lake, [name]: value });
   };
 
   const handleCheckboxChange = (e, type) => {
     const value = e.target.value;
     const isChecked = e.target.checked;
 
-    setNewLake((prev) => ({
+    setLake((prev) => ({
       ...prev,
       [type]: isChecked
         ? [...prev[type], value]
@@ -81,7 +129,19 @@ function CreateLake({ setActiveSection }) {
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setNewLake({ ...newLake, image: file });
+      // Validate file type
+      if (!file.type.startsWith("image/")) {
+        toast.error("Please upload an image file");
+        return;
+      }
+
+      // Validate file size (max 5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        toast.error("Image size should be less than 5MB");
+        return;
+      }
+
+      setLake({ ...lake, image: file });
       setPreviewImage(URL.createObjectURL(file));
     }
   };
@@ -90,72 +150,60 @@ function CreateLake({ setActiveSection }) {
     e.preventDefault();
     if (isSubmitting) return;
 
+    // Validate all inputs before submission
+    if (!validateInputs()) {
+      return;
+    }
+
+    const loadingToast = toast.loading("Updating lake...");
+
     try {
       setIsSubmitting(true);
       const formData = new FormData();
 
-      formData.append("name", newLake.name);
-      formData.append("description", newLake.description);
-      formData.append("location", newLake.location);
-      formData.append("currentStock", newLake.currentStock);
-      formData.append("maxWeight", newLake.maxWeight);
-      formData.append("fishTypes", JSON.stringify(newLake.fishTypes));
-      formData.append("facilities", JSON.stringify(newLake.facilities));
-      formData.append("pricing", newLake.pricing);
-      if (newLake.image) {
-        formData.append("image", newLake.image);
+      formData.append("name", lake.name.trim());
+      formData.append("description", lake.description.trim());
+      formData.append("location", lake.location.trim());
+      formData.append("currentStock", lake.currentStock);
+      formData.append("maxWeight", lake.maxWeight);
+      formData.append("fishTypes", JSON.stringify(lake.fishTypes));
+      formData.append("facilities", JSON.stringify(lake.facilities));
+      formData.append("pricing", lake.pricing);
+      if (lake.image && typeof lake.image !== "string") {
+        formData.append("image", lake.image);
       }
 
       const token = localStorage.getItem("token");
 
-      let response;
-      if (id) {
-        response = await axios.put(`${baseUrl}/api/lakes/${id}`, formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        toast.success("Lake updated successfully!");
-      } else {
-        response = await axios.post(`${baseUrl}/api/lakes`, formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        toast.success("Lake created successfully!");
-      }
-
-      setNewLake({
-        name: "",
-        description: "",
-        location: "",
-        image: null,
-        currentStock: "",
-        maxWeight: "",
-        fishTypes: [],
-        facilities: [],
-        pricing: "",
+      await axios.put(`${baseUrl}/api/lakes/${id}`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
+        },
       });
-      setPreviewImage(null);
-      // onLakeCreated();
+
+      toast.dismiss(loadingToast);
+      toast.success("Lake updated successfully!");
+      navigate("/lake-owner-dashboard/manage-lakes");
     } catch (error) {
       console.error("Error details:", error.response || error);
+      toast.dismiss(loadingToast);
       toast.error(
         error.response?.data?.message ||
-          `Error ${id ? "updating" : "creating"} lake. Please try again.`
+          "Failed to update lake. Please try again."
       );
     } finally {
       setIsSubmitting(false);
     }
   };
 
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <div className="bg-white rounded-lg shadow p-6">
-      <h2 className="text-xl font-semibold text-gray-900 mb-4">
-        {id ? "Edit Lake" : "Add New Lake"}
-      </h2>
+      <h2 className="text-xl font-semibold text-gray-900 mb-4">Edit Lake</h2>
       <form
         onSubmit={handleSubmit}
         className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full"
@@ -171,7 +219,7 @@ function CreateLake({ setActiveSection }) {
             type="text"
             id="name"
             name="name"
-            value={newLake.name}
+            value={lake.name}
             onChange={handleInputChange}
             required
             className="w-full rounded-md border border-[#ae7a31] shadow-sm focus:border-[#ae7a31] focus:ring-[#ae7a31] sm:text-sm"
@@ -189,7 +237,7 @@ function CreateLake({ setActiveSection }) {
             type="text"
             id="location"
             name="location"
-            value={newLake.location}
+            value={lake.location}
             onChange={handleInputChange}
             className="w-full rounded-md border border-[#ae7a31] shadow-sm focus:border-[#ae7a31] focus:ring-[#ae7a31] sm:text-sm"
           />
@@ -206,7 +254,7 @@ function CreateLake({ setActiveSection }) {
             type="number"
             id="currentStock"
             name="currentStock"
-            value={newLake.currentStock}
+            value={lake.currentStock}
             onChange={handleInputChange}
             className="w-full rounded-md border border-[#ae7a31] shadow-sm focus:border-[#ae7a31] focus:ring-[#ae7a31] sm:text-sm"
           />
@@ -223,7 +271,7 @@ function CreateLake({ setActiveSection }) {
             type="number"
             id="maxWeight"
             name="maxWeight"
-            value={newLake.maxWeight}
+            value={lake.maxWeight}
             onChange={handleInputChange}
             className="w-full rounded-md border border-[#ae7a31] shadow-sm focus:border-[#ae7a31] focus:ring-[#ae7a31] sm:text-sm"
           />
@@ -240,7 +288,7 @@ function CreateLake({ setActiveSection }) {
             type="number"
             id="pricing"
             name="pricing"
-            value={newLake.pricing}
+            value={lake.pricing}
             onChange={handleInputChange}
             className="w-full rounded-md border border-[#ae7a31] shadow-sm focus:border-[#ae7a31] focus:ring-[#ae7a31] sm:text-sm"
           />
@@ -256,7 +304,7 @@ function CreateLake({ setActiveSection }) {
           <textarea
             id="description"
             name="description"
-            value={newLake.description}
+            value={lake.description}
             onChange={handleInputChange}
             rows={3}
             className="w-full rounded-md border border-[#ae7a31] shadow-sm focus:border-[#ae7a31] focus:ring-[#ae7a31] sm:text-sm"
@@ -274,7 +322,7 @@ function CreateLake({ setActiveSection }) {
                   type="checkbox"
                   id={type}
                   value={type}
-                  checked={newLake.fishTypes.includes(type)}
+                  checked={lake.fishTypes.includes(type)}
                   onChange={(e) => handleCheckboxChange(e, "fishTypes")}
                   className="h-4 w-4 text-[#ae7a31] focus:ring-[#ae7a31] border-[#ae7a31] rounded"
                 />
@@ -297,7 +345,7 @@ function CreateLake({ setActiveSection }) {
                   type="checkbox"
                   id={facility}
                   value={facility}
-                  checked={newLake.facilities.includes(facility)}
+                  checked={lake.facilities.includes(facility)}
                   onChange={(e) => handleCheckboxChange(e, "facilities")}
                   className="h-4 w-4 text-[#ae7a31] focus:ring-[#ae7a31] border-[#ae7a31] rounded"
                 />
@@ -351,14 +399,10 @@ function CreateLake({ setActiveSection }) {
             disabled={isSubmitting}
             className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#ae7a31] hover:bg-[#8e6429] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#ae7a31] disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {isSubmitting
-              ? `${id ? "Updating" : "Creating"} Lake...`
-              : `${id ? "Update" : "Add"} Lake`}
+            {isSubmitting ? "Updating Lake..." : "Update Lake"}
           </button>
         </div>
       </form>
     </div>
   );
 }
-
-export default CreateLake;
