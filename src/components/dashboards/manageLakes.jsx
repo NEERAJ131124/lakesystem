@@ -83,48 +83,48 @@ function ManageLakes() {
   const uniqueFishTypes = [...new Set(lakes.flatMap((lake) => lake.fishTypes))];
 
   const ViewModal = () => (
-    <div className="fixed inset-0 bg-black bg-opacity-60 backdrop-blur-sm flex justify-center items-center z-50">
-      <div className="bg-black bg-opacity-20 backdrop-filter backdrop-blur-lg rounded-xl p-8 w-2/3">
-        <div className="flex justify-between items-center mb-6">
-          <h3 className="text-2xl font-bold text-white">
+    <div className="fixed inset-0 bg-black bg-opacity-60 backdrop-blur-sm flex justify-center items-center z-50 p-4">
+      <div className="bg-black bg-opacity-20 backdrop-filter backdrop-blur-lg rounded-xl p-4 sm:p-6 md:p-8 w-full md:w-4/5 lg:w-2/3 max-h-[90vh] overflow-y-auto">
+        <div className="flex justify-between items-center mb-4 sm:mb-6">
+          <h3 className="text-xl sm:text-2xl font-bold text-white">
             {selectedLake?.name}
           </h3>
-          <button onClick={() => setShowViewModal(false)}>
-            <X className="text-white" />
+          <button onClick={() => setShowViewModal(false)} className="p-1">
+            <X className="text-white w-5 h-5 sm:w-6 sm:h-6" />
           </button>
         </div>
-        <div className="grid grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 md:gap-8">
           <img
             src={selectedLake?.image}
             alt={selectedLake?.name}
-            className="rounded-lg w-full h-64 object-cover"
+            className="rounded-lg w-full h-48 sm:h-56 md:h-64 object-cover"
           />
-          <div className="text-white space-y-4">
-            <p>
+          <div className="text-white space-y-2 sm:space-y-4">
+            <p className="text-sm sm:text-base">
               <span className="font-bold">Location:</span>{" "}
               {selectedLake?.location}
             </p>
-            <p>
+            <p className="text-sm sm:text-base">
               <span className="font-bold">Price:</span> £{selectedLake?.pricing}
               /day
             </p>
-            <p>
+            <p className="text-sm sm:text-base">
               <span className="font-bold">Description:</span>{" "}
               {selectedLake?.description}
             </p>
-            <p>
+            <p className="text-sm sm:text-base">
               <span className="font-bold">Fish Types:</span>{" "}
               {selectedLake?.fishTypes.join(", ")}
             </p>
-            <p>
+            <p className="text-sm sm:text-base">
               <span className="font-bold">Facilities:</span>{" "}
               {selectedLake?.facilities.join(", ")}
             </p>
-            <p>
+            <p className="text-sm sm:text-base">
               <span className="font-bold">Current Stock:</span>{" "}
               {selectedLake?.currentStock}
             </p>
-            <p>
+            <p className="text-sm sm:text-base">
               <span className="font-bold">Max Weight:</span>{" "}
               {selectedLake?.maxWeight}kg
             </p>
@@ -133,7 +133,6 @@ function ManageLakes() {
       </div>
     </div>
   );
-
   if (loading) {
     return <Loader />;
   }
@@ -222,61 +221,71 @@ function ManageLakes() {
           {filteredLakes.map((lake) => (
             <div
               key={lake._id}
-              className="bg-black relative bg-opacity-60 shadow-xl rounded-xl p-6 flex"
+              className="bg-black relative bg-opacity-60 shadow-xl rounded-xl p-4 sm:p-6 flex flex-col sm:flex-row gap-4 sm:gap-6"
             >
               <img
                 src={lake.image || "/placeholder.svg?height=200&width=300"}
                 alt={lake.name}
-                className="w-1/4 h-48 object-cover rounded-lg"
+                className="w-full sm:w-1/4 h-48 object-cover rounded-lg"
               />
-              <div className="flex-1 px-6">
-                <h3 className="text-2xl font-bold text-white">{lake.name}</h3>
-                <p className="text-white opacity-80">{lake.location}</p>
-                <p className="text-white opacity-80">£{lake.pricing}/day</p>
-                <p className="text-white opacity-80 mt-2">{lake.description}</p>
-                <div className="mt-4">
-                  <span className="text-white opacity-80">Fish Types: </span>
+              <div className="flex-1 px-2 sm:px-6">
+                <h3 className="text-xl sm:text-2xl font-bold text-white">
+                  {lake.name}
+                </h3>
+                <p className="text-white opacity-80 text-sm sm:text-base">
+                  {lake.location}
+                </p>
+                <p className="text-white opacity-80 text-sm sm:text-base">
+                  £{lake.pricing}/day
+                </p>
+                <p className="text-white opacity-80 mt-2 text-sm sm:text-base">
+                  {lake.description}
+                </p>
+                <div className="mt-4 flex flex-wrap gap-2">
+                  <span className="text-white opacity-80 text-sm sm:text-base">
+                    Fish Types:{" "}
+                  </span>
                   {lake.fishTypes.map((fish) => (
                     <span
                       key={fish}
-                      className="inline-block bg-black bg-opacity-20 rounded-full px-3 py-1 text-sm text-white mr-2"
+                      className="inline-block bg-black bg-opacity-20 rounded-full px-2 sm:px-3 py-1 text-xs sm:text-sm text-white"
                     >
                       {fish}
                     </span>
                   ))}
                 </div>
               </div>
-              <div className="flex flex-col justify-center space-y-4">
+              <div className="flex flex-row sm:flex-col justify-start sm:justify-center space-x-4 sm:space-x-0 sm:space-y-4">
                 <button
                   onClick={() => handleView(lake)}
-                  className="text-white opacity-80 hover:opacity-100 flex items-center"
+                  className="text-white opacity-80 hover:opacity-100 flex items-center text-sm sm:text-base"
                 >
-                  <Eye size={18} className="mr-2" />
-                  View
+                  <Eye size={16} className="mr-1 sm:mr-2" />
+                  <span className="hidden sm:inline">View</span>
                 </button>
                 <button
                   onClick={() =>
                     navigate(`/lake-owner-dashboard/edit-lake/${lake._id}`)
                   }
-                  className="text-white opacity-80 hover:opacity-100 flex items-center"
+                  className="text-white opacity-80 hover:opacity-100 flex items-center text-sm sm:text-base"
                 >
-                  <Edit size={18} className="mr-2" />
-                  Edit
+                  <Edit size={16} className="mr-1 sm:mr-2" />
+                  <span className="hidden sm:inline">Edit</span>
                 </button>
                 <button
                   onClick={() =>
                     navigate(`/lake-owner-dashboard/add-fish-stock/${lake._id}`)
                   }
-                  className="text-white opacity-80 hover:opacity-100 flex items-center"
+                  className="text-white opacity-80 hover:opacity-100 flex items-center text-sm sm:text-base"
                 >
-                  <Edit size={18} className="mr-2" />
-                  Add Fish Stock
+                  <Edit size={16} className="mr-1 sm:mr-2" />
+                  <span className="hidden sm:inline">Add Fish Stock</span>
                 </button>
                 <button
                   onClick={() => handleDelete(lake)}
-                  className="text-red-500 absolute top-2 right-2 opacity-80 hover:opacity-100 flex items-center"
+                  className="text-red-500 sm:absolute sm:top-2 sm:right-2 opacity-80 hover:opacity-100 flex items-center text-sm sm:text-base"
                 >
-                  <Trash2 size={24} className="mr-2" />
+                  <Trash2 size={24} className="mr-1 sm:mr-2" />
                 </button>
               </div>
             </div>

@@ -230,7 +230,7 @@ function Register() {
                   htmlFor="dateOfBirth"
                   className="block text-sm font-medium text-gray-700"
                 >
-                  Date of Birth
+                  Date of Birth(dd/MM/yyyy)
                 </label>
                 <DatePicker
                   selected={formData.dateOfBirth}
@@ -238,6 +238,8 @@ function Register() {
                   dateFormat="dd/MM/yyyy"
                   showYearDropdown
                   scrollableYearDropdown
+                  maxDate={new Date("2010-01-01")} // Sets max date to current date
+                  minDate={new Date("1950-01-01")} // Optional: Sets minimum date
                   yearDropdownItemNumber={100}
                   placeholderText="Select your date of birth"
                   className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-[#ae7a31] focus:border-[#ae7a31] sm:text-sm"
@@ -256,6 +258,8 @@ function Register() {
                   type="text"
                   name="complexName"
                   id="complexName"
+                  minLength={3}
+                  maxLength={50}
                   value={formData.complexName}
                   onChange={handleChange}
                   required
@@ -273,6 +277,8 @@ function Register() {
               <input
                 type="tel"
                 name="mobileNumber"
+                min={10}
+                max={10}
                 id="mobileNumber"
                 value={formData.mobileNumber}
                 onChange={handleChange}
@@ -319,6 +325,7 @@ function Register() {
                 id="agreeToTerms"
                 name="agreeToTerms"
                 type="checkbox"
+                required
                 checked={formData.agreeToTerms}
                 onChange={handleChange}
                 className="h-4 w-4 text-[#ae7a31] focus:ring-[#ae7a31] border-gray-300 rounded"
