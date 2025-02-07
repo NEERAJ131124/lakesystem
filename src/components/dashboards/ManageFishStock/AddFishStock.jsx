@@ -1,14 +1,24 @@
+import axios from "axios";
 import React, { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { baseUrl } from "../../../constants/APIs";
+import toast from "react-hot-toast";
+import Loader from "../../Loader";
 
 const AddingFishStock = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
-    fishType: "",
+    name: "",
+    species: "",
+    quantity: "",
     weight: "",
-    image: null,
+    location: "",
+    averageSize: "",
     notes: "",
-    lakeId: id,
+    image: null,
+    lake: id,
   });
 
   const [errors, setErrors] = useState({});
@@ -20,7 +30,6 @@ const AddingFishStock = () => {
       ...formData,
       [name]: value,
     });
-    // Clear error when user starts typing
     if (errors[name]) {
       setErrors({
         ...errors,
@@ -33,6 +42,14 @@ const AddingFishStock = () => {
     const file = e.target.files[0];
     if (file) {
       if (file.type.startsWith("image/")) {
+        if (file.size > 5242880) {
+          // 5MB limit
+          setErrors({
+            ...errors,
+            image: "Image size should be less than 5MB",
+          });
+          return;
+        }
         setFormData({
           ...formData,
           image: file,
@@ -45,7 +62,7 @@ const AddingFishStock = () => {
       } else {
         setErrors({
           ...errors,
-          image: "Please select an image file",
+          image: "Please select an image file (jpg, png, gif)",
         });
       }
     }
@@ -54,62 +71,202 @@ const AddingFishStock = () => {
   const validateForm = () => {
     const newErrors = {};
 
-    if (!formData.fishType) {
-      newErrors.fishType = "Please select a fish type";
+    // Name validation - required and min length
+    if (!formData.name.trim()) {
+      newErrors.name = "Name is required";
+    } else if (formData.name.length < 3) {
+      newErrors.name = "Name must be at least 3 characters";
     }
 
+    // Species validation - required and alphabets only
+    if (!formData.species.trim()) {
+      newErrors.species = "Species is required";
+    } else if (!/^[a-zA-Z\s]+$/.test(formData.species)) {
+      newErrors.species = "Species should contain only letters";
+    }
+
+    // Quantity validation - required, positive integer
+    if (!formData.quantity) {
+      newErrors.quantity = "Quantity is required";
+    } else if (
+      !Number.isInteger(Number(formData.quantity)) ||
+      Number(formData.quantity) <= 0
+    ) {
+      newErrors.quantity = "Please enter a valid positive whole number";
+    }
+
+    // Weight validation - required, positive number with 2 decimal places
     if (!formData.weight) {
       newErrors.weight = "Weight is required";
-    } else if (isNaN(formData.weight) || formData.weight <= 0) {
+    } else if (isNaN(formData.weight) || Number(formData.weight) <= 0) {
       newErrors.weight = "Please enter a valid weight";
+    } else if (!/^\d+(\.\d{1,2})?$/.test(formData.weight)) {
+      newErrors.weight = "Weight should have maximum 2 decimal places";
     }
 
-    if (!formData.image) {
-      newErrors.image = "Please select an image";
+    // Location validation - required and alphanumeric with spaces
+    if (!formData.location.trim()) {
+      newErrors.location = "Location is required";
+    } else if (!/^[a-zA-Z0-9\s]+$/.test(formData.location)) {
+      newErrors.location =
+        "Location should contain only letters, numbers and spaces";
+    }
+
+    // Average Size validation - positive number with 2 decimal places if provided
+    if (formData.averageSize) {
+      if (isNaN(formData.averageSize) || Number(formData.averageSize) <= 0) {
+        newErrors.averageSize = "Please enter a valid size";
+      } else if (!/^\d+(\.\d{1,2})?$/.test(formData.averageSize)) {
+        newErrors.averageSize = "Size should have maximum 2 decimal places";
+      }
+    }
+
+    // Notes validation - max length
+    if (formData.notes.length > 500) {
+      newErrors.notes = "Notes should not exceed 500 characters";
     }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (validateForm()) {
-      // Handle form submission
-      console.log("Form submitted:", formData);
+      setIsSubmitting(true);
+      try {
+        const formDataToSend = new FormData();
+
+        Object.keys(formData).forEach((key) => {
+          if (key === "image") {
+            if (formData.image) {
+              formDataToSend.append("image", formData.image);
+            }
+          } else {
+            formDataToSend.append(key, formData[key]);
+          }
+        });
+        const response = await axios.post(
+          `${baseUrl}/api/fish`,
+          formDataToSend,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+
+        console.log("Success:", response);
+
+        // Clear form
+        setFormData({
+          name: "",
+          species: "",
+          quantity: "",
+          weight: "",
+          location: "",
+          averageSize: "",
+          notes: "",
+          image: null,
+          lake: id,
+        });
+        setImagePreview(null);
+
+        // Show success message
+        toast.success("Fish stock added successfully!");
+        if (response.status === 201) {
+          navigate(`/lake-owner-dashboard/manage-fish-stock/${id}`);
+        }
+        // Clear any previous errors
+        setErrors({});
+      } catch (error) {
+        console.error("Error:", error);
+        setErrors((prev) => ({
+          ...prev,
+          submit:
+            error.response?.data?.message ||
+            "Failed to submit fish stock data. Please try again.",
+        }));
+      } finally {
+        setIsSubmitting(false);
+      }
     }
   };
 
+  if (isSubmitting) {
+    return <Loader />;
+  }
+
   return (
-    <div className="max-w-[600px] mx-auto p-5">
+    <div className="max-w-[1200px] mx-auto p-5">
       <h2 className="text-2xl font-bold mb-4">Add Fish Stock</h2>
-      <form onSubmit={handleSubmit} className="flex flex-col gap-5">
-        <div className="flex flex-col gap-2">
-          <label htmlFor="fishType" className="font-bold">
-            Fish Type:
+      <form onSubmit={handleSubmit} className="flex flex-wrap gap-5">
+        <div className="flex flex-col gap-2 flex-1 min-w-[300px]">
+          <label htmlFor="name" className="font-bold">
+            Name:
           </label>
-          <select
-            id="fishType"
-            name="fishType"
-            value={formData.fishType}
+          <input
+            type="text"
+            id="name"
+            name="name"
+            value={formData.name}
             onChange={handleInputChange}
+            placeholder="Enter fish name"
             className={`p-2 border rounded-md text-base ${
-              errors.fishType ? "border-red-500" : "border-gray-300"
+              errors.name ? "border-red-500" : "border-gray-300"
             }`}
-          >
-            <option value="">Select Fish Type </option>
-            <option value="type1">Carp </option>
-            <option value="type2">Mirror Carp </option>
-            <option value="type3">Common Carp</option>
-          </select>
-          {errors.fishType && (
-            <span className="text-red-500 text-sm">{errors.fishType}</span>
+          />
+          {errors.name && (
+            <span className="text-red-500 text-sm">{errors.name}</span>
           )}
         </div>
 
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-2 flex-1 min-w-[300px]">
+          <label htmlFor="species" className="font-bold">
+            Species:
+          </label>
+          <input
+            type="text"
+            id="species"
+            name="species"
+            value={formData.species}
+            onChange={handleInputChange}
+            placeholder="Enter species name"
+            className={`p-2 border rounded-md text-base ${
+              errors.species ? "border-red-500" : "border-gray-300"
+            }`}
+          />
+          {errors.species && (
+            <span className="text-red-500 text-sm">{errors.species}</span>
+          )}
+        </div>
+
+        <div className="flex flex-col gap-2 flex-1 min-w-[300px]">
+          <label htmlFor="quantity" className="font-bold">
+            Quantity:
+          </label>
+          <input
+            type="number"
+            id="quantity"
+            name="quantity"
+            value={formData.quantity}
+            onChange={handleInputChange}
+            placeholder="Enter quantity"
+            min="1"
+            step="1"
+            className={`p-2 border rounded-md text-base ${
+              errors.quantity ? "border-red-500" : "border-gray-300"
+            }`}
+          />
+          {errors.quantity && (
+            <span className="text-red-500 text-sm">{errors.quantity}</span>
+          )}
+        </div>
+
+        <div className="flex flex-col gap-2 flex-1 min-w-[300px]">
           <label htmlFor="weight" className="font-bold">
-            Weight (lbs):
+            Weight (kg):
           </label>
           <input
             type="number"
@@ -117,7 +274,9 @@ const AddingFishStock = () => {
             name="weight"
             value={formData.weight}
             onChange={handleInputChange}
-            placeholder="Enter weight in lbs"
+            placeholder="Enter weight"
+            min="0.01"
+            step="0.01"
             className={`p-2 border rounded-md text-base ${
               errors.weight ? "border-red-500" : "border-gray-300"
             }`}
@@ -127,7 +286,49 @@ const AddingFishStock = () => {
           )}
         </div>
 
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-2 flex-1 min-w-[300px]">
+          <label htmlFor="location" className="font-bold">
+            Location:
+          </label>
+          <input
+            type="text"
+            id="location"
+            name="location"
+            value={formData.location}
+            onChange={handleInputChange}
+            placeholder="Enter location"
+            className={`p-2 border rounded-md text-base ${
+              errors.location ? "border-red-500" : "border-gray-300"
+            }`}
+          />
+          {errors.location && (
+            <span className="text-red-500 text-sm">{errors.location}</span>
+          )}
+        </div>
+
+        <div className="flex flex-col gap-2 flex-1 min-w-[300px]">
+          <label htmlFor="averageSize" className="font-bold">
+            Average Size (cm):
+          </label>
+          <input
+            type="number"
+            id="averageSize"
+            name="averageSize"
+            value={formData.averageSize}
+            onChange={handleInputChange}
+            placeholder="Enter average size"
+            min="0.01"
+            step="0.01"
+            className={`p-2 border rounded-md text-base ${
+              errors.averageSize ? "border-red-500" : "border-gray-300"
+            }`}
+          />
+          {errors.averageSize && (
+            <span className="text-red-500 text-sm">{errors.averageSize}</span>
+          )}
+        </div>
+
+        <div className="flex flex-col gap-2 w-full">
           <label htmlFor="image" className="font-bold">
             Fish Image:
           </label>
@@ -155,27 +356,45 @@ const AddingFishStock = () => {
           )}
         </div>
 
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-2 w-full">
           <label htmlFor="notes" className="font-bold">
-            Additional Notes:
+            Notes:
           </label>
           <textarea
             id="notes"
             name="notes"
             value={formData.notes}
             onChange={handleInputChange}
-            placeholder="Enter any additional notes"
+            placeholder="Enter additional notes"
             rows="4"
-            className="p-2 border border-gray-300 rounded-md text-base"
+            maxLength="500"
+            className={`p-2 border rounded-md text-base ${
+              errors.notes ? "border-red-500" : "border-gray-300"
+            }`}
           />
+          {errors.notes && (
+            <span className="text-red-500 text-sm">{errors.notes}</span>
+          )}
+          <span className="text-sm text-gray-500">
+            {formData.notes.length}/500 characters
+          </span>
         </div>
 
-        <button
-          type="submit"
-          className="px-5 py-2.5 bg-[#ae7a31] hover:bg-[#8e6429] text-white rounded-md cursor-pointer text-base"
-        >
-          Add Fish Stock
-        </button>
+        <div className="flex flex-row gap-3 w-full">
+          <button
+            type="button"
+            onClick={() => navigate(-1)}
+            className="px-5 py-2.5 bg-gray-500 hover:bg-gray-600 text-white rounded-md cursor-pointer text-base flex-1 whitespace-nowrap"
+          >
+            Cancel
+          </button>
+          <button
+            type="submit"
+            className="px-5 py-2.5 bg-[#ae7a31] hover:bg-[#8e6429] text-white rounded-md cursor-pointer text-base flex-1 whitespace-nowrap"
+          >
+            Add Fish Stock
+          </button>
+        </div>
       </form>
     </div>
   );

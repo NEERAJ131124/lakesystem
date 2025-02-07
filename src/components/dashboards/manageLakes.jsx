@@ -7,6 +7,7 @@ import { baseUrl } from "../../constants/APIs";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import Loader from "../Loader";
+import ViewModal from "./ManageLakes/ViewLakeModal";
 
 function ManageLakes() {
   const [loading, setLoading] = useState(false);
@@ -82,57 +83,6 @@ function ManageLakes() {
 
   const uniqueFishTypes = [...new Set(lakes.flatMap((lake) => lake.fishTypes))];
 
-  const ViewModal = () => (
-    <div className="fixed inset-0 bg-black bg-opacity-60 backdrop-blur-sm flex justify-center items-center z-50 p-4">
-      <div className="bg-black bg-opacity-20 backdrop-filter backdrop-blur-lg rounded-xl p-4 sm:p-6 md:p-8 w-full md:w-4/5 lg:w-2/3 max-h-[90vh] overflow-y-auto">
-        <div className="flex justify-between items-center mb-4 sm:mb-6">
-          <h3 className="text-xl sm:text-2xl font-bold text-white">
-            {selectedLake?.name}
-          </h3>
-          <button onClick={() => setShowViewModal(false)} className="p-1">
-            <X className="text-white w-5 h-5 sm:w-6 sm:h-6" />
-          </button>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 md:gap-8">
-          <img
-            src={selectedLake?.image}
-            alt={selectedLake?.name}
-            className="rounded-lg w-full h-48 sm:h-56 md:h-64 object-cover"
-          />
-          <div className="text-white space-y-2 sm:space-y-4">
-            <p className="text-sm sm:text-base">
-              <span className="font-bold">Location:</span>{" "}
-              {selectedLake?.location}
-            </p>
-            <p className="text-sm sm:text-base">
-              <span className="font-bold">Price:</span> £{selectedLake?.pricing}
-              /day
-            </p>
-            <p className="text-sm sm:text-base">
-              <span className="font-bold">Description:</span>{" "}
-              {selectedLake?.description}
-            </p>
-            <p className="text-sm sm:text-base">
-              <span className="font-bold">Fish Types:</span>{" "}
-              {selectedLake?.fishTypes.join(", ")}
-            </p>
-            <p className="text-sm sm:text-base">
-              <span className="font-bold">Facilities:</span>{" "}
-              {selectedLake?.facilities.join(", ")}
-            </p>
-            <p className="text-sm sm:text-base">
-              <span className="font-bold">Current Stock:</span>{" "}
-              {selectedLake?.currentStock}
-            </p>
-            <p className="text-sm sm:text-base">
-              <span className="font-bold">Max Weight:</span>{" "}
-              {selectedLake?.maxWeight}kg
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
   if (loading) {
     return <Loader />;
   }
@@ -272,7 +222,7 @@ function ManageLakes() {
                   <Edit size={16} className="mr-1 sm:mr-2" />
                   <span className="hidden sm:inline">Edit</span>
                 </button>
-                <button
+                {/* <button
                   onClick={() =>
                     navigate(`/lake-owner-dashboard/add-fish-stock/${lake._id}`)
                   }
@@ -280,6 +230,17 @@ function ManageLakes() {
                 >
                   <Edit size={16} className="mr-1 sm:mr-2" />
                   <span className="hidden sm:inline">Add Fish Stock</span>
+                </button> */}
+                <button
+                  onClick={() =>
+                    navigate(
+                      `/lake-owner-dashboard/manage-fish-stock/${lake._id}`
+                    )
+                  }
+                  className="text-white opacity-80 hover:opacity-100 flex items-center text-sm sm:text-base"
+                >
+                  <Edit size={16} className="mr-1 sm:mr-2" />
+                  <span className="hidden sm:inline">Manage Fish Stock</span>
                 </button>
                 <button
                   onClick={() => handleDelete(lake)}
@@ -293,7 +254,12 @@ function ManageLakes() {
         </div>
       )}
 
-      {showViewModal && <ViewModal />}
+      {showViewModal && (
+        <ViewModal
+          selectedLake={selectedLake}
+          setShowViewModal={setShowViewModal}
+        />
+      )}
       {showDeleteModal && (
         <DeleteModal
           setShowDeleteModal={setShowDeleteModal}

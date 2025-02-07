@@ -21,6 +21,7 @@ import ManageLakes from "./components/dashboards/manageLakes.jsx";
 import EditLake from "./components/dashboards/ManageLakes/EditLake.jsx";
 import CreateLake from "./components/dashboards/ManageLakes/CreateLake.jsx";
 import AddFishStock from "./components/dashboards/ManageFishStock/AddFishStock.jsx";
+import ManageFishStock from "./components/dashboards/ManageFishStock/ManageFishStock.jsx";
 
 const PrivateRoute = ({ children, allowedUserTypes }) => {
   const { user } = useAuth();
@@ -89,6 +90,11 @@ const App = () => {
                 <Route path="create-lake" element={<CreateLake />} />
                 <Route path="edit-lake/:lakeId" element={<EditLake />} />
                 <Route path="add-fish-stock/:id" element={<AddFishStock />} />
+                <Route path="edit-fish-stock/:id" element={<AddFishStock />} />
+                <Route
+                  path="manage-fish-stock/:id"
+                  element={<ManageFishStock />}
+                />
               </Route>
 
               <Route path="*" element={<Navigate to="/" replace />} />

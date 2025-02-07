@@ -1,12 +1,10 @@
 import React, { useState } from "react";
-import { useAuth } from "../../contexts/AuthContext";
 import { PlusCircle } from "lucide-react";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { baseUrl } from "../../../constants/APIs";
 import { Toaster } from "react-hot-toast";
 import Loader from "../../Loader";
-import { use } from "react";
 import { useNavigate } from "react-router-dom";
 
 function CreateLake() {
