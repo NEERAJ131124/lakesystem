@@ -14,7 +14,7 @@ import AnglerDashboard from "./components/dashboards/AnglerDashboard.jsx";
 import AdminDashboard from "./components/dashboards/AdminDashboard.jsx";
 import Login from "./components/auth/Login.js";
 import Register from "./components/auth/Register.js";
-import AboutUs from "./pages/AboutUs";
+import AboutUs from "./pages/AboutUs.jsx";
 import { Toaster } from "react-hot-toast";
 import UserProfile from "./components/dashboards/Profile.jsx";
 import ManageLakes from "./components/dashboards/manageLakes.jsx";
@@ -22,6 +22,8 @@ import EditLake from "./components/dashboards/ManageLakes/EditLake.jsx";
 import CreateLake from "./components/dashboards/ManageLakes/CreateLake.jsx";
 import AddFishStock from "./components/dashboards/ManageFishStock/AddFishStock.jsx";
 import ManageFishStock from "./components/dashboards/ManageFishStock/ManageFishStock.jsx";
+import LakesPage from "./pages/LakesPage.jsx";
+import ContactUs from "./pages/ContactUs.jsx";
 
 const PrivateRoute = ({ children, allowedUserTypes }) => {
   const { user } = useAuth();
@@ -56,7 +58,9 @@ const App = () => {
               <Route path="/" element={<HomePage />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
-              <Route path="/about-us" element={<AboutUs />} />
+              {/* <Route path="/about" element={<AboutUs />} />
+              <Route path="/lakes" element={<LakesPage />} />
+              <Route path="/contact" element={<ContactUs />} /> */}
 
               <Route
                 path="/admin-dashboard"

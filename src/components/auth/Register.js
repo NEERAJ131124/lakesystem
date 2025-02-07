@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../contexts/AuthContext";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { set } from "date-fns";
+import Loader from "../Loader";
 
 function Register() {
   const [isAngler, setIsAngler] = useState(true);
@@ -19,7 +21,7 @@ function Register() {
     complexName: "",
     agreeToTerms: false,
   });
-
+  const [loading, setLoading] = useState(false);
   const { register } = useContext(AuthContext);
   const navigate = useNavigate();
 
@@ -75,6 +77,7 @@ function Register() {
   };
 
   const handleSubmit = async (e) => {
+    setLoading(true);
     e.preventDefault();
     // console.log('handleSubmit called. isAngler:', isAngler, 'formData:', formData);
     setErrorMessage("");
@@ -93,7 +96,6 @@ function Register() {
 
     try {
       const userType = isAngler ? "angler" : "lakeOwner";
-
       const registrationData = {
         ...formData,
         userType,
@@ -126,8 +128,14 @@ function Register() {
       } else {
         setErrorMessage("An error occurred. Please try again.");
       }
+    } finally {
+      setLoading(false);
     }
   };
+
+  if (loading) {
+    return <Loader />;
+  }
 
   if (!showForm) {
     return (
@@ -277,11 +285,20 @@ function Register() {
               <input
                 type="tel"
                 name="mobileNumber"
-                min={10}
-                max={10}
+                minLength={10}
+                maxLength={10}
                 id="mobileNumber"
                 value={formData.mobileNumber}
-                onChange={handleChange}
+                onChange={(event) => {
+                  // Allow backspace/delete and only numbers up to 10 digits
+                  const value = event.target.value;
+                  if (
+                    value === "" || // Allow empty string for backspace
+                    (/^\d+$/.test(value) && value.length <= 10)
+                  ) {
+                    handleChange(event);
+                  }
+                }}
                 required
                 className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-[#ae7a31] focus:border-[#ae7a31] sm:text-sm"
               />

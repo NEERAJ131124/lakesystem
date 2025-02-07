@@ -1,17 +1,19 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { Disclosure } from '@headlessui/react';
-import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
-import { useAuth } from './contexts/AuthContext';
+import React from "react";
+import { Link, useLocation } from "react-router-dom";
+import { Disclosure } from "@headlessui/react";
+import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
+import { useAuth } from "./contexts/AuthContext";
 
 const NavBar = () => {
   const { user, logout } = useAuth();
+  const location = useLocation();
+  const currentPath = location.pathname;
 
   const navigation = [
-    { name: 'Home', href: '/', current: true },
-    { name: 'Lakes', href: '/lakes', current: false },
-    { name: 'About', href: '/about', current: false },
-    { name: 'Contact', href: '/contact', current: false },
+    { name: "Home", href: "/" },
+    { name: "Lakes", href: "/lakes" },
+    { name: "About", href: "/about" },
+    { name: "Contact Us", href: "/contact" },
   ];
 
   return (
@@ -43,11 +45,13 @@ const NavBar = () => {
                         key={item.name}
                         to={item.href}
                         className={`${
-                          item.current
-                            ? 'bg-carp-700 text-white'
-                            : 'text-carp-100 hover:bg-carp-700 hover:text-white'
+                          currentPath === item.href
+                            ? "bg-carp-700 text-white"
+                            : "text-carp-100 hover:bg-carp-700 hover:text-white"
                         } rounded-md px-3 py-2 text-sm font-medium`}
-                        aria-current={item.current ? 'page' : undefined}
+                        aria-current={
+                          currentPath === item.href ? "page" : undefined
+                        }
                       >
                         {item.name}
                       </Link>
@@ -66,7 +70,12 @@ const NavBar = () => {
                 ) : (
                   <Link
                     to="/login"
-                    className="rounded-md bg-sand-600 px-3 py-2 text-sm font-medium text-white hover:bg-sand-700"
+                    className={`${
+                      currentPath === "/login"
+                        ? "bg-carp-700 text-white"
+                        : "text-carp-100 hover:bg-carp-700 hover:text-white"
+                    } rounded-md px-3 py-2 text-sm font-medium`}
+                    aria-current={currentPath === "/login" ? "page" : undefined}
                   >
                     Login
                   </Link>
@@ -82,11 +91,11 @@ const NavBar = () => {
                   key={item.name}
                   to={item.href}
                   className={`${
-                    item.current
-                      ? 'bg-carp-700 text-white'
-                      : 'text-carp-100 hover:bg-carp-700 hover:text-white'
+                    currentPath === item.href
+                      ? "bg-carp-700 text-white"
+                      : "text-carp-100 hover:bg-carp-700 hover:text-white"
                   } block rounded-md px-3 py-2 text-base font-medium`}
-                  aria-current={item.current ? 'page' : undefined}
+                  aria-current={currentPath === item.href ? "page" : undefined}
                 >
                   {item.name}
                 </Link>
@@ -100,4 +109,3 @@ const NavBar = () => {
 };
 
 export default NavBar;
-

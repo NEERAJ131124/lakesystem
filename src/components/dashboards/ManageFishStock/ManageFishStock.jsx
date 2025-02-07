@@ -89,6 +89,8 @@ const ManageFishStock = () => {
   const handleUpdate = async (e) => {
     e.preventDefault();
     setLoading(true);
+    setShowEditModal(false);
+
     const formData = new FormData();
     formData.append("name", editForm.name);
     formData.append("species", editForm.species);
@@ -116,9 +118,9 @@ const ManageFishStock = () => {
         }
       );
       console.log(res);
-      setShowEditModal(false);
       fetchFishStocks();
     } catch (error) {
+      setShowEditModal(true);
       console.error("Error updating fish stock:", error);
     } finally {
       setLoading(false);
@@ -172,7 +174,7 @@ const ManageFishStock = () => {
         <div className="space-y-4">
           {fishStocks.map((fish) => (
             <div
-              key={fish?.id}
+              key={fish?._id}
               className="bg-white rounded-lg shadow-md p-4 flex flex-col md:flex-row items-center md:items-start"
             >
               {fish?.image && (
