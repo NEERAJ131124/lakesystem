@@ -16,14 +16,14 @@ import Login from "./components/auth/Login.js";
 import Register from "./components/auth/Register.js";
 import AboutUs from "./pages/AboutUs.jsx";
 import { Toaster } from "react-hot-toast";
+import LakesPage from "./pages/LakesPage.jsx";
+import ContactUs from "./pages/ContactUs.jsx";
 import UserProfile from "./components/dashboards/Profile.jsx";
 import ManageLakes from "./components/dashboards/manageLakes.jsx";
 import EditLake from "./components/dashboards/ManageLakes/EditLake.jsx";
 import CreateLake from "./components/dashboards/ManageLakes/CreateLake.jsx";
 import AddFishStock from "./components/dashboards/ManageFishStock/AddFishStock.jsx";
 import ManageFishStock from "./components/dashboards/ManageFishStock/ManageFishStock.jsx";
-import LakesPage from "./pages/LakesPage.jsx";
-import ContactUs from "./pages/ContactUs.jsx";
 
 const PrivateRoute = ({ children, allowedUserTypes }) => {
   const { user } = useAuth();
