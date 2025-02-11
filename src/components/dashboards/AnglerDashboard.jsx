@@ -49,41 +49,37 @@ function AnglerDashboard() {
           <div className="space-y-6">
             <div className="flex space-x-2 sm:space-x-4 mb-4">
               <button
-                className={`px-2 sm:px-4 sm:py-2 rounded ${
-                  activeTab === "browseLakes"
-                    ? "bg-blue-500 text-white"
-                    : "bg-gray-200 text-gray-700"
-                }`}
+                className={`px-2 sm:px-4 sm:py-2 text-sm mb-0.5 rounded ${activeTab === "browseLakes"
+                  ? "bg-blue-500 text-white"
+                  : "bg-gray-200 text-gray-700"
+                  }`}
                 onClick={() => setActiveTab("browseLakes")}
               >
                 Browse Lakes
               </button>
               <button
-                className={`px-2 sm:px-4 sm:py-2 rounded ${
-                  activeTab === "followedLakes"
-                    ? "bg-blue-500 text-white"
-                    : "bg-gray-200 text-gray-700"
-                }`}
+                className={`px-2 sm:px-4 sm:py-2 text-sm mb-0.5 rounded ${activeTab === "followedLakes"
+                  ? "bg-blue-500 text-white"
+                  : "bg-gray-200 text-gray-700"
+                  }`}
                 onClick={() => setActiveTab("followedLakes")}
               >
                 Followed Lakes
               </button>
               <button
-                className={`px-2 sm:px-4 sm:py-2 rounded ${
-                  activeTab === "yourCatches"
-                    ? "bg-blue-500 text-white"
-                    : "bg-gray-200 text-gray-700"
-                }`}
+                className={`px-2 sm:px-4 sm:py-2 text-sm mb-0.5 rounded ${activeTab === "yourCatches"
+                  ? "bg-blue-500 text-white"
+                  : "bg-gray-200 text-gray-700"
+                  }`}
                 onClick={() => setActiveTab("yourCatches")}
               >
                 Your Catches
               </button>
               <button
-                className={`px-2 sm:px-4 sm:py-2 rounded ${
-                  activeTab === "topCatches"
-                    ? "bg-blue-500 text-white"
-                    : "bg-gray-200 text-gray-700"
-                }`}
+                className={`px-2 sm:px-4 sm:py-2 text-sm mb-0.5 rounded ${activeTab === "topCatches"
+                  ? "bg-blue-500 text-white"
+                  : "bg-gray-200 text-gray-700"
+                  }`}
                 onClick={() => setActiveTab("topCatches")}
               >
                 Top Catches
