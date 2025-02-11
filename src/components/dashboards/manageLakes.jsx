@@ -165,13 +165,13 @@ function ManageLakes() {
       </div>
 
       {filteredLakes.length === 0 ? (
-        <p className="text-white">No lakes found.</p>
+        <p className="text-black">No lakes found.</p>
       ) : (
         <div className="space-y-6">
           {filteredLakes.map((lake) => (
             <div
               key={lake._id}
-              className="bg-black relative bg-opacity-60 shadow-xl rounded-xl p-4 sm:p-6 flex flex-col sm:flex-row gap-4 sm:gap-6"
+              className="bg-white relative bg-opacity-60 shadow-2xl rounded-xl p-4 sm:p-6 flex flex-col sm:flex-row gap-4 sm:gap-6 border-2 border-gray-200"
             >
               <img
                 src={lake.image || "/placeholder.svg?height=200&width=300"}
@@ -179,26 +179,26 @@ function ManageLakes() {
                 className="w-full sm:w-1/4 h-48 object-cover rounded-lg"
               />
               <div className="flex-1 px-2 sm:px-6">
-                <h3 className="text-xl sm:text-2xl font-bold text-white">
+                <h3 className="text-xl sm:text-2xl font-bold text-black">
                   {lake.name}
                 </h3>
-                <p className="text-white opacity-80 text-sm sm:text-base">
+                <p className="text-black opacity-80 text-sm sm:text-base">
                   {lake.location}
                 </p>
-                <p className="text-white opacity-80 text-sm sm:text-base">
+                {/* <p className="text-black opacity-80 text-sm sm:text-base">
                   £{lake.pricing}/day
-                </p>
-                <p className="text-white opacity-80 mt-2 text-sm sm:text-base">
+                </p> */}
+                <p className="text-black opacity-80 mt-2 text-sm sm:text-base line-clamp-4">
                   {lake.description}
                 </p>
                 <div className="mt-4 flex flex-wrap gap-2">
-                  <span className="text-white opacity-80 text-sm sm:text-base">
+                  <span className="text-black opacity-80 text-sm sm:text-base">
                     Fish Types:{" "}
                   </span>
                   {lake.fishTypes.map((fish) => (
                     <span
                       key={fish}
-                      className="inline-block bg-black bg-opacity-20 rounded-full px-2 sm:px-3 py-1 text-xs sm:text-sm text-white"
+                      className="inline-block bg-black bg-opacity-20 rounded-full px-2 sm:px-3 py-1 text-xs sm:text-sm text-black"
                     >
                       {fish}
                     </span>
@@ -208,7 +208,7 @@ function ManageLakes() {
               <div className="flex flex-row sm:flex-col justify-start sm:justify-center space-x-4 sm:space-x-0 sm:space-y-4">
                 <button
                   onClick={() => handleView(lake)}
-                  className="text-white opacity-80 hover:opacity-100 flex items-center text-sm sm:text-base"
+                  className="text-black opacity-80 hover:opacity-100 flex items-center text-sm sm:text-base"
                 >
                   <Eye size={16} className="mr-1 sm:mr-2" />
                   <span className="hidden sm:inline">View</span>
@@ -217,7 +217,7 @@ function ManageLakes() {
                   onClick={() =>
                     navigate(`/lake-owner-dashboard/edit-lake/${lake._id}`)
                   }
-                  className="text-white opacity-80 hover:opacity-100 flex items-center text-sm sm:text-base"
+                  className="text-black opacity-80 hover:opacity-100 flex items-center text-sm sm:text-base"
                 >
                   <Edit size={16} className="mr-1 sm:mr-2" />
                   <span className="hidden sm:inline">Edit</span>
@@ -226,7 +226,7 @@ function ManageLakes() {
                   onClick={() =>
                     navigate(`/lake-owner-dashboard/add-fish-stock/${lake._id}`)
                   }
-                  className="text-white opacity-80 hover:opacity-100 flex items-center text-sm sm:text-base"
+                  className="text-black opacity-80 hover:opacity-100 flex items-center text-sm sm:text-base"
                 >
                   <Edit size={16} className="mr-1 sm:mr-2" />
                   <span className="hidden sm:inline">Add Fish Stock</span>
@@ -237,7 +237,7 @@ function ManageLakes() {
                       `/lake-owner-dashboard/manage-fish-stock/${lake._id}`
                     )
                   }
-                  className="text-white opacity-80 hover:opacity-100 flex items-center text-sm sm:text-base"
+                  className="text-black opacity-80 hover:opacity-100 flex items-center text-sm sm:text-base"
                 >
                   <Edit size={16} className="mr-1 sm:mr-2" />
                   <span className="hidden sm:inline">Manage Fish Stock</span>

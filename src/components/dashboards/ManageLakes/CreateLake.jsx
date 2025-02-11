@@ -8,7 +8,6 @@ import Loader from "../../Loader";
 import { useNavigate } from "react-router-dom";
 
 function CreateLake() {
-  // Form validation state
   const [errors, setErrors] = useState({});
   const [newLake, setNewLake] = useState({
     name: "",
@@ -24,13 +23,11 @@ function CreateLake() {
   const [previewImage, setPreviewImage] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
-  // const { user } = useAuth();
 
   const fishTypeOptions = ["Common", "Mirror", "Grass", "Ghost"];
   // const fishTypeOptions = ["Carp", "Mirror Carp", "Common Carp"];
   // const facilityOptions = ["Parking", "Toilets", "Cafe"];
 
-  // Validation rules
   const validateForm = () => {
     let tempErrors = {};
     if (!newLake.name.trim()) {
@@ -86,7 +83,6 @@ function CreateLake() {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setNewLake({ ...newLake, [name]: value });
-    // Clear error when user starts typing
     if (errors[name]) {
       setErrors({ ...errors, [name]: null });
     }
@@ -102,7 +98,6 @@ function CreateLake() {
         ? [...prev[type], value]
         : prev[type].filter((item) => item !== value),
     }));
-    // Clear error when user makes selection
     if (errors[type]) {
       setErrors({ ...errors, [type]: null });
     }
@@ -112,7 +107,6 @@ function CreateLake() {
     const file = e.target.files[0];
     if (file) {
       if (file.size > 5242880) {
-        // 5MB limit
         setErrors({ ...errors, image: "Image size should not exceed 5MB" });
         return;
       }
@@ -130,7 +124,6 @@ function CreateLake() {
     e.preventDefault();
     if (isSubmitting) return;
 
-    // Validate form before submission
     if (!validateForm()) {
       toast.error("Please fix the form errors before submitting");
       return;
@@ -191,7 +184,7 @@ function CreateLake() {
   }
 
   return (
-    <div className="bg-white rounded-lg shadow p-6">
+    <div className="bg-white rounded-xl shadow-lg p-8 max-w-4xl mx-auto">
       <Toaster />
       <h2 className="text-xl font-semibold text-gray-900 mb-4">Add New Lake</h2>
       <form
@@ -352,7 +345,7 @@ function CreateLake() {
             placeholder="Description"
           />
           {errors.description && (
-            <p className="text-red-500 text-xs mt-1">{errors.description}</p>
+            <p className="text-red-500 mt-2">{errors.description}</p>
           )}
         </div>
 
@@ -368,7 +361,7 @@ function CreateLake() {
             `}
           >
             {fishTypeOptions.map((type) => (
-              <div key={type} className="flex items-center">
+              <div key={type} className="flex items-center space-x-3">
                 <input
                   type="checkbox"
                   id={type}
@@ -378,14 +371,14 @@ function CreateLake() {
                   className="h-5 w-5 text-[#ae7a31] focus:ring-2 focus:ring-[#ae7a31] border-gray-300 rounded-md"
                 // className="h-4 w-4 text-[#ae7a31] focus:ring-[#ae7a31] border-[#ae7a31] rounded"
                 />
-                <label htmlFor={type} className="ml-2 text-sm text-gray-700">
+                <label htmlFor={type} className="text-base text-gray-700">
                   {type}
                 </label>
               </div>
             ))}
           </div>
           {errors.fishTypes && (
-            <p className="text-red-500 text-xs mt-1">{errors.fishTypes}</p>
+            <p className="text-red-500 mt-2">{errors.fishTypes}</p>
           )}
         </div>
 
@@ -424,7 +417,7 @@ function CreateLake() {
         {/* <div className="md:col-span-2 lg:col-span-3 space-y-2">
           <label
             htmlFor="image"
-            className="block text-sm font-medium text-gray-700"
+            className="text-base font-semibold text-gray-700 mb-2 block"
           >
             Lake Image
           </label>
@@ -443,13 +436,11 @@ function CreateLake() {
               className={`cursor-pointer bg-white py-2 px-3 border ${errors.image ? "border-red-500" : "border-[#ae7a31]"
                 } rounded-md shadow-sm text-sm leading-4 font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#ae7a31]`}
             >
-              <PlusCircle className="h-5 w-5 inline-block mr-2" />
+              <PlusCircle className="h-6 w-6 mr-2" />
               Choose Image
             </label>
           </div>
-          {errors.image && (
-            <p className="text-red-500 text-xs mt-1">{errors.image}</p>
-          )}
+          {errors.image && <p className="text-red-500 mt-2">{errors.image}</p>}
           {previewImage && (
             <img
               src={previewImage}

@@ -22,10 +22,10 @@ const ViewModal = ({ selectedLake, setShowViewModal }) => (
             <span className="font-bold">Location:</span>{" "}
             {selectedLake?.location}
           </p>
-          <p className="text-sm sm:text-base">
+          {/* <p className="text-sm sm:text-base">
             <span className="font-bold">Price:</span> £{selectedLake?.pricing}
             /day
-          </p>
+          </p> */}
           <p className="text-sm sm:text-base">
             <span className="font-bold">Description:</span>{" "}
             {selectedLake?.description}
@@ -34,10 +34,10 @@ const ViewModal = ({ selectedLake, setShowViewModal }) => (
             <span className="font-bold">Fish Types:</span>{" "}
             {selectedLake?.fishTypes.join(", ")}
           </p>
-          <p className="text-sm sm:text-base">
+          {/* <p className="text-sm sm:text-base">
             <span className="font-bold">Facilities:</span>{" "}
             {selectedLake?.facilities.join(", ")}
-          </p>
+          </p> */}
           <p className="text-sm sm:text-base">
             <span className="font-bold">Current Stock:</span>{" "}
             {selectedLake?.currentStock}

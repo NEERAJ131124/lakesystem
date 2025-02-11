@@ -19,7 +19,6 @@ function UserProfile() {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  useAuth();
 
   useEffect(() => {
     const fetchUserDetails = async () => {
@@ -30,6 +29,7 @@ function UserProfile() {
             Authorization: `Bearer ${token}`,
           },
         });
+        console.log(response);
         setUser(response.data);
         setEditedUser({
           firstName: response.data.firstName,
@@ -74,13 +74,13 @@ function UserProfile() {
       setIsSubmitting(true);
       const token = localStorage.getItem("token");
 
-      const response = await axios.put(`${baseUrl}/api/users`, editedUser, {
+      const response = await axios.put(`${baseUrl}/api/users/me`, editedUser, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
       });
-
+      console.log(response);
       setUser({ ...user, ...editedUser });
       setShowEditModal(false);
       toast.success("Profile updated successfully!");
@@ -211,7 +211,8 @@ function UserProfile() {
                   value={editedUser.firstName}
                   onChange={handleInputChange}
                   required
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#ae7a31] focus:ring-[#ae7a31] sm:text-sm"
+                  className="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400
+                  focus:outline-none focus:border-[#ae7a31] focus:ring-1 focus:ring-[#ae7a31]"
                 />
               </div>
 
@@ -229,7 +230,8 @@ function UserProfile() {
                   value={editedUser.lastName}
                   onChange={handleInputChange}
                   required
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#ae7a31] focus:ring-[#ae7a31] sm:text-sm"
+                  className="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400
+                  focus:outline-none focus:border-[#ae7a31] focus:ring-1 focus:ring-[#ae7a31]"
                 />
               </div>
 
@@ -247,7 +249,8 @@ function UserProfile() {
                   value={editedUser.email}
                   onChange={handleInputChange}
                   required
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#ae7a31] focus:ring-[#ae7a31] sm:text-sm"
+                  className="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400
+                  focus:outline-none focus:border-[#ae7a31] focus:ring-1 focus:ring-[#ae7a31]"
                 />
               </div>
 
@@ -264,7 +267,8 @@ function UserProfile() {
                   name="mobileNumber"
                   value={editedUser.mobileNumber}
                   onChange={handleInputChange}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#ae7a31] focus:ring-[#ae7a31] sm:text-sm"
+                  className="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400
+                  focus:outline-none focus:border-[#ae7a31] focus:ring-1 focus:ring-[#ae7a31]"
                 />
               </div>
 
@@ -281,7 +285,8 @@ function UserProfile() {
                   name="complexName"
                   value={editedUser.complexName}
                   onChange={handleInputChange}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#ae7a31] focus:ring-[#ae7a31] sm:text-sm"
+                  className="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400
+                  focus:outline-none focus:border-[#ae7a31] focus:ring-1 focus:ring-[#ae7a31]"
                 />
               </div>
 
