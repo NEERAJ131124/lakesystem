@@ -1,9 +1,13 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { WeatherSection } from "../features/weather";
-import { MapPin, Fish, Target } from "lucide-react";
+import { MapPin, Fish, Target, ChevronLeft, ChevronRight } from "lucide-react";
 import { useAuth } from "../components/contexts/AuthContext";
 import LakeOwnerDashboard from "../components/dashboards/LakeOwnerDashboard";
+import axios from "axios";
+import { baseUrl } from "../constants/APIs";
+import Loader from "../components/Loader";
+import l0 from "../assets/wlake.jpg";
 
 const FeatureCard = ({ icon, title, description, imageSrc }) => {
   return (
@@ -23,13 +27,39 @@ const FeatureCard = ({ icon, title, description, imageSrc }) => {
 const HomePage = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
-  if (user?.userType === "lakeOwner") {
-    navigate("/lake-owner-dashboard");
-  } else if (user?.userType === "angler") {
-    navigate("/angler-dashboard");
-  } else if (user?.userType === "admin") {
-    navigate("/admin-dashboard");
-  }
+  const [lakes, setLakes] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [slideDirection, setSlideDirection] = useState(""); // Track slide direction
+
+  const nextSlide = () => {
+    setSlideDirection("slide-left");
+    setCurrentIndex((prevIndex) =>
+      prevIndex + 1 >= lakes.length ? 0 : prevIndex + 1
+    );
+  };
+
+  const prevSlide = () => {
+    setSlideDirection("slide-right");
+    setCurrentIndex((prevIndex) =>
+      prevIndex - 1 < 0 ? lakes.length - 1 : prevIndex - 1
+    );
+  };
+
+  useEffect(() => {
+    const fetchLakes = async () => {
+      try {
+        const response = await axios.get(`${baseUrl}/api/lakes/all`);
+        console.log(response);
+        setLakes(response.data);
+      } catch (error) {
+        console.error("Error fetching lakes:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchLakes();
+  }, []);
 
   useEffect(() => {
     if (user) {
@@ -42,6 +72,18 @@ const HomePage = () => {
       }
     }
   });
+
+  useEffect(() => {
+    // Reset slide direction after animation completes
+    const timer = setTimeout(() => {
+      setSlideDirection("");
+    }, 500);
+    return () => clearTimeout(timer);
+  }, [currentIndex]);
+
+  if (loading) {
+    return <Loader />;
+  }
   return (
     <div className="flex flex-col min-h-screen">
       {/* Hero Section */}
@@ -133,38 +175,71 @@ const HomePage = () => {
             </p>
           </div>
 
-          <div className="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-12 lg:mx-0 lg:max-w-none lg:grid-cols-3">
-            {[1, 2, 3].map((item) => (
-              <div key={item} className="flex flex-col items-start">
-                <div className="relative w-full">
-                  <img
-                    src={`/placeholder.svg?height=600&width=800&text=Lake+${item}`}
-                    alt={`Sample Lake ${item}`}
-                    className="aspect-[16/9] w-full rounded-lg bg-gray-100 object-cover sm:aspect-[2/1] lg:aspect-[3/2]"
-                  />
-                </div>
-                <div className="max-w-xl">
-                  <div className="mt-8 flex items-center gap-x-4 text-xs">
-                    <time dateTime="2024-03-16" className="text-gray-500">
-                      Available Now
-                    </time>
-                    <span className="relative z-10 rounded-full bg-gray-50 px-3 py-1.5 font-medium text-gray-600 hover:bg-gray-100">
-                      Day Tickets
-                    </span>
+          <div className="relative">
+            <div
+              className={`mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-12 lg:mx-0 lg:max-w-none lg:grid-cols-3 transition-transform duration-500 ease-in-out ${slideDirection}`}
+            >
+              {[...Array(3)].map((_, idx) => {
+                const lakeIndex = (currentIndex + idx) % lakes.length;
+                const lake = lakes[lakeIndex];
+                return (
+                  <div key={lake._id} className="flex flex-col items-start">
+                    <div className="relative w-full">
+                      <img
+                        src={lake.image || l0}
+                        alt={lake.name}
+                        className="aspect-[16/9] w-full rounded-lg bg-gray-100 object-cover sm:aspect-[2/1] lg:aspect-[3/2]"
+                      />
+                    </div>
+                    <div className="max-w-xl">
+                      <div className="mt-8 flex items-center gap-x-4 text-xs">
+                        <time
+                          dateTime={lake.availableFrom}
+                          className="text-gray-500"
+                        >
+                          {lake.isAvailable ? "Available Now" : "Coming Soon"}
+                        </time>
+                        <span className="relative z-10 rounded-full bg-gray-50 px-3 py-1.5 font-medium text-gray-600 hover:bg-gray-100">
+                          {lake.ticketType}
+                        </span>
+                      </div>
+                      <div className="group relative">
+                        <h3 className="mt-3 text-lg font-semibold leading-6 text-gray-900 group-hover:text-carp-600">
+                          <span className="absolute inset-0" />
+                          {lake.name}
+                        </h3>
+                        <p className="mt-5 line-clamp-3 text-sm leading-6 text-gray-600">
+                          {lake.description}
+                        </p>
+                      </div>
+                    </div>
                   </div>
-                  <div className="group relative">
-                    <h3 className="mt-3 text-lg font-semibold leading-6 text-gray-900 group-hover:text-carp-600">
-                      <span className="absolute inset-0" />
-                      Sample Lake {item}
-                    </h3>
-                    <p className="mt-5 line-clamp-3 text-sm leading-6 text-gray-600">
-                      A Beautiful Lake Situated in Peaceful Surroundings,
-                      Perfect for Carp Fishing Enthusiasts
-                    </p>
-                  </div>
-                </div>
-              </div>
-            ))}
+                );
+              })}
+            </div>
+
+            <button
+              onClick={prevSlide}
+              className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-lg"
+            >
+              <ChevronLeft className="w-6 h-6" />
+            </button>
+
+            <button
+              onClick={nextSlide}
+              className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-lg"
+            >
+              <ChevronRight className="w-6 h-6" />
+            </button>
+          </div>
+
+          <div className="text-center mt-12">
+            <Link
+              to="/lakes"
+              className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-carp-600 hover:bg-carp-700 transition-all duration-300 ease-in-out"
+            >
+              View All Lakes
+            </Link>
           </div>
         </div>
       </div>

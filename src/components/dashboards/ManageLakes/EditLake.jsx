@@ -18,16 +18,13 @@ export default function EditLake() {
     currentStock: "",
     maxWeight: "",
     fishTypes: [],
-    facilities: [],
-    pricing: "",
   });
   const [previewImage, setPreviewImage] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const { user } = useAuth();
 
-  const fishTypeOptions = ["Carp", "Mirror Carp", "Common Carp"];
-  const facilityOptions = ["Parking", "Toilets", "Cafe"];
+  const fishTypeOptions = ["Common", "Mirror", "Grass", "Ghost"];
 
   useEffect(() => {
     const fetchLake = async () => {
@@ -82,18 +79,8 @@ export default function EditLake() {
       return false;
     }
 
-    if (!lake.pricing || lake.pricing < 0) {
-      toast.error("Price must be a positive number");
-      return false;
-    }
-
     if (lake.fishTypes.length === 0) {
       toast.error("Please select at least one fish type");
-      return false;
-    }
-
-    if (lake.facilities.length === 0) {
-      toast.error("Please select at least one facility");
       return false;
     }
 
@@ -103,8 +90,7 @@ export default function EditLake() {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
 
-    // Validate numeric inputs
-    if (["currentStock", "maxWeight", "pricing"].includes(name)) {
+    if (["currentStock", "maxWeight"].includes(name)) {
       if (value < 0) {
         toast.error(`${name} cannot be negative`);
         return;
@@ -129,13 +115,11 @@ export default function EditLake() {
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      // Validate file type
       if (!file.type.startsWith("image/")) {
         toast.error("Please upload an image file");
         return;
       }
 
-      // Validate file size (max 5MB)
       if (file.size > 5 * 1024 * 1024) {
         toast.error("Image size should be less than 5MB");
         return;
@@ -150,7 +134,6 @@ export default function EditLake() {
     e.preventDefault();
     if (isSubmitting) return;
 
-    // Validate all inputs before submission
     if (!validateInputs()) {
       return;
     }
@@ -167,8 +150,6 @@ export default function EditLake() {
       formData.append("currentStock", lake.currentStock);
       formData.append("maxWeight", lake.maxWeight);
       formData.append("fishTypes", JSON.stringify(lake.fishTypes));
-      formData.append("facilities", JSON.stringify(lake.facilities));
-      formData.append("pricing", lake.pricing);
       if (lake.image && typeof lake.image !== "string") {
         formData.append("image", lake.image);
       }
@@ -202,207 +183,166 @@ export default function EditLake() {
   }
 
   return (
-    <div className="bg-white rounded-lg shadow p-6">
-      <h2 className="text-xl font-semibold text-gray-900 mb-4">Edit Lake</h2>
-      <form
-        onSubmit={handleSubmit}
-        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full"
-      >
-        <div className="space-y-2">
-          <label
-            htmlFor="name"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Lake Name
-          </label>
-          <input
-            type="text"
-            id="name"
-            name="name"
-            value={lake.name}
-            onChange={handleInputChange}
-            required
-            className="w-full rounded-md border border-[#ae7a31] shadow-sm focus:border-[#ae7a31] focus:ring-[#ae7a31] sm:text-sm"
-          />
-        </div>
+    <div className="max-w-4xl mx-auto px-4 py-8 pt-0">
+      <div className="bg-white shadow-md rounded-lg p-6 pt-2">
+        <h2 className="text-2xl font-bold text-gray-900 mb-6">Edit Lake</h2>
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label
+                htmlFor="name"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Lake Name
+              </label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                value={lake.name}
+                onChange={handleInputChange}
+                required
+                className="mt-1 block w-full rounded-md border-2 border-[#ae7a31] py-2 px-3 shadow-sm focus:border-[#ae7a31] focus:outline-none focus:ring-[#ae7a31] sm:text-sm"
+              />
+            </div>
 
-        <div className="space-y-2">
-          <label
-            htmlFor="location"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Location
-          </label>
-          <input
-            type="text"
-            id="location"
-            name="location"
-            value={lake.location}
-            onChange={handleInputChange}
-            className="w-full rounded-md border border-[#ae7a31] shadow-sm focus:border-[#ae7a31] focus:ring-[#ae7a31] sm:text-sm"
-          />
-        </div>
+            <div>
+              <label
+                htmlFor="location"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Location
+              </label>
+              <input
+                type="text"
+                id="location"
+                name="location"
+                value={lake.location}
+                onChange={handleInputChange}
+                required
+                className="mt-1 block w-full rounded-md border-2 border-[#ae7a31] py-2 px-3 shadow-sm focus:border-[#ae7a31] focus:outline-none focus:ring-[#ae7a31] sm:text-sm"
+              />
+            </div>
 
-        <div className="space-y-2">
-          <label
-            htmlFor="currentStock"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Current Stock
-          </label>
-          <input
-            type="number"
-            id="currentStock"
-            name="currentStock"
-            value={lake.currentStock}
-            onChange={handleInputChange}
-            className="w-full rounded-md border border-[#ae7a31] shadow-sm focus:border-[#ae7a31] focus:ring-[#ae7a31] sm:text-sm"
-          />
-        </div>
+            <div>
+              <label
+                htmlFor="currentStock"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Current Stock
+              </label>
+              <input
+                type="number"
+                id="currentStock"
+                name="currentStock"
+                value={lake.currentStock}
+                onChange={handleInputChange}
+                required
+                className="mt-1 block w-full rounded-md border-2 border-[#ae7a31] py-2 px-3 shadow-sm focus:border-[#ae7a31] focus:outline-none focus:ring-[#ae7a31] sm:text-sm"
+              />
+            </div>
 
-        <div className="space-y-2">
-          <label
-            htmlFor="maxWeight"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Maximum Weight (lbs)
-          </label>
-          <input
-            type="number"
-            id="maxWeight"
-            name="maxWeight"
-            value={lake.maxWeight}
-            onChange={handleInputChange}
-            className="w-full rounded-md border border-[#ae7a31] shadow-sm focus:border-[#ae7a31] focus:ring-[#ae7a31] sm:text-sm"
-          />
-        </div>
-
-        <div className="space-y-2">
-          <label
-            htmlFor="pricing"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Pricing (£) Per Hour
-          </label>
-          <input
-            type="number"
-            id="pricing"
-            name="pricing"
-            value={lake.pricing}
-            onChange={handleInputChange}
-            className="w-full rounded-md border border-[#ae7a31] shadow-sm focus:border-[#ae7a31] focus:ring-[#ae7a31] sm:text-sm"
-          />
-        </div>
-
-        <div className="md:col-span-2 lg:col-span-3 space-y-2">
-          <label
-            htmlFor="description"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Description
-          </label>
-          <textarea
-            id="description"
-            name="description"
-            value={lake.description}
-            onChange={handleInputChange}
-            rows={3}
-            className="w-full rounded-md border border-[#ae7a31] shadow-sm focus:border-[#ae7a31] focus:ring-[#ae7a31] sm:text-sm"
-          />
-        </div>
-
-        <div className="space-y-2">
-          <label className="block text-sm font-medium text-gray-700">
-            Fish Types
-          </label>
-          <div className="space-y-2 bg-white p-3 rounded-md border border-[#ae7a31]">
-            {fishTypeOptions.map((type) => (
-              <div key={type} className="flex items-center">
-                <input
-                  type="checkbox"
-                  id={type}
-                  value={type}
-                  checked={lake.fishTypes.includes(type)}
-                  onChange={(e) => handleCheckboxChange(e, "fishTypes")}
-                  className="h-4 w-4 text-[#ae7a31] focus:ring-[#ae7a31] border-[#ae7a31] rounded"
-                />
-                <label htmlFor={type} className="ml-2 text-sm text-gray-700">
-                  {type}
-                </label>
-              </div>
-            ))}
+            <div>
+              <label
+                htmlFor="maxWeight"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Maximum Weight (lbs)
+              </label>
+              <input
+                type="number"
+                id="maxWeight"
+                name="maxWeight"
+                value={lake.maxWeight}
+                onChange={handleInputChange}
+                required
+                className="mt-1 block w-full rounded-md border-2 border-[#ae7a31] py-2 px-3 shadow-sm focus:border-[#ae7a31] focus:outline-none focus:ring-[#ae7a31] sm:text-sm"
+              />
+            </div>
           </div>
-        </div>
 
-        <div className="space-y-2">
-          <label className="block text-sm font-medium text-gray-700">
-            Facilities
-          </label>
-          <div className="space-y-2 bg-white p-3 rounded-md border border-[#ae7a31]">
-            {facilityOptions.map((facility) => (
-              <div key={facility} className="flex items-center">
-                <input
-                  type="checkbox"
-                  id={facility}
-                  value={facility}
-                  checked={lake.facilities.includes(facility)}
-                  onChange={(e) => handleCheckboxChange(e, "facilities")}
-                  className="h-4 w-4 text-[#ae7a31] focus:ring-[#ae7a31] border-[#ae7a31] rounded"
-                />
-                <label
-                  htmlFor={facility}
-                  className="ml-2 text-sm text-gray-700"
-                >
-                  {facility}
-                </label>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <div className="md:col-span-2 lg:col-span-3 space-y-2">
-          <label
-            htmlFor="image"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Lake Image
-          </label>
-          <div className="flex items-center">
-            <input
-              type="file"
-              id="image"
-              name="image"
-              onChange={handleImageChange}
-              accept="image/*"
-              className="hidden"
-            />
+          <div>
             <label
-              htmlFor="image"
-              className="cursor-pointer bg-white py-2 px-3 border border-[#ae7a31] rounded-md shadow-sm text-sm leading-4 font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#ae7a31]"
+              htmlFor="description"
+              className="block text-sm font-medium text-gray-700"
             >
-              <PlusCircle className="h-5 w-5 inline-block mr-2" />
-              Choose Image
+              Description
             </label>
-          </div>
-          {previewImage && (
-            <img
-              src={previewImage}
-              alt="Preview"
-              className="mt-2 h-32 object-cover rounded-md"
+            <textarea
+              id="description"
+              name="description"
+              value={lake.description}
+              onChange={handleInputChange}
+              rows={4}
+              required
+              className="mt-1 block w-full rounded-md border-2 border-[#ae7a31] py-2 px-3 shadow-sm focus:border-[#ae7a31] focus:outline-none focus:ring-[#ae7a31] sm:text-sm"
             />
-          )}
-        </div>
+          </div>
 
-        <div className="md:col-span-2 lg:col-span-3">
-          <button
-            type="submit"
-            disabled={isSubmitting}
-            className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#ae7a31] hover:bg-[#8e6429] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#ae7a31] disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            {isSubmitting ? "Updating Lake..." : "Update Lake"}
-          </button>
-        </div>
-      </form>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Fish Types
+            </label>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+              {fishTypeOptions.map((type) => (
+                <div key={type} className="flex items-center">
+                  <input
+                    type="checkbox"
+                    id={type}
+                    value={type}
+                    checked={lake.fishTypes.includes(type)}
+                    onChange={(e) => handleCheckboxChange(e, "fishTypes")}
+                    className="h-4 w-4 text-[#ae7a31] border-2 border-2 focus:ring-[#ae7a31] border-[#ae7a31] rounded"
+                  />
+                  <label htmlFor={type} className="ml-2 text-sm text-gray-700">
+                    {type}
+                  </label>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Lake Image
+            </label>
+            <div className="flex items-center">
+              <input
+                type="file"
+                id="image"
+                name="image"
+                onChange={handleImageChange}
+                accept="image/*"
+                className="hidden"
+              />
+              <label
+                htmlFor="image"
+                className="cursor-pointer inline-flex border-2 items-center px-4 py-2 border-[#ae7a31] rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#ae7a31]"
+              >
+                <PlusCircle className="h-5 w-5 mr-2" />
+                Choose Image
+              </label>
+            </div>
+            {previewImage && (
+              <img
+                src={previewImage}
+                alt="Preview"
+                className="mt-4 h-48 w-full object-cover border-2 rounded-lg"
+              />
+            )}
+          </div>
+
+          <div className="flex justify-end">
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-[#ae7a31] hover:bg-[#8e6429] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#ae7a31] disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {isSubmitting ? "Updating Lake..." : "Update Lake"}
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 }
