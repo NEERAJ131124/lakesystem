@@ -136,9 +136,8 @@ function AddCatch({
         rating: 0,
       });
       console.log(res);
-      // onCatchAdded();
-      // onClose();
-      window.location.reload();
+      onCatchAdded();
+      onClose();
     } catch (error) {
       console.error("Error adding new catch:", error);
     } finally {

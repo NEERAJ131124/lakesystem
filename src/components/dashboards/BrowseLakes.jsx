@@ -95,7 +95,7 @@ function BrowseLakes({ setActiveTab }) {
                     Average Rating
                   </span>
                   <div
-                    className="flex items-center cursor-pointer"
+                    className="flex items-center cursor-pointer flex-col"
                     onClick={() => setSelectedLake(lake)}
                   >
                     <StarRating
@@ -154,12 +154,16 @@ function BrowseLakes({ setActiveTab }) {
               <div className="space-y-4">
                 {selectedLake.reviews.map((review) => (
                   <div key={review._id} className="border-b pb-4">
-                    <p className="font-semibold">{review.user.username}</p>
-                    <p className="text-gray-600">{review.review}</p>
-                    <p className="text-yellow-500">
-                      {"★".repeat(review.rating)}
-                      {"☆".repeat(5 - review.rating)}
-                    </p>
+                    <div className="md:flex md:justify-between md:items-center flex-col md:flex-row">
+                      <p className="font-semibold mb-2 md:mb-0">
+                        {review.user.username}
+                      </p>
+                      <p className="text-yellow-500">
+                        {"★".repeat(review.rating)}
+                        {"☆".repeat(5 - review.rating)}
+                      </p>
+                    </div>
+                    <p className="text-gray-600 mt-2">{review.review}</p>
                   </div>
                 ))}
               </div>

@@ -1,9 +1,32 @@
-import React from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
+import { baseUrl } from "../../constants/APIs";
 
 function UserDetails({ onEditProfile, onAddCatch }) {
   const { user } = useAuth();
-  console.log(user);
+  const [users, setUser] = useState({});
+
+  const getUser = async () => {
+    try {
+      const response = await axios.get(`${baseUrl}/api/users/me`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      console.log(response);
+      setUser(response.data);
+    } catch (error) {
+      console.error("Error fetching users:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (localStorage.getItem("token")) {
+      getUser();
+    }
+  }, []);
+
   return (
     <div className="bg-white rounded-lg shadow-2xl p-6">
       <div className="flex flex-col md:flex-row justify-between">
@@ -11,39 +34,56 @@ function UserDetails({ onEditProfile, onAddCatch }) {
           <div className="flex items-center mb-4">
             <div className="rounded-full bg-gray-200 w-16 h-16 flex items-center justify-center">
               <span className="text-2xl font-bold text-gray-600">
-                {user.firstName[0]}
-                {user.lastName[0]}
+                <div className="rounded-full bg-gray-200 w-16 h-16 flex items-center justify-center">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-8 w-8 text-gray-600"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                    />
+                  </svg>
+                </div>
               </span>
             </div>
             <div className="ml-4">
               <p className="font-semibold text-lg">
-                {user.firstName} {user.lastName}
+                {users?.firstName} {users?.lastName}
               </p>
-              <p className="text-gray-500">{user.email}</p>
+              <p className="text-gray-500">{users?.email}</p>
             </div>
           </div>
           <div className="space-y-2">
-            {user.dateOfBirth && (
+            {users?.dateOfBirth && (
               <p className="text-gray-600">
-                Date of Birth: {new Date(user.dateOfBirth).toLocaleDateString()}
+                Date of Birth:{" "}
+                {new Date(users?.dateOfBirth).toLocaleDateString()}
               </p>
             )}
-            {user.mobileNumber && (
+            {users?.mobileNumber && (
               <p className="text-gray-600">
-                Mobile Number: {user.mobileNumber}
+                Mobile Number: {users?.mobileNumber}
               </p>
             )}
-            {user.complexName && (
-              <p className="text-gray-600">Complex Name: {user.complexName}</p>
+            {users?.complexName && (
+              <p className="text-gray-600">
+                Complex Name: {users?.complexName}
+              </p>
             )}
-            {user.userType && (
-              <p className="text-gray-600">User Type: {user.userType}</p>
+            {users?.userType && (
+              <p className="text-gray-600">Users Type: {users?.userType}</p>
             )}
             <p className="text-gray-600">
-              Total Catches: {user.catches?.length || 0}
+              Total Catches: {users?.catches?.length || 0}
             </p>
             <p className="text-gray-600">
-              Following Lakes: {user.following?.length || 0}
+              Following Lakes: {users?.following?.length || 0}
             </p>
           </div>
         </div>
