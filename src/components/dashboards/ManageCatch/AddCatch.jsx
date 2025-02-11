@@ -3,13 +3,16 @@ import axios from "axios";
 import { useAuth } from "../../contexts/AuthContext";
 import { baseUrl } from "../../../constants/APIs";
 import { handleFollowLake } from "../../contexts/Methods";
-import Loader from "../../Loader";
-import { ChevronDown, ChevronRight } from "lucide-react";
+import Modal from "../../Modal";
 
-function AddCatch({ onCatchAdded, fetchFollowedLakes }) {
+function AddCatch({
+  isOpen,
+  onClose,
+  onCatchAdded,
+  fetchFollowedLakes,
+  setLoading,
+}) {
   const [lakes, setLakes] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [showForm, setShowForm] = useState(false);
   const [newCatch, setNewCatch] = useState({
     species: "",
     weight: "",
@@ -84,6 +87,7 @@ function AddCatch({ onCatchAdded, fetchFollowedLakes }) {
     if (!validateForm()) {
       return;
     }
+    setLoading(true);
 
     const formData = new FormData();
     formData.append("species", newCatch.species);
@@ -112,221 +116,209 @@ function AddCatch({ onCatchAdded, fetchFollowedLakes }) {
       });
       console.log(res);
       onCatchAdded();
+      onClose();
     } catch (error) {
       console.error("Error adding new catch:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
-  if (loading) {
-    return <Loader />;
-  }
-
   return (
-    <div className="bg-white rounded-lg shadow p-6">
-      <div className="flex justify-between items-center">
+    <Modal isOpen={isOpen} onClose={onClose}>
+      <div className="bg-white rounded-lg shadow p-6">
         <h2 className="text-xl font-semibold text-gray-900 mb-4">
           Add New Catch
         </h2>
-        <button
-          onClick={() => setShowForm(!showForm)}
-          className="text-2xl transform transition-transform duration-200"
-        >
-          {showForm ? (
-            <ChevronDown className="h-6 w-6 transition-transform duration-300" />
-          ) : (
-            <ChevronRight className="h-6 w-6 transition-transform duration-300" />
-          )}
-        </button>
-      </div>
-      <div
-        className={`transition-all duration-300 ease-in-out overflow-hidden ${
-          showForm ? "max-h-[2000px] opacity-100" : "max-h-0 opacity-0"
-        }`}
-      >
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label
-              htmlFor="species"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Fish Species
-            </label>
-            <input
-              type="text"
-              id="species"
-              name="species"
-              value={newCatch.species}
-              onChange={handleInputChange}
-              required
-              className={`p-2 border w-full rounded-md text-base ${
-                errors.species ? "border-red-500" : "border-gray-300"
-              }`}
-            />
-            {errors.species && (
-              <span className="text-red-500 text-sm">{errors.species}</span>
-            )}
-          </div>
-
-          <div>
-            <label
-              htmlFor="weight"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Weight (kg)
-            </label>
-            <input
-              type="number"
-              step="0.01"
-              id="weight"
-              name="weight"
-              value={newCatch.weight}
-              onChange={handleInputChange}
-              required
-              className={`p-2 w-full border rounded-md text-base ${
-                errors.weight ? "border-red-500" : "border-gray-300"
-              }`}
-            />
-            {errors.weight && (
-              <span className="text-red-500 text-sm">{errors.weight}</span>
-            )}
-          </div>
-
-          <div>
-            <label
-              htmlFor="length"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Length (cm)
-            </label>
-            <input
-              type="number"
-              step="0.01"
-              id="length"
-              name="length"
-              value={newCatch.length}
-              onChange={handleInputChange}
-              required
-              className={`p-2 w-full border rounded-md text-base ${
-                errors.length ? "border-red-500" : "border-gray-300"
-              }`}
-            />
-            {errors.length && (
-              <span className="text-red-500 text-sm">{errors.length}</span>
-            )}
-          </div>
-
-          <div>
-            <label
-              htmlFor="lake"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Lake
-            </label>
-            <div className="flex gap-2">
-              <select
-                id="lake"
-                name="lake"
-                value={newCatch.lake}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="mb-4">
+              <label
+                htmlFor="species"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Fish Species
+              </label>
+              <input
+                type="text"
+                id="species"
+                name="species"
+                value={newCatch.species}
                 onChange={handleInputChange}
                 required
                 className={`p-2 border w-full rounded-md text-base ${
-                  errors.lake ? "border-red-500" : "border-gray-300"
+                  errors.species ? "border-red-500" : "border-gray-300"
                 }`}
-              >
-                <option value="">Select a lake</option>
-                {lakes.map((lake) => (
-                  <option key={lake._id} value={lake._id}>
-                    {lake.name}
-                  </option>
-                ))}
-              </select>
-              {newCatch.lake && (
-                <button
-                  type="button"
-                  onClick={() => {
-                    handleFollowLake(
-                      newCatch.lake,
-                      true,
-                      setLoading,
-                      fetchFollowedLakes
-                    );
-                    // fetchFollowedLakes();
-                  }}
-                  className="mt-1 px-4 py-2 bg-[#ae7a31] hover:bg-[#8e6429] text-white rounded-md whitespace-nowrap"
-                >
-                  Follow Lake
-                </button>
+              />
+              {errors.species && (
+                <span className="text-red-500 text-sm">{errors.species}</span>
               )}
             </div>
-            {errors.lake && (
-              <span className="text-red-500 text-sm">{errors.lake}</span>
-            )}
-          </div>
 
-          <div>
-            <label
-              htmlFor="photo"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Photo
-            </label>
-            <input
-              type="file"
-              id="photo"
-              name="photo"
-              onChange={handleFileChange}
-              accept="image/*"
-              className={`p-2 border rounded-md text-base ${
-                errors.photo ? "border-red-500" : "border-gray-300"
-              }`}
-            />
-            {errors.photo && (
-              <span className="text-red-500 text-sm">{errors.photo}</span>
-            )}
-          </div>
+            <div className="mb-4">
+              <label
+                htmlFor="weight"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Weight (kg)
+              </label>
+              <input
+                type="number"
+                step="0.01"
+                id="weight"
+                name="weight"
+                value={newCatch.weight}
+                onChange={handleInputChange}
+                required
+                className={`p-2 w-full border rounded-md text-base ${
+                  errors.weight ? "border-red-500" : "border-gray-300"
+                }`}
+              />
+              {errors.weight && (
+                <span className="text-red-500 text-sm">{errors.weight}</span>
+              )}
+            </div>
 
-          <div>
-            <label
-              htmlFor="description"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Description
-            </label>
-            <textarea
-              id="description"
-              name="description"
-              value={newCatch.description}
-              onChange={handleInputChange}
-              rows={3}
-              className={`p-2 border w-full rounded-md text-base ${
-                errors.description ? "border-red-500" : "border-gray-300"
-              }`}
-            />
-            {errors.description && (
-              <span className="text-red-500 text-sm">{errors.description}</span>
-            )}
-          </div>
+            <div className="mb-4">
+              <label
+                htmlFor="length"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Length (cm)
+              </label>
+              <input
+                type="number"
+                step="0.01"
+                id="length"
+                name="length"
+                value={newCatch.length}
+                onChange={handleInputChange}
+                required
+                className={`p-2 w-full border rounded-md text-base ${
+                  errors.length ? "border-red-500" : "border-gray-300"
+                }`}
+              />
+              {errors.length && (
+                <span className="text-red-500 text-sm">{errors.length}</span>
+              )}
+            </div>
 
-          <div>
-            <label
-              htmlFor="taggedUsers"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Tagged Users (comma separated usernames)
-            </label>
-            <input
-              type="text"
-              id="taggedUsers"
-              name="taggedUsers"
-              value={newCatch.taggedUsers}
-              onChange={handleInputChange}
-              className={`p-2 border w-full rounded-md text-base ${
-                errors.taggedUsers ? "border-red-500" : "border-gray-300"
-              }`}
-            />
-            {errors.taggedUsers && (
-              <span className="text-red-500 text-sm">{errors.taggedUsers}</span>
-            )}
+            <div className="mb-4">
+              <label
+                htmlFor="lake"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Lake
+              </label>
+              <div className="flex gap-2">
+                <select
+                  id="lake"
+                  name="lake"
+                  value={newCatch.lake}
+                  onChange={handleInputChange}
+                  required
+                  className={`p-2 border w-full rounded-md text-base ${
+                    errors.lake ? "border-red-500" : "border-gray-300"
+                  }`}
+                >
+                  <option value="">Select a lake</option>
+                  {lakes.map((lake) => (
+                    <option key={lake._id} value={lake._id}>
+                      {lake.name}
+                    </option>
+                  ))}
+                </select>
+                {newCatch.lake && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      handleFollowLake(
+                        newCatch.lake,
+                        true,
+                        setLoading,
+                        fetchFollowedLakes
+                      );
+                    }}
+                    className="mt-1 px-4 py-2 bg-[#ae7a31] hover:bg-[#8e6429] text-white rounded-md whitespace-nowrap"
+                  >
+                    Follow Lake
+                  </button>
+                )}
+              </div>
+              {errors.lake && (
+                <span className="text-red-500 text-sm">{errors.lake}</span>
+              )}
+            </div>
+
+            <div className="mb-4">
+              <label
+                htmlFor="photo"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Photo
+              </label>
+              <input
+                type="file"
+                id="photo"
+                name="photo"
+                onChange={handleFileChange}
+                accept="image/*"
+                className={`p-2 border rounded-md text-base ${
+                  errors.photo ? "border-red-500" : "border-gray-300"
+                }`}
+              />
+              {errors.photo && (
+                <span className="text-red-500 text-sm">{errors.photo}</span>
+              )}
+            </div>
+
+            <div className="mb-4 md:col-span-2">
+              <label
+                htmlFor="description"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Description
+              </label>
+              <textarea
+                id="description"
+                name="description"
+                value={newCatch.description}
+                onChange={handleInputChange}
+                rows={3}
+                className={`p-2 border w-full rounded-md text-base ${
+                  errors.description ? "border-red-500" : "border-gray-300"
+                }`}
+              />
+              {errors.description && (
+                <span className="text-red-500 text-sm">
+                  {errors.description}
+                </span>
+              )}
+            </div>
+
+            {/* <div className="mb-4 md:col-span-2">
+              <label
+                htmlFor="taggedUsers"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Tagged Users (comma separated usernames)
+              </label>
+              <input
+                type="text"
+                id="taggedUsers"
+                name="taggedUsers"
+                value={newCatch.taggedUsers}
+                onChange={handleInputChange}
+                className={`p-2 border w-full rounded-md text-base ${
+                  errors.taggedUsers ? "border-red-500" : "border-gray-300"
+                }`}
+              />
+              {errors.taggedUsers && (
+                <span className="text-red-500 text-sm">
+                  {errors.taggedUsers}
+                </span>
+              )}
+            </div> */}
           </div>
 
           <div className="flex flex-row gap-3 w-full">
@@ -356,7 +348,7 @@ function AddCatch({ onCatchAdded, fetchFollowedLakes }) {
           </div>
         </form>
       </div>
-    </div>
+    </Modal>
   );
 }
 
