@@ -23,21 +23,21 @@ const FeatureCard = ({ icon, title, description, imageSrc }) => {
 const HomePage = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
-  if (user.userType === "lakeOwner") {
+  if (user?.userType === "lakeOwner") {
     navigate("/lake-owner-dashboard");
-  } else if (user.userType === "angler") {
+  } else if (user?.userType === "angler") {
     navigate("/angler-dashboard");
-  } else if (user.userType === "admin") {
+  } else if (user?.userType === "admin") {
     navigate("/admin-dashboard");
   }
 
   useEffect(() => {
     if (user) {
-      if (user.userType === "lakeOwner") {
+      if (user?.userType === "lakeOwner") {
         navigate("/lake-owner-dashboard");
-      } else if (user.userType === "angler") {
+      } else if (user?.userType === "angler") {
         navigate("/angler-dashboard");
-      } else if (user.userType === "admin") {
+      } else if (user?.userType === "admin") {
         navigate("/admin-dashboard");
       }
     }
