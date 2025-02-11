@@ -38,7 +38,8 @@ function EditProfileModal({ isOpen, onClose, setLoading }) {
       });
       console.log(response);
       alert("Profile updated successfully!");
-      onClose();
+      // onClose();
+      window.location.reload();
     } catch (error) {
       console.error("Error updating profile:", error);
       setError("Failed to update profile. Please try again.");
