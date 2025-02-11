@@ -14,7 +14,26 @@ function BrowseLakes({ setActiveTab }) {
   const [loading, setLoading] = useState(false);
   const [selectedLake, setSelectedLake] = useState(null);
   const [isAddCatchOpen, setIsAddCatchOpen] = useState(false);
-  const { user } = useAuth();
+  // const { user } = useAuth();
+  const [user, setUser] = useState([]);
+  const getUser = async () => {
+    try {
+      const response = await axios.get(`${baseUrl}/api/users/me`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      console.log("response", response.data);
+      setUser(response.data);
+    } catch (error) {
+      console.error("Error fetching user:", error);
+    }
+  };
+  useEffect(() => {
+    if (localStorage.getItem("token")) {
+      getUser();
+    }
+  }, []);
 
   const fetchLakes = async () => {
     setLoading(true);
