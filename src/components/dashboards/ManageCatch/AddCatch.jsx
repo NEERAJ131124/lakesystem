@@ -244,8 +244,13 @@ function AddCatch({ onCatchAdded, fetchFollowedLakes }) {
                 <button
                   type="button"
                   onClick={() => {
-                    handleFollowLake(newCatch.lake, true, setLoading);
-                    fetchFollowedLakes();
+                    handleFollowLake(
+                      newCatch.lake,
+                      true,
+                      setLoading,
+                      fetchFollowedLakes
+                    );
+                    // fetchFollowedLakes();
                   }}
                   className="mt-1 px-4 py-2 bg-[#ae7a31] hover:bg-[#8e6429] text-white rounded-md whitespace-nowrap"
                 >

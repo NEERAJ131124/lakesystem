@@ -1,7 +1,9 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { WeatherSection } from '../features/weather';
-import { MapPin, Fish, Target } from 'lucide-react';
+import React, { useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { WeatherSection } from "../features/weather";
+import { MapPin, Fish, Target } from "lucide-react";
+import { useAuth } from "../components/contexts/AuthContext";
+import LakeOwnerDashboard from "../components/dashboards/LakeOwnerDashboard";
 
 const FeatureCard = ({ icon, title, description, imageSrc }) => {
   return (
@@ -19,13 +21,34 @@ const FeatureCard = ({ icon, title, description, imageSrc }) => {
 };
 
 const HomePage = () => {
+  const navigate = useNavigate();
+  const { user } = useAuth();
+  if (user.userType === "lakeOwner") {
+    navigate("/lake-owner-dashboard");
+  } else if (user.userType === "angler") {
+    navigate("/angler-dashboard");
+  } else if (user.userType === "admin") {
+    navigate("/admin-dashboard");
+  }
+
+  useEffect(() => {
+    if (user) {
+      if (user.userType === "lakeOwner") {
+        navigate("/lake-owner-dashboard");
+      } else if (user.userType === "angler") {
+        navigate("/angler-dashboard");
+      } else if (user.userType === "admin") {
+        navigate("/admin-dashboard");
+      }
+    }
+  });
   return (
     <div className="flex flex-col min-h-screen">
       {/* Hero Section */}
-      <div className="relative overflow-hidden" style={{ minHeight: '500px' }}>
-        <img 
+      <div className="relative overflow-hidden" style={{ minHeight: "500px" }}>
+        <img
           src="/images/hero-image.jpeg"
-          alt="Carp fishing scene" 
+          alt="Carp fishing scene"
           className="absolute inset-0 w-full h-full object-cover object-center"
         />
         <div className="absolute inset-0 bg-black opacity-50" />
@@ -35,13 +58,11 @@ const HomePage = () => {
               Welcome to Carpbook
             </h1>
             <p className="mt-6 text-lg leading-8 text-gray-300">
-              Your Ultimate Platform for Carp Fishing Enthusiasts and Lake Owners
+              Your Ultimate Platform for Carp Fishing Enthusiasts and Lake
+              Owners
             </p>
             <div className="mt-10 flex gap-x-6">
-              <Link
-                to="/register"
-                className="btn-primary"
-              >
+              <Link to="/register" className="btn-primary">
                 Sign Up
               </Link>
               <Link
@@ -70,21 +91,23 @@ const HomePage = () => {
       {/* What is Carpbook section */}
       <section className="py-16 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">What is Carpbook?</h2>
+          <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">
+            What is Carpbook?
+          </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <FeatureCard 
+            <FeatureCard
               icon={<MapPin className="w-6 h-6 text-carp-600" />}
               title="Discover New Lakes"
               description="Explore a vast network of carp fishing locations, from hidden gems to popular hotspots."
               imageSrc="/images/discover-lakes.jpg"
             />
-            <FeatureCard 
+            <FeatureCard
               icon={<Fish className="w-6 h-6 text-carp-600" />}
               title="View Lake Stock"
               description="Get up-to-date information on lake stocks, including species, sizes, and recent catches."
               imageSrc="/images/lake-stock.jpg"
             />
-            <FeatureCard 
+            <FeatureCard
               icon={<Target className="w-6 h-6 text-carp-600" />}
               title="Capture Your Goals"
               description="Set personal fishing goals, track your progress, and celebrate your achievements."
@@ -105,10 +128,11 @@ const HomePage = () => {
               Explore Our Lakes
             </h2>
             <p className="mt-2 text-lg leading-8 text-gray-600">
-              Discover the Perfect Fishing Spot from Our Curated Selection of Premium Carp Fishing Lakes
+              Discover the Perfect Fishing Spot from Our Curated Selection of
+              Premium Carp Fishing Lakes
             </p>
           </div>
-          
+
           <div className="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-12 lg:mx-0 lg:max-w-none lg:grid-cols-3">
             {[1, 2, 3].map((item) => (
               <div key={item} className="flex flex-col items-start">
@@ -134,7 +158,8 @@ const HomePage = () => {
                       Sample Lake {item}
                     </h3>
                     <p className="mt-5 line-clamp-3 text-sm leading-6 text-gray-600">
-                      A Beautiful Lake Situated in Peaceful Surroundings, Perfect for Carp Fishing Enthusiasts
+                      A Beautiful Lake Situated in Peaceful Surroundings,
+                      Perfect for Carp Fishing Enthusiasts
                     </p>
                   </div>
                 </div>
@@ -148,4 +173,3 @@ const HomePage = () => {
 };
 
 export default HomePage;
-

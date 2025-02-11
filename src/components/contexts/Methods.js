@@ -1,7 +1,13 @@
 import axios from "axios";
 import { baseUrl } from "../../constants/APIs";
+import toast from "react-hot-toast";
 
-const handleFollowLake = async (lakeId, status, setLoading) => {
+const handleFollowLake = async (
+  lakeId,
+  status,
+  setLoading,
+  fetchFollowedLakes
+) => {
   try {
     setLoading(true);
     const response = await axios.put(
@@ -16,7 +22,13 @@ const handleFollowLake = async (lakeId, status, setLoading) => {
         },
       }
     );
+    await fetchFollowedLakes();
+    toast.success(response.data.message);
   } catch (error) {
+    if (error.response.status === 400) {
+      return toast.error("You are already following this lake");
+    }
+    toast.error("Error following lake");
     console.error("Error following lake:", error);
   } finally {
     setLoading(false);
