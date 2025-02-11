@@ -4,6 +4,7 @@ import { useAuth } from "../contexts/AuthContext";
 import { baseUrl } from "../../constants/APIs";
 import Loader from "../Loader";
 import { MoreVertical, Edit, Trash2 } from "lucide-react";
+import EditCatch from "./ManageCatch/EditCatch";
 
 function YourCatches() {
   const [catches, setCatches] = useState([]);
@@ -36,7 +37,6 @@ function YourCatches() {
 
   const handleEdit = (catchData) => {
     setSelectedCatch(catchData);
-    // Implement edit functionality
   };
 
   const handleDelete = async (catchId) => {
@@ -259,6 +259,16 @@ function YourCatches() {
             </div>
           ))}
         </div>
+      )}
+      {selectedCatch && (
+        <EditCatch
+          catchData={selectedCatch}
+          onClose={() => setSelectedCatch(null)}
+          onSave={fetchCatches}
+          isOpen={!!selectedCatch}
+          setLoading={setLoading}
+          onCatchUpdated={fetchCatches}
+        />
       )}
     </div>
   );

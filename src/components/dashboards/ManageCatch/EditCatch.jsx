@@ -2,29 +2,29 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useAuth } from "../../contexts/AuthContext";
 import { baseUrl } from "../../../constants/APIs";
-import { handleFollowLake } from "../../contexts/Methods";
 import Modal from "../../Modal";
 import StarRating from "../../StarRating";
+import { handleFollowLake } from "../../contexts/Methods";
 
-function AddCatch({
+function EditCatch({
   isOpen,
   onClose,
-  onCatchAdded,
+  catchData,
+  onCatchUpdated,
   fetchFollowedLakes,
   setLoading,
-  selectedLake,
 }) {
   const [lakes, setLakes] = useState([]);
-  const [newCatch, setNewCatch] = useState({
-    species: "",
-    weight: "",
-    length: "",
+  const [updatedCatch, setUpdatedCatch] = useState({
+    species: catchData.fish.species,
+    weight: catchData.fish.weight,
+    length: catchData.fish.length,
     photo: null,
-    lake: selectedLake ? selectedLake._id : "",
-    description: "",
-    taggedUsers: "",
-    review: "",
-    rating: 0,
+    lake: catchData.lake._id,
+    description: catchData.description,
+    taggedUsers: catchData.taggedUsers.join(", "),
+    review: catchData.review || "",
+    rating: catchData.rating || 0,
   });
   const [errors, setErrors] = useState({});
   const { user } = useAuth();
@@ -45,24 +45,15 @@ function AddCatch({
     fetchLakes();
   }, []);
 
-  useEffect(() => {
-    if (selectedLake) {
-      setNewCatch((prevCatch) => ({
-        ...prevCatch,
-        lake: selectedLake._id,
-      }));
-    }
-  }, [selectedLake]);
-
   const handleInputChange = (e) => {
-    setNewCatch({ ...newCatch, [e.target.name]: e.target.value });
+    setUpdatedCatch({ ...updatedCatch, [e.target.name]: e.target.value });
     if (errors[e.target.name]) {
       setErrors({ ...errors, [e.target.name]: "" });
     }
   };
 
   const handleFileChange = (e) => {
-    setNewCatch({ ...newCatch, photo: e.target.files[0] });
+    setUpdatedCatch({ ...updatedCatch, photo: e.target.files[0] });
     if (errors.photo) {
       setErrors({ ...errors, photo: "" });
     }
@@ -71,27 +62,34 @@ function AddCatch({
   const validateForm = () => {
     const newErrors = {};
 
-    if (!newCatch.species.trim()) {
+    if (!updatedCatch.species.trim()) {
       newErrors.species = "Fish species is required";
     }
 
-    if (!newCatch.weight || isNaN(newCatch.weight) || newCatch.weight <= 0) {
+    if (
+      !updatedCatch.weight ||
+      isNaN(updatedCatch.weight) ||
+      updatedCatch.weight <= 0
+    ) {
       newErrors.weight = "Please enter a valid weight";
     }
 
-    if (!newCatch.length || isNaN(newCatch.length) || newCatch.length <= 0) {
+    if (
+      !updatedCatch.length ||
+      isNaN(updatedCatch.length) ||
+      updatedCatch.length <= 0
+    ) {
       newErrors.length = "Please enter a valid length";
     }
 
-    if (!newCatch.lake) {
+    if (!updatedCatch.lake) {
       newErrors.lake = "Please select a lake";
     }
 
-    if (!newCatch.photo) {
-      newErrors.photo = "Please upload a photo";
-    }
-
-    if (newCatch.rating && (newCatch.rating < 1 || newCatch.rating > 5)) {
+    if (
+      updatedCatch.rating &&
+      (updatedCatch.rating < 1 || updatedCatch.rating > 5)
+    ) {
       newErrors.rating = "Rating must be between 1 and 5";
     }
 
@@ -107,40 +105,34 @@ function AddCatch({
     setLoading(true);
 
     const formData = new FormData();
-    formData.append("species", newCatch.species);
-    formData.append("weight", newCatch.weight);
-    formData.append("length", newCatch.length);
-    formData.append("image", newCatch.photo);
-    formData.append("lake", newCatch.lake);
-    formData.append("description", newCatch.description);
-    formData.append("taggedUsers", newCatch.taggedUsers);
-    formData.append("review", newCatch.review);
-    formData.append("rating", newCatch.rating);
+    formData.append("species", updatedCatch.species);
+    formData.append("weight", updatedCatch.weight);
+    formData.append("length", updatedCatch.length);
+    if (updatedCatch.photo) {
+      formData.append("image", updatedCatch.photo);
+    }
+    formData.append("lake", updatedCatch.lake);
+    formData.append("description", updatedCatch.description);
+    formData.append("taggedUsers", updatedCatch.taggedUsers);
+    formData.append("review", updatedCatch.review);
+    formData.append("rating", updatedCatch.rating);
 
     try {
-      const res = await axios.post(`${baseUrl}/api/catches`, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
-      setNewCatch({
-        species: "",
-        weight: "",
-        length: "",
-        photo: null,
-        lake: "",
-        description: "",
-        taggedUsers: "",
-        review: "",
-        rating: 0,
-      });
+      const res = await axios.put(
+        `${baseUrl}/api/catches/${catchData._id}`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
       console.log(res);
-      // onCatchAdded();
-      // onClose();
-      window.location.reload();
+      onCatchUpdated();
+      onClose();
     } catch (error) {
-      console.error("Error adding new catch:", error);
+      console.error("Error updating catch:", error);
     } finally {
       setLoading(false);
     }
@@ -149,9 +141,7 @@ function AddCatch({
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <div className="bg-white rounded-lg shadow p-6">
-        <h2 className="text-xl font-semibold text-gray-900 mb-4">
-          Add New Catch
-        </h2>
+        <h2 className="text-xl font-semibold text-gray-900 mb-4">Edit Catch</h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="mb-4">
@@ -165,7 +155,7 @@ function AddCatch({
                 type="text"
                 id="species"
                 name="species"
-                value={newCatch.species}
+                value={updatedCatch.species}
                 onChange={handleInputChange}
                 required
                 className={`p-2 border w-full rounded-md text-base ${
@@ -189,7 +179,7 @@ function AddCatch({
                 step="0.01"
                 id="weight"
                 name="weight"
-                value={newCatch.weight}
+                value={updatedCatch.weight}
                 onChange={handleInputChange}
                 required
                 className={`p-2 w-full border rounded-md text-base ${
@@ -213,7 +203,7 @@ function AddCatch({
                 step="0.01"
                 id="length"
                 name="length"
-                value={newCatch.length}
+                value={updatedCatch.length}
                 onChange={handleInputChange}
                 required
                 className={`p-2 w-full border rounded-md text-base ${
@@ -236,7 +226,7 @@ function AddCatch({
                 <select
                   id="lake"
                   name="lake"
-                  value={newCatch.lake}
+                  value={updatedCatch.lake}
                   onChange={handleInputChange}
                   required
                   className={`p-2 border w-full rounded-md text-base ${
@@ -250,12 +240,12 @@ function AddCatch({
                     </option>
                   ))}
                 </select>
-                {newCatch.lake && (
+                {updatedCatch.lake && (
                   <button
                     type="button"
                     onClick={() => {
                       handleFollowLake(
-                        newCatch.lake,
+                        updatedCatch.lake,
                         true,
                         setLoading,
                         fetchFollowedLakes
@@ -304,7 +294,7 @@ function AddCatch({
               <textarea
                 id="description"
                 name="description"
-                value={newCatch.description}
+                value={updatedCatch.description}
                 onChange={handleInputChange}
                 rows={3}
                 className={`p-2 border w-full rounded-md text-base ${
@@ -328,7 +318,7 @@ function AddCatch({
               <textarea
                 id="review"
                 name="review"
-                value={newCatch.review}
+                value={updatedCatch.review}
                 onChange={handleInputChange}
                 rows={3}
                 className={`p-2 border w-full rounded-md text-base ${
@@ -348,9 +338,9 @@ function AddCatch({
                 Rating (1-5)
               </label>
               <StarRating
-                rating={newCatch.rating}
+                rating={updatedCatch.rating}
                 setRating={(value) =>
-                  setNewCatch({ ...newCatch, rating: value })
+                  setUpdatedCatch({ ...updatedCatch, rating: value })
                 }
               />
               {errors.rating && (
@@ -363,16 +353,16 @@ function AddCatch({
             <button
               type="button"
               onClick={() =>
-                setNewCatch({
-                  species: "",
-                  weight: "",
-                  length: "",
+                setUpdatedCatch({
+                  species: catchData.fish.species,
+                  weight: catchData.fish.weight,
+                  length: catchData.fish.length,
                   photo: null,
-                  lake: "",
-                  description: "",
-                  taggedUsers: "",
-                  review: "",
-                  rating: 0,
+                  lake: catchData.lake._id,
+                  description: catchData.description,
+                  taggedUsers: catchData.taggedUsers.join(", "),
+                  review: catchData.review || "",
+                  rating: catchData.rating || 0,
                 })
               }
               className="px-5 py-2.5 bg-gray-500 hover:bg-gray-600 text-white rounded-md cursor-pointer text-base flex-1 whitespace-nowrap"
@@ -383,7 +373,7 @@ function AddCatch({
               type="submit"
               className="px-5 py-2.5 bg-[#ae7a31] hover:bg-[#8e6429] text-white rounded-md cursor-pointer text-base flex-1 whitespace-nowrap"
             >
-              Add Catch
+              Update Catch
             </button>
           </div>
         </form>
@@ -392,4 +382,4 @@ function AddCatch({
   );
 }
 
-export default AddCatch;
+export default EditCatch;

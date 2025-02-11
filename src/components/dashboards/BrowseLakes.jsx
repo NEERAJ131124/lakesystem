@@ -4,11 +4,16 @@ import { baseUrl } from "../../constants/APIs";
 import Loader from "../Loader";
 import { useAuth } from "../contexts/AuthContext";
 import { handleFollowLake } from "../contexts/Methods";
+import Modal from "../Modal";
+import StarRating from "../StarRating";
+import AddCatch from "./ManageCatch/AddCatch";
 import l0 from "../../assets/wlake.jpg";
 
-function BrowseLakes() {
+function BrowseLakes({ setActiveTab }) {
   const [lakes, setLakes] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [selectedLake, setSelectedLake] = useState(null);
+  const [isAddCatchOpen, setIsAddCatchOpen] = useState(false);
   const { user } = useAuth();
 
   const fetchLakes = async () => {
@@ -30,6 +35,22 @@ function BrowseLakes() {
     fetchLakes();
   }, [user.following]);
 
+  const handleFollow = async () => {
+    setActiveTab("followedLakes");
+  };
+
+  const handleAddCatch = (lake) => {
+    setSelectedLake(lake);
+    setIsAddCatchOpen(true);
+  };
+
+  if (loading)
+    return (
+      <div className="bg-white rounded-lg shadow-2xl p-6">
+        <Loader />
+      </div>
+    );
+
   return (
     <div className="bg-white rounded-lg shadow-2xl p-6">
       <h2 className="text-xl font-semibold text-gray-900 mb-4">Browse Lakes</h2>
@@ -44,13 +65,11 @@ function BrowseLakes() {
               key={lake._id}
               className="border-[1px] border-[#ae7a31] shadow-2xl rounded-lg p-4 relative"
             >
-              {/* {lake.image && ( */}
               <img
                 src={lake.image || l0}
                 alt={lake.name}
                 className="w-full h-48 object-cover rounded-lg mb-4"
               />
-              {/* )} */}
               <h3 className="font-semibold text-lg mb-4">{lake.name}</h3>
 
               <div className="grid grid-cols-2 gap-4">
@@ -75,7 +94,18 @@ function BrowseLakes() {
                   <span className="font-medium text-gray-700">
                     Average Rating
                   </span>
-                  <span className="text-gray-600">{lake.averageRating}/5</span>
+                  <div
+                    className="flex items-center cursor-pointer"
+                    onClick={() => setSelectedLake(lake)}
+                  >
+                    <StarRating
+                      rating={lake.averageRating}
+                      setRating={() => {}}
+                    />
+                    <span className="ml-2 text-gray-600">
+                      ({lake.reviews.length} reviews)
+                    </span>
+                  </div>
                 </div>
 
                 <div className="flex flex-col col-span-2">
@@ -95,18 +125,61 @@ function BrowseLakes() {
                 <button
                   className="mt-4 px-4 py-2 bg-[#ae7a31] text-white rounded hover:bg-blue-600  bottom-4 right-4"
                   onClick={() => {
-                    handleFollowLake(lake._id, true, setLoading, () => {
-                      fetchLakes();
-                    });
+                    handleFollowLake(lake._id, true, setLoading, handleFollow);
                   }}
                 >
                   Subscribe
+                </button>
+                <button
+                  className="mt-2 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+                  onClick={() => handleAddCatch(lake)}
+                >
+                  Add Catch
                 </button>
               </div>
             </div>
           ))}
         </div>
       )}
+
+      {selectedLake && (
+        <Modal isOpen={!!selectedLake} onClose={() => setSelectedLake(null)}>
+          <div className="bg-white rounded-lg shadow p-6">
+            <h2 className="text-xl font-semibold text-gray-900 mb-4">
+              Reviews for {selectedLake.name}
+            </h2>
+            {selectedLake.reviews.length === 0 ? (
+              <p className="text-gray-500">No reviews available.</p>
+            ) : (
+              <div className="space-y-4">
+                {selectedLake.reviews.map((review) => (
+                  <div key={review._id} className="border-b pb-4">
+                    <p className="font-semibold">{review.user.username}</p>
+                    <p className="text-gray-600">{review.review}</p>
+                    <p className="text-yellow-500">
+                      {"★".repeat(review.rating)}
+                      {"☆".repeat(5 - review.rating)}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </Modal>
+      )}
+
+      <AddCatch
+        isOpen={isAddCatchOpen}
+        onClose={() => setIsAddCatchOpen(false)}
+        setLoading={setLoading}
+        onCatchAdded={() => {
+          // Refresh the catches list or perform any other necessary actions
+        }}
+        fetchFollowedLakes={() => {
+          // Refresh the followed lakes list or perform any other necessary actions
+        }}
+        selectedLake={selectedLake}
+      />
     </div>
   );
 }

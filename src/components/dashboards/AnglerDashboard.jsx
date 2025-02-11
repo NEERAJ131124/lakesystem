@@ -17,7 +17,7 @@ function AnglerDashboard() {
   const renderTabContent = () => {
     switch (activeTab) {
       case "browseLakes":
-        return <BrowseLakes />;
+        return <BrowseLakes setActiveTab={setActiveTab} />;
       case "followedLakes":
         return <FollowedLakes />;
       case "yourCatches":
