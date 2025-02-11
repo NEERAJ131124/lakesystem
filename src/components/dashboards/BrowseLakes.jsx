@@ -95,7 +95,7 @@ function BrowseLakes() {
                 <button
                   className="mt-4 px-4 py-2 bg-[#ae7a31] text-white rounded hover:bg-blue-600  bottom-4 right-4"
                   onClick={() => {
-                    handleFollowLake(lake._id, false, setLoading, () => {
+                    handleFollowLake(lake._id, true, setLoading, () => {
                       fetchLakes();
                     });
                   }}

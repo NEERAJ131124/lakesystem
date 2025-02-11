@@ -22,9 +22,11 @@ const handleFollowLake = async (
         },
       }
     );
+
     await fetchFollowedLakes();
     toast.success(response.data.message);
   } catch (error) {
+    console.log(error);
     if (error.response.status === 400) {
       return toast.error("You are already following this lake");
     }
