@@ -184,14 +184,14 @@ function CreateLake() {
   }
 
   return (
-    <div className="bg-white rounded-xl shadow-lg p-8 max-w-4xl mx-auto">
+    <div className="bg-white rounded-xl shadow-lg p-8 mx-auto">
       <Toaster />
       <h2 className="text-xl font-semibold text-gray-900 mb-4">Add New Lake</h2>
       <form
         onSubmit={handleSubmit}
         className="grid grid-cols-1 md:grid-cols-12 lg:grid-cols-12 gap-6 w-full"
       >
-        <div className="col-span-6">
+        <div className="col-span-12 md:col-span-6">
           <label
             htmlFor="name"
             className="block text-sm font-medium text-gray-700 mb-2"
@@ -218,7 +218,7 @@ function CreateLake() {
           )}
         </div>
 
-        <div className="col-span-6">
+        <div className="col-span-12 md:col-span-6">
           <label
             htmlFor="location"
             className="block text-sm font-medium text-gray-700 mb-2"
@@ -244,7 +244,7 @@ function CreateLake() {
           )}
         </div>
 
-        <div className="col-span-6">
+        <div className="col-span-12 md:col-span-6">
           <label
             htmlFor="currentStock"
             className="block text-sm font-medium text-gray-700 mb-2"
@@ -271,7 +271,7 @@ function CreateLake() {
           )}
         </div>
 
-        <div className="col-span-6">
+        <div className="col-span-12 md:col-span-6">
           <label
             htmlFor="maxWeight"
             className="block text-sm font-medium text-gray-700 mb-2"
