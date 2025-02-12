@@ -4,6 +4,8 @@ import { Disclosure } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { useAuth } from "./contexts/AuthContext";
 
+import WhiteCarp from "../assets/WhiteCarp.png";
+
 const NavBar = () => {
   const { user, logout } = useAuth();
   const location = useLocation();
@@ -35,7 +37,8 @@ const NavBar = () => {
               <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
                 <div className="flex flex-shrink-0 items-center">
                   <Link to="/" className="text-2xl font-bold text-white">
-                    Carpbook
+                    {/* Carpbook */}
+                    <img src={WhiteCarp} alt="Carpbook Logo" className="h-8 w-auto" />
                   </Link>
                 </div>
                 <div className="hidden sm:ml-6 sm:block">

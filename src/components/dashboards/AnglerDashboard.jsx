@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import UserDetails from "./UserDetails";
 import EditProfileModal from "./EditProfileModal";
 import AddCatch from "./ManageCatch/AddCatch";
@@ -7,12 +7,20 @@ import FollowedLakes from "./FollowedLakes";
 import YourCatches from "./YourCatches";
 import TopCatches from "./TopCatches";
 import Loader from "../Loader";
+import { XCircle } from "lucide-react";
+import axios from "axios";
+import { baseUrl } from "../../constants/APIs";
 
 function AnglerDashboard() {
   const [loading, setLoading] = useState(false);
   const [isEditProfileOpen, setIsEditProfileOpen] = useState(false);
   const [isAddCatchOpen, setIsAddCatchOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("yourCatches");
+  const [visible, setVisible] = useState(true);
+
+  const [lakes, setLakes] = useState([]);
+  const [msg, setMsg] = useState(null);
+  const [index, setIndex] = useState(0);
 
   const renderTabContent = () => {
     switch (activeTab) {
@@ -29,12 +37,59 @@ function AnglerDashboard() {
     }
   };
 
+  console.log("lakes", lakes);
+
+  useEffect(() => {
+    const fetchRecentLakes = async () => {
+      try {
+        const response = await axios.get(`${baseUrl}/api/lakes/recent?days=1`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
+        setLakes(response.data);
+      } catch (error) {
+        console.error("Error fetching recent lakes:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchRecentLakes();
+  }, []);
+
+  useEffect(() => {
+    if (lakes.length > 0) {
+
+      setMsg(`${lakes[index].name} has been listed on ${new Date(lakes[index].createdAt).toLocaleDateString('en-GB').replace(/\//g, '-')} in ${lakes[index].location}`);
+
+      const interval = setInterval(() => {
+        setIndex((prevIndex) => (prevIndex + 1) % lakes.length);
+      }, 3000);
+
+      return () => clearInterval(interval);
+    }
+  }, [index, lakes]);
+
   return (
     <div className="min-h-screen bg-gray-100 p-8">
       {loading ? (
         <Loader />
       ) : (
         <div className="max-w-full mx-auto md:mx-[5vw]">
+          <div className="py-6">
+            {visible && (
+              <div className="flex items-center justify-between p-4 border-l-4 border-blue-500 bg-blue-100 text-blue-700 rounded-lg shadow-md">
+                <span className="font-medium">{msg}</span>
+                <button
+                  onClick={() => setVisible(false)}
+                  className="text-lg text-gray-500 hover:text-gray-700"
+                >
+                  <XCircle className="w-5 h-5" />
+                </button>
+              </div>
+            )}
+          </div>
           <h1 className="text-3xl font-bold text-gray-900 mb-8">
             Angler Dashboard
           </h1>
