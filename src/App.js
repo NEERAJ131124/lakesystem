@@ -29,7 +29,6 @@ const PrivateRoute = ({ children, allowedUserTypes }) => {
   const { user } = useAuth();
 
   // console.log("User:", user);
-
   // console.log("Allowed User Types:", allowedUserTypes);
   // console.log(
   //   "User Type Check:",
