@@ -4,7 +4,7 @@ import DeleteModal from "./ManageLakes/DeleteLakeModal";
 import { useAuth } from "../contexts/AuthContext";
 import axios from "axios";
 import { baseUrl } from "../../constants/APIs";
-import toast from "react-hot-toast";
+// import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import Loader from "../Loader";
 import ViewModal from "./ManageLakes/ViewLakeModal";
