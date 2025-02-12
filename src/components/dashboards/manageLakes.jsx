@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Edit, Trash2, Eye, X } from "lucide-react";
+import { Edit, Trash2, Eye, X, Fish } from "lucide-react";
 import DeleteModal from "./ManageLakes/DeleteLakeModal";
 import { useAuth } from "../contexts/AuthContext";
 import axios from "axios";
@@ -239,7 +239,8 @@ function ManageLakes() {
                   }
                   className="text-black opacity-80 hover:opacity-100 flex items-center text-sm sm:text-base"
                 >
-                  <Edit size={16} className="mr-1 sm:mr-2" />
+                  <Fish size={16} className="mr-1 sm:mr-2" />
+                  {/* <Edit size={16} className="mr-1 sm:mr-2" /> */}
                   <span className="hidden sm:inline">Manage Fish Stock</span>
                 </button>
                 <button

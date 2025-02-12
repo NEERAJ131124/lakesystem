@@ -14,7 +14,6 @@ function UserDetails({ onEditProfile, onAddCatch }) {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
-      console.log(response);
       setUser(response.data);
     } catch (error) {
       console.error("Error fetching users:", error);
@@ -69,7 +68,7 @@ function UserDetails({ onEditProfile, onAddCatch }) {
             {users?.dateOfBirth && (
               <p className="text-gray-600">
                 Date of Birth:{" "}
-                {new Date(users?.dateOfBirth).toLocaleDateString()}
+                {new Date(users.dateOfBirth).toLocaleDateString("en-GB").replace(/\//g, "-")}
               </p>
             )}
             {users?.mobileNumber && (

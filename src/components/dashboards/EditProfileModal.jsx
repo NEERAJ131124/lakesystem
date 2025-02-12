@@ -10,7 +10,7 @@ function EditProfileModal({ isOpen, onClose, setLoading }) {
   const [firstName, setFirstName] = useState(user.firstName);
   const [lastName, setLastName] = useState(user.lastName);
   const [email, setEmail] = useState(user.email);
-  const [dateOfBirth, setDateOfBirth] = useState(user.dateOfBirth || "");
+  const [dateOfBirth, setDateOfBirth] = useState(user.dateOfBirth ? new Date(user.dateOfBirth).toISOString().split("T")[0] : "");
   const [mobileNumber, setMobileNumber] = useState(user.mobileNumber || "");
   // const [complexName, setComplexName] = useState(user.complexName || "");
   const [loading, setLoadingState] = useState(false);
@@ -36,7 +36,6 @@ function EditProfileModal({ isOpen, onClose, setLoading }) {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
-      console.log(response);
       alert("Profile updated successfully!");
       // onClose();
       window.location.reload();
