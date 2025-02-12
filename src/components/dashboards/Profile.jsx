@@ -80,7 +80,6 @@ function UserProfile() {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log(response);
       setUser({ ...user, ...editedUser });
       setShowEditModal(false);
       toast.success("Profile updated successfully!");

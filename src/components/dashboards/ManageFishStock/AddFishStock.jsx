@@ -126,6 +126,11 @@ const AddingFishStock = () => {
       newErrors.notes = "Notes should not exceed 500 characters";
     }
 
+    //Fish image required msg
+    if (!formData.image) {
+      newErrors.image = "Fish image is required"
+    }
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -157,7 +162,6 @@ const AddingFishStock = () => {
           }
         );
 
-        console.log("Success:", response);
 
         // Clear form
         setFormData({
@@ -213,9 +217,8 @@ const AddingFishStock = () => {
             value={formData.name}
             onChange={handleInputChange}
             placeholder="Enter fish name"
-            className={`p-2 border rounded-md text-base ${
-              errors.name ? "border-red-500" : "border-gray-300"
-            }`}
+            className={`p-2 border rounded-md text-base ${errors.name ? "border-red-500" : "border-gray-300"
+              }`}
           />
           {errors.name && (
             <span className="text-red-500 text-sm">{errors.name}</span>
@@ -233,9 +236,8 @@ const AddingFishStock = () => {
             value={formData.species}
             onChange={handleInputChange}
             placeholder="Enter species name"
-            className={`p-2 border rounded-md text-base ${
-              errors.species ? "border-red-500" : "border-gray-300"
-            }`}
+            className={`p-2 border rounded-md text-base ${errors.species ? "border-red-500" : "border-gray-300"
+              }`}
           />
           {errors.species && (
             <span className="text-red-500 text-sm">{errors.species}</span>
@@ -255,9 +257,8 @@ const AddingFishStock = () => {
             placeholder="Enter quantity"
             min="1"
             step="1"
-            className={`p-2 border rounded-md text-base ${
-              errors.quantity ? "border-red-500" : "border-gray-300"
-            }`}
+            className={`p-2 border rounded-md text-base ${errors.quantity ? "border-red-500" : "border-gray-300"
+              }`}
           />
           {errors.quantity && (
             <span className="text-red-500 text-sm">{errors.quantity}</span>
@@ -277,9 +278,8 @@ const AddingFishStock = () => {
             placeholder="Enter weight"
             min="0.01"
             step="0.01"
-            className={`p-2 border rounded-md text-base ${
-              errors.weight ? "border-red-500" : "border-gray-300"
-            }`}
+            className={`p-2 border rounded-md text-base ${errors.weight ? "border-red-500" : "border-gray-300"
+              }`}
           />
           {errors.weight && (
             <span className="text-red-500 text-sm">{errors.weight}</span>
@@ -297,9 +297,8 @@ const AddingFishStock = () => {
             value={formData.location}
             onChange={handleInputChange}
             placeholder="Enter location"
-            className={`p-2 border rounded-md text-base ${
-              errors.location ? "border-red-500" : "border-gray-300"
-            }`}
+            className={`p-2 border rounded-md text-base ${errors.location ? "border-red-500" : "border-gray-300"
+              }`}
           />
           {errors.location && (
             <span className="text-red-500 text-sm">{errors.location}</span>
@@ -319,9 +318,8 @@ const AddingFishStock = () => {
             placeholder="Enter average size"
             min="0.01"
             step="0.01"
-            className={`p-2 border rounded-md text-base ${
-              errors.averageSize ? "border-red-500" : "border-gray-300"
-            }`}
+            className={`p-2 border rounded-md text-base ${errors.averageSize ? "border-red-500" : "border-gray-300"
+              }`}
           />
           {errors.averageSize && (
             <span className="text-red-500 text-sm">{errors.averageSize}</span>
@@ -338,9 +336,8 @@ const AddingFishStock = () => {
             name="image"
             accept="image/*"
             onChange={handleImageChange}
-            className={`p-2 border rounded-md text-base ${
-              errors.image ? "border-red-500" : "border-gray-300"
-            }`}
+            className={`p-2 border rounded-md text-base ${errors.image ? "border-red-500" : "border-gray-300"
+              }`}
           />
           {errors.image && (
             <span className="text-red-500 text-sm">{errors.image}</span>
@@ -368,9 +365,8 @@ const AddingFishStock = () => {
             placeholder="Enter additional notes"
             rows="4"
             maxLength="500"
-            className={`p-2 border rounded-md text-base ${
-              errors.notes ? "border-red-500" : "border-gray-300"
-            }`}
+            className={`p-2 border rounded-md text-base ${errors.notes ? "border-red-500" : "border-gray-300"
+              }`}
           />
           {errors.notes && (
             <span className="text-red-500 text-sm">{errors.notes}</span>

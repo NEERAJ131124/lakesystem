@@ -18,7 +18,7 @@ const NavBar = () => {
 
   return (
     <Disclosure as="nav" className="bg-carp-600">
-      {({ open }) => (
+      {({ open, close }) => (
         <>
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="relative flex h-16 items-center justify-between">
@@ -44,11 +44,10 @@ const NavBar = () => {
                       <Link
                         key={item.name}
                         to={item.href}
-                        className={`${
-                          currentPath === item.href
-                            ? "bg-carp-700 text-white"
-                            : "text-carp-100 hover:bg-carp-700 hover:text-white"
-                        } rounded-md px-3 py-2 text-sm font-medium`}
+                        className={`${currentPath === item.href
+                          ? "bg-carp-700 text-white"
+                          : "text-carp-100 hover:bg-carp-700 hover:text-white"
+                          } rounded-md px-3 py-2 text-sm font-medium`}
                         aria-current={
                           currentPath === item.href ? "page" : undefined
                         }
@@ -70,11 +69,10 @@ const NavBar = () => {
                 ) : (
                   <Link
                     to="/login"
-                    className={`${
-                      currentPath === "/login"
-                        ? "bg-carp-700 text-white"
-                        : "text-carp-100 hover:bg-carp-700 hover:text-white"
-                    } rounded-md px-3 py-2 text-sm font-medium`}
+                    className={`${currentPath === "/login"
+                      ? "bg-carp-700 text-white"
+                      : "text-carp-100 hover:bg-carp-700 hover:text-white"
+                      } rounded-md px-3 py-2 text-sm font-medium`}
                     aria-current={currentPath === "/login" ? "page" : undefined}
                   >
                     Login
@@ -90,12 +88,12 @@ const NavBar = () => {
                 <Link
                   key={item.name}
                   to={item.href}
-                  className={`${
-                    currentPath === item.href
-                      ? "bg-carp-700 text-white"
-                      : "text-carp-100 hover:bg-carp-700 hover:text-white"
-                  } block rounded-md px-3 py-2 text-base font-medium`}
+                  className={`${currentPath === item.href
+                    ? "bg-carp-700 text-white"
+                    : "text-carp-100 hover:bg-carp-700 hover:text-white"
+                    } block rounded-md px-3 py-2 text-base font-medium`}
                   aria-current={currentPath === item.href ? "page" : undefined}
+                  onClick={() => close()}
                 >
                   {item.name}
                 </Link>

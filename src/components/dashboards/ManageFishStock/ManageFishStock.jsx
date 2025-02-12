@@ -40,7 +40,6 @@ const ManageFishStock = () => {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
-      console.log(response);
       setFishStocks(response.data.fish);
       setTotalPages(response.data.totalPages);
     } catch (error) {
@@ -117,7 +116,6 @@ const ManageFishStock = () => {
           },
         }
       );
-      console.log(res);
       fetchFishStocks();
     } catch (error) {
       setShowEditModal(true);
@@ -226,11 +224,10 @@ const ManageFishStock = () => {
           <button
             key={index}
             onClick={() => handlePageChange(index + 1)}
-            className={`px-3 py-1 mx-1 rounded ${
-              currentPage === index + 1
-                ? "bg-blue-500 text-white"
-                : "bg-gray-200 text-gray-700"
-            }`}
+            className={`px-3 py-1 mx-1 rounded ${currentPage === index + 1
+              ? "bg-blue-500 text-white"
+              : "bg-gray-200 text-gray-700"
+              }`}
           >
             {index + 1}
           </button>

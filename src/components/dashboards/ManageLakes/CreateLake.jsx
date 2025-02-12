@@ -465,7 +465,6 @@ function CreateLake() {
               onChange={handleImageChange}
               accept="image/*"
               className="hidden"
-              required
             />
 
             {/* Custom Button */}

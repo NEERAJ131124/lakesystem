@@ -90,8 +90,7 @@ function AddCatch({
     if (!newCatch.photo) {
       newErrors.photo = "Please upload a photo";
     }
-
-    if (newCatch.rating && (newCatch.rating < 1 || newCatch.rating > 5)) {
+    if (newCatch.rating === 0 && (newCatch.rating < 1 || newCatch.rating > 5)) {
       newErrors.rating = "Rating must be between 1 and 5";
     }
 
@@ -167,9 +166,8 @@ function AddCatch({
                 value={newCatch.species}
                 onChange={handleInputChange}
                 required
-                className={`p-2 border w-full rounded-md text-base ${
-                  errors.species ? "border-red-500" : "border-gray-300"
-                }`}
+                className={`p-2 border w-full rounded-md text-base ${errors.species ? "border-red-500" : "border-gray-300"
+                  }`}
               />
               {errors.species && (
                 <span className="text-red-500 text-sm">{errors.species}</span>
@@ -191,9 +189,8 @@ function AddCatch({
                 value={newCatch.weight}
                 onChange={handleInputChange}
                 required
-                className={`p-2 w-full border rounded-md text-base ${
-                  errors.weight ? "border-red-500" : "border-gray-300"
-                }`}
+                className={`p-2 w-full border rounded-md text-base ${errors.weight ? "border-red-500" : "border-gray-300"
+                  }`}
               />
               {errors.weight && (
                 <span className="text-red-500 text-sm">{errors.weight}</span>
@@ -215,9 +212,8 @@ function AddCatch({
                 value={newCatch.length}
                 onChange={handleInputChange}
                 required
-                className={`p-2 w-full border rounded-md text-base ${
-                  errors.length ? "border-red-500" : "border-gray-300"
-                }`}
+                className={`p-2 w-full border rounded-md text-base ${errors.length ? "border-red-500" : "border-gray-300"
+                  }`}
               />
               {errors.length && (
                 <span className="text-red-500 text-sm">{errors.length}</span>
@@ -238,9 +234,8 @@ function AddCatch({
                   value={newCatch.lake}
                   onChange={handleInputChange}
                   required
-                  className={`p-2 border w-full rounded-md text-base ${
-                    errors.lake ? "border-red-500" : "border-gray-300"
-                  }`}
+                  className={`p-2 border w-full rounded-md text-base ${errors.lake ? "border-red-500" : "border-gray-300"
+                    }`}
                 >
                   <option value="">Select a lake</option>
                   {lakes.map((lake) => (
@@ -249,7 +244,7 @@ function AddCatch({
                     </option>
                   ))}
                 </select>
-                {newCatch.lake && (
+                {/* {newCatch.lake && (
                   <button
                     type="button"
                     onClick={() => {
@@ -264,14 +259,14 @@ function AddCatch({
                   >
                     Follow Lake
                   </button>
-                )}
+                )} */}
               </div>
               {errors.lake && (
                 <span className="text-red-500 text-sm">{errors.lake}</span>
               )}
             </div>
 
-            <div className="mb-4">
+            <div className="mb-4 md:col-span-2">
               <label
                 htmlFor="photo"
                 className="block text-sm font-medium text-gray-700"
@@ -284,9 +279,8 @@ function AddCatch({
                 name="photo"
                 onChange={handleFileChange}
                 accept="image/*"
-                className={`p-2 border rounded-md text-base ${
-                  errors.photo ? "border-red-500" : "border-gray-300"
-                }`}
+                className={`p-2 w-full border rounded-md text-base ${errors.photo ? "border-red-500" : "border-gray-300"
+                  }`}
               />
               {errors.photo && (
                 <span className="text-red-500 text-sm">{errors.photo}</span>
@@ -306,9 +300,8 @@ function AddCatch({
                 value={newCatch.description}
                 onChange={handleInputChange}
                 rows={3}
-                className={`p-2 border w-full rounded-md text-base ${
-                  errors.description ? "border-red-500" : "border-gray-300"
-                }`}
+                className={`p-2 border w-full rounded-md text-base ${errors.description ? "border-red-500" : "border-gray-300"
+                  }`}
               />
               {errors.description && (
                 <span className="text-red-500 text-sm">
@@ -330,16 +323,15 @@ function AddCatch({
                 value={newCatch.review}
                 onChange={handleInputChange}
                 rows={3}
-                className={`p-2 border w-full rounded-md text-base ${
-                  errors.review ? "border-red-500" : "border-gray-300"
-                }`}
+                className={`p-2 border w-full rounded-md text-base ${errors.review ? "border-red-500" : "border-gray-300"
+                  }`}
               />
               {errors.review && (
                 <span className="text-red-500 text-sm">{errors.review}</span>
               )}
             </div>
 
-            <div className="mb-4">
+            <div className="mb-4 md:col-span-2">
               <label
                 htmlFor="rating"
                 className="block text-sm font-medium text-gray-700"

@@ -56,10 +56,16 @@ function UserDetails({ onEditProfile, onAddCatch }) {
               <p className="font-semibold text-lg">
                 {users?.firstName} {users?.lastName}
               </p>
-              <p className="text-gray-500">{users?.email}</p>
+              <p className="text-gray-500 hidden sm:block">{users?.email}</p>
             </div>
           </div>
           <div className="space-y-2">
+            {users?.email && (
+              <p className="text-gray-600 block sm:hidden">
+                Email:{" "}
+                {users?.email}
+              </p>
+            )}
             {users?.dateOfBirth && (
               <p className="text-gray-600">
                 Date of Birth:{" "}

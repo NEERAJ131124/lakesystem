@@ -7,7 +7,7 @@ function LakeOwnerDashboard() {
   const { user, logout } = useAuth();
   const location = useLocation();
   const currentPath = location.pathname.split("/").pop();
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
     <div className="flex min-h-screen bg-gray-100">
@@ -21,9 +21,8 @@ function LakeOwnerDashboard() {
 
       {/* Sidebar */}
       <div
-        className={`${
-          sidebarOpen ? "translate-x-0" : "-translate-x-full"
-        } lg:translate-x-0 fixed lg:static z-10 w-16 lg:w-64 bg-[#ae7a31] text-white transition-transform duration-300 ease-in-out h-screen`}
+        className={`${sidebarOpen ? "translate-x-0" : "-translate-x-full"
+          } lg:translate-x-0 fixed lg:static z-10 w-16 lg:w-64 bg-[#ae7a31] text-white transition-transform duration-300 ease-in-out h-screen`}
       >
         <div className="p-5 hidden lg:block">
           <h2 className="text-2xl font-semibold">CarpBook</h2>
@@ -32,33 +31,30 @@ function LakeOwnerDashboard() {
         <nav className="mt-8">
           <Link
             to="profile"
-            className={`flex items-center py-3 px-5 transition-colors duration-200 w-full text-left ${
-              currentPath === "profile"
+            className={`flex items-center py-3 px-5 transition-colors duration-200 w-full text-left ${currentPath === "profile"
                 ? "bg-[#8e6429] text-white"
                 : "text-gray-300 hover:bg-[#8e6429] hover:text-white"
-            }`}
+              }`}
           >
             <User className="h-5 w-5 lg:mr-3" />
             <span className="hidden lg:inline">Profile</span>
           </Link>
           <Link
             to="manage-lakes"
-            className={`flex items-center py-3 px-5 transition-colors duration-200 w-full text-left ${
-              currentPath === "manage-lakes"
+            className={`flex items-center py-3 px-5 transition-colors duration-200 w-full text-left ${currentPath === "manage-lakes"
                 ? "bg-[#8e6429] text-white"
                 : "text-gray-300 hover:bg-[#8e6429] hover:text-white"
-            }`}
+              }`}
           >
             <Map className="h-5 w-5 lg:mr-3" />
             <span className="hidden lg:inline">Manage Lakes</span>
           </Link>
           <Link
             to="create-lake"
-            className={`flex items-center py-3 px-5 transition-colors duration-200 w-full text-left ${
-              currentPath === "create-lake"
+            className={`flex items-center py-3 px-5 transition-colors duration-200 w-full text-left ${currentPath === "create-lake"
                 ? "bg-[#8e6429] text-white"
                 : "text-gray-300 hover:bg-[#8e6429] hover:text-white"
-            }`}
+              }`}
           >
             <PlusCircle className="h-5 w-5 lg:mr-3" />
             <span className="hidden lg:inline">Create Lake</span>

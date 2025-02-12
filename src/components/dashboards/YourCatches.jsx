@@ -103,11 +103,11 @@ function YourCatches() {
       ) : catches.length === 0 ? (
         <p className="text-gray-500">No catches recorded yet.</p>
       ) : (
-        <div className="grid gap-4">
+        <div className="grid gap-4 overflow-auto">
           {catches.map((fish) => (
             <div
               key={fish._id}
-              className="bg-white border rounded-lg p-6 shadow-2xl border-[1px] border-[#ae7a31] relative"
+              className="bg-white border rounded-lg p-6 shadow-2xl border-[1px] border-[#ae7a31] relative max-w-full overflow-hidden"
             >
               {/* Post Header */}
               <div className="flex items-center justify-between mb-4">
@@ -164,7 +164,7 @@ function YourCatches() {
               </div>
 
               {/* Description */}
-              <p className="mb-4">{fish.description}</p>
+              <p className="w-full mb-4 max-w-full break-words">{fish.description}</p>
 
               {/* Fish Image */}
               {fish.fish.image && (
@@ -172,7 +172,7 @@ function YourCatches() {
                   <img
                     src={fish.fish.image}
                     alt={fish.fish.species}
-                    className="w-full h-96 object-cover rounded-lg"
+                    className="w-full h-96 object-cover rounded-lg max-w-full"
                   />
                 </div>
               )}
