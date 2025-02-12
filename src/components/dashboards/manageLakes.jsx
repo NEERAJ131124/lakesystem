@@ -62,8 +62,8 @@ function ManageLakes() {
     const matchesSearch =
       lake.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       lake.location.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      lake.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      lake.pricing.toString().includes(searchTerm);
+      lake.description.toLowerCase().includes(searchTerm.toLowerCase());
+    // lake.pricing.toString().includes(searchTerm);
 
     // Fish type filtering
     const matchesFishType =
