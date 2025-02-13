@@ -59,7 +59,10 @@ export function AuthProvider({ children }) {
   const fetchUser = useCallback(async () => {
     if (user) return;
     try {
+      // const token1 = getToken();
       const token = localStorage.getItem("token");
+
+      console.log("Token:", token);
       if (!token) {
         setLoading(false);
         return;
@@ -124,6 +127,7 @@ export function AuthProvider({ children }) {
       }
 
       localStorage.setItem("token", token);
+      // setToken(token);
       api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
       setUser(normalizedUser);
       setError(null);
@@ -155,6 +159,28 @@ export function AuthProvider({ children }) {
       throw new Error(errorMessage);
     }
   };
+
+  // const setToken = (token) => {
+  //   const now = new Date();
+  //   const expiryTime = now.getTime() + 24 * 60 * 60 * 1000; // 12 hours in milliseconds
+  //   const tokenData = {
+  //     token: token,
+  //     expiry: expiryTime,
+  //   };
+  //   localStorage.setItem("token", JSON.stringify(tokenData));
+  // };
+
+  // const getToken = () => {
+  //   const tokenData = localStorage.getItem("token");
+  //   if (!tokenData) return null;
+  //   const { value, expiry } = JSON.parse(tokenData);
+  //   const now = new Date().getTime();
+  //   if (now > expiry) {
+  //     localStorage.removeItem("token");
+  //     return null;
+  //   }
+  //   return value;
+  // };
 
   const register = async (userData) => {
     try {
