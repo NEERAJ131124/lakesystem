@@ -108,7 +108,8 @@ function UserDetails({ onEditProfile, onAddCatch }) {
 
   return (
     <>
-      <div className="bg-white rounded-lg shadow-2xl p-6">
+      {/* <ImageCropper /> */}
+      {/* <div className="bg-white rounded-lg shadow-2xl p-6">
         <div className="flex flex-col md:flex-row justify-between">
           <div>
             <div className="flex items-center mb-4">
@@ -212,23 +213,30 @@ function UserDetails({ onEditProfile, onAddCatch }) {
             </button>
           </div>
         </div>
-      </div>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
-        {/* Total Catches */}
-        <div className="flex items-center justify-between bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg shadow-lg p-6 hover:shadow-2xl transition-all duration-300">
+      </div> */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+        {/* User Profile Card */}
+        <div className="bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-xl shadow-md p-6 flex items-center justify-between transition-transform transform hover:scale-105">
           <div>
-            <p className="text-lg font-semibold">Total Catches</p>
-            <p className="text-3xl font-bold">{users?.catches?.length || 0}</p>
+            <p className="font-semibold text-xl">
+              {users?.firstName} {users?.lastName}
+            </p>
+            <p className="text-gray-200">{users?.email}</p>
+            <button
+              className="mt-4 px-4 py-2 bg-white text-purple-600 font-medium rounded-lg hover:bg-gray-100 transition"
+              onClick={onEditProfile}
+            >
+              Edit Profile
+            </button>
           </div>
-          <div className="bg-white bg-opacity-20 p-3 rounded-full">
-            {/* Fish Icon */}
+          <div className="rounded-full bg-white bg-opacity-20 w-16 h-16 flex items-center justify-center shadow-sm">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="h-10 w-10 text-white"
+              className="h-8 w-8 text-white"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
-              strokeWidth="2"
+              strokeWidth={2}
             >
               <path
                 strokeLinecap="round"
