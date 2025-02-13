@@ -1,49 +1,41 @@
+// Remove the duplicate import and declaration of createImage
+// import { createImage, getCroppedImg } from "react-easy-crop";
+
 export const createImage = (url) =>
-    new Promise((resolve, reject) => {
-      const image = new Image();
-      image.addEventListener('load', () => resolve(image));
-      image.addEventListener('error', (error) => reject(error));
-      image.setAttribute('crossOrigin', 'anonymous');
-      image.src = url;
-    });
-  
-  export const getCroppedImg = async (imageSrc, crop) => {
-    const image = await createImage(imageSrc);
-    const canvas = document.createElement('canvas');
-    const ctx = canvas.getContext('2d');
-  
-    if (!ctx) {
-      return null;
-    }
-  
-    // Set canvas dimensions to match crop size
-    canvas.width = crop.width;
-    canvas.height = crop.height;
-  
-    // Draw cropped image
-    ctx.drawImage(
-      image,
-      crop.x,
-      crop.y,
-      crop.width,
-      crop.height,
-      0,
-      0,
-      crop.width,
-      crop.height
-    );
-  
-    // Convert canvas to blob
-    return new Promise((resolve) => {
-      canvas.toBlob((blob) => {
-        if (!blob) {
-          reject(new Error('Canvas is empty'));
-          return;
-        }
-        blob.name = 'cropped.jpeg';
-        resolve(blob);
-      }, 'image/jpeg');
-    });
-  };
-  
-  
+  new Promise((resolve, reject) => {
+    const image = new Image();
+    image.addEventListener("load", () => resolve(image));
+    image.addEventListener("error", (error) => reject(error));
+    image.setAttribute("crossOrigin", "anonymous");
+    image.src = url;
+  });
+
+export default async function getCroppedImg(imageSrc, crop) {
+  const image = await createImage(imageSrc);
+  const canvas = document.createElement("canvas");
+  const ctx = canvas.getContext("2d");
+
+  const scaleX = image.width / crop.width;
+  const scaleY = image.height / crop.height;
+
+  canvas.width = crop.width;
+  canvas.height = crop.height;
+
+  ctx.drawImage(
+    image,
+    crop.x * scaleX,
+    crop.y * scaleY,
+    crop.width * scaleX,
+    crop.height * scaleY,
+    0,
+    0,
+    crop.width,
+    crop.height
+  );
+
+  return new Promise((resolve) => {
+    canvas.toBlob((file) => {
+      resolve(file);
+    }, "image/jpeg");
+  });
+}
