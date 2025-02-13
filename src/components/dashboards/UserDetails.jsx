@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { baseUrl } from "../../constants/APIs";
+import ImageCropper from "../ImageCropper";
 
 function UserDetails({ onEditProfile, onAddCatch }) {
   const { user } = useAuth();
@@ -52,6 +53,7 @@ function UserDetails({ onEditProfile, onAddCatch }) {
 
   return (
     <>
+      {/* <ImageCropper /> */}
       {/* <div className="bg-white rounded-lg shadow-2xl p-6">
         <div className="flex flex-col md:flex-row justify-between">
           <div>
@@ -127,7 +129,7 @@ function UserDetails({ onEditProfile, onAddCatch }) {
           </div>
         </div>
       </div> */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
         {/* User Profile Card */}
         <div className="bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-xl shadow-md p-6 flex items-center justify-between transition-transform transform hover:scale-105">
           <div>
@@ -196,7 +198,7 @@ function UserDetails({ onEditProfile, onAddCatch }) {
         </div>
 
         {/* Angler Rank */}
-        <div className="flex flex-col bg-gradient-to-r from-yellow-500 to-orange-500 text-white rounded-xl shadow-md p-6 hover:shadow-lg transition-transform transform hover:scale-105">
+        {/* <div className="flex flex-col bg-gradient-to-r from-yellow-500 to-orange-500 text-white rounded-xl shadow-md p-6 hover:shadow-lg transition-transform transform hover:scale-105">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-lg font-semibold">Your Rank</p>
@@ -208,7 +210,7 @@ function UserDetails({ onEditProfile, onAddCatch }) {
               </svg>
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
 
 

@@ -4,7 +4,7 @@ import { Disclosure } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { useAuth } from "./contexts/AuthContext";
 
-import WhiteCarp from "../assets/WhiteCarp.png";
+import WhiteCarp from "../assets/logo.png";
 
 const NavBar = () => {
   const { user, logout } = useAuth();
