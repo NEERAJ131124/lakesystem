@@ -13,6 +13,23 @@ import { baseUrl } from "../../constants/APIs";
 import { useAuth } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 
+
+function WaterIcon() {
+  return <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2C12 2 4 10 4 16a8 8 0 1 0 16 0c0-6-8-14-8-14z"></path></svg>;
+}
+
+function StarIcon() {
+  return <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 15 10 22 10 16 14 18 22 12 18 6 22 8 14 2 10 9 10"></polygon></svg>;
+}
+
+function FishIcon() {
+  return <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 10c4.5 0 6 2 6 2s-1.5 2-6 2c-2.7 0-5.2 1.3-7 3-1.8-1.7-4.3-3-7-3-4.5 0-6-2-6-2s1.5-2 6-2c2.7 0 5.2-1.3 7-3 1.8 1.7 4.3 3 7 3z"></path></svg>;
+}
+
+function TrophyIcon() {
+  return <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M8 21h8M12 17v4m5-4h1a4 4 0 0 0 4-4V5H3v8a4 4 0 0 0 4 4h1"></path></svg>;
+}
+
 function AnglerDashboard() {
   const [loading, setLoading] = useState(true);
   const [isEditProfileOpen, setIsEditProfileOpen] = useState(false);
@@ -62,23 +79,15 @@ function AnglerDashboard() {
   }, []);
 
   const handleViewNewLakes = () => {
-    navigate("/new-lakes"); // Change the route as per your project
+    navigate("/new-lakes");
   };
 
-  // useEffect(() => {
-  //   if (lakes.length > 0) {
-  //     setMsg(`${lakes.length} new lakes have been added since your last visit. Click 'View New Lakes' to explore.`);
-  //     if (visible === false) {
-  //       setVisible(true);
-  //     }
-  //     setMsg(`Recently added lake since your last login: ${lakes[index].name} (added on ${new Date(lakes[index].createdAt).toLocaleDateString('en-GB').replace(/\//g, '-')} at ${lakes[index].location}).`);
-  //     const interval = setInterval(() => {
-  //       setIndex((prevIndex) => (prevIndex + 1) % lakes.length);
-  //     }, 3000);
-  //     return () => clearInterval(interval);
-  //   }
-  // }, [index, lakes]);
-
+  const tabs = [
+    { id: "browseLakes", label: "Browse Lakes", icon: <WaterIcon /> },
+    { id: "followedLakes", label: "Followed Lakes", icon: <StarIcon /> },
+    { id: "yourCatches", label: "Your Catches", icon: <FishIcon /> },
+    { id: "topCatches", label: "Top Catches", icon: <TrophyIcon /> },
+  ];
 
   return (
     <div className="min-h-screen bg-gray-100 p-8">
@@ -121,7 +130,27 @@ function AnglerDashboard() {
             />
           </div>
 
-          <div className="space-y-6">
+          <div className="space-y-6 w-full max-w-7xl mx-auto">
+            <div className="flex justify-around sm:justify-center gap-4 sm:gap-8 mb-4 border-b border-gray-300 pb-2 w-full overflow-x-auto">
+              {tabs.map((tab) => (
+                <button
+                  key={tab.id}
+                  className={`flex flex-col sm:flex-row items-center sm:gap-2 px-4 py-2 rounded-lg transition duration-300
+              ${activeTab === tab.id
+                      ? "bg-blue-600 text-white shadow-md"
+                      : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                    }`}
+                  onClick={() => setActiveTab(tab.id)}
+                >
+                  <span>{tab.icon}</span>
+                  <span className="hidden sm:inline">{tab.label}</span>
+                </button>
+              ))}
+            </div>
+            {renderTabContent()}
+          </div>
+
+          {/* <div className="space-y-6">
             <div className="flex space-x-2 sm:space-x-4 mb-4">
               <button
                 className={`px-2 sm:px-4 sm:py-2 text-sm mb-0.5 rounded ${activeTab === "browseLakes"
@@ -160,9 +189,8 @@ function AnglerDashboard() {
                 Top Catches
               </button>
             </div>
-
             {renderTabContent()}
-          </div>
+          </div> */}
 
           <EditProfileModal
             isOpen={isEditProfileOpen}
