@@ -37,6 +37,7 @@ export function AuthProvider({ children }) {
 
   const logout = useCallback(() => {
     localStorage.removeItem("token");
+    localStorage.removeItem("tokenExpiry");
     delete api.defaults.headers.common["Authorization"];
     setUser(null);
     setError(null);
@@ -59,8 +60,9 @@ export function AuthProvider({ children }) {
   const fetchUser = useCallback(async () => {
     if (user) return;
     try {
-      // const token1 = getToken();
-      const token = localStorage.getItem("token");
+      const token = await getToken();
+
+      // const token = localStorage.getItem("token");
 
       console.log("Token:", token);
       if (!token) {
@@ -126,8 +128,8 @@ export function AuthProvider({ children }) {
         throw new Error("Invalid response from server");
       }
 
-      localStorage.setItem("token", token);
-      // setToken(token);
+      // localStorage.setItem("token", token);
+      await setToken(token);
       api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
       setUser(normalizedUser);
       setError(null);
@@ -160,27 +162,25 @@ export function AuthProvider({ children }) {
     }
   };
 
-  // const setToken = (token) => {
-  //   const now = new Date();
-  //   const expiryTime = now.getTime() + 24 * 60 * 60 * 1000; // 12 hours in milliseconds
-  //   const tokenData = {
-  //     token: token,
-  //     expiry: expiryTime,
-  //   };
-  //   localStorage.setItem("token", JSON.stringify(tokenData));
-  // };
+  const setToken = async (token) => {
+    const now = new Date();
+    const expiryTime = now.getTime() + 24 * 60 * 60 * 1000; // 12 hours in milliseconds
+    localStorage.setItem("token", token);
+    localStorage.setItem("tokenExpiry", expiryTime.toString());
+  };
 
-  // const getToken = () => {
-  //   const tokenData = localStorage.getItem("token");
-  //   if (!tokenData) return null;
-  //   const { value, expiry } = JSON.parse(tokenData);
-  //   const now = new Date().getTime();
-  //   if (now > expiry) {
-  //     localStorage.removeItem("token");
-  //     return null;
-  //   }
-  //   return value;
-  // };
+  const getToken = async () => {
+    const token = localStorage.getItem("token");
+    const expiry = localStorage.getItem("tokenExpiry");
+    if (!token || !expiry) return null;
+    const now = new Date().getTime();
+    if (now > parseInt(expiry, 10)) {
+      localStorage.removeItem("token");
+      localStorage.removeItem("tokenExpiry");
+      return null;
+    }
+    return token;
+  };
 
   const register = async (userData) => {
     try {
