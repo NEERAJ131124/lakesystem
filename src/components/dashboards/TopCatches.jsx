@@ -16,6 +16,7 @@ function TopCatches() {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         });
+        console.log("ranking data", response);
         const anglersData = response.data
           .filter((user) => user.userType === "angler")
           .sort((a, b) => b.catches.length - a.catches.length);
@@ -46,7 +47,6 @@ function TopCatches() {
             >
               {/* Responsive Column Layout for Small Screens & Row Layout for Larger Screens */}
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
-
                 {/* Image - Full Width on Small Screens */}
                 <div className="w-full sm:w-auto flex justify-center sm:justify-start mb-3 sm:mb-0">
                   <div className="rounded-full bg-gray-200 w-16 h-16 flex items-center justify-center">
@@ -59,20 +59,25 @@ function TopCatches() {
 
                 {/* Name & Email - Full Width on Small Screens */}
                 <div className="w-full text-center sm:text-left sm:w-auto">
-                  <p className="font-semibold">{angler.firstName} {angler.lastName}</p>
-                  <p className="text-gray-500 text-sm break-words">{angler.email}</p>
+                  <p className="font-semibold">
+                    {angler.firstName} {angler.lastName}
+                  </p>
+                  <p className="text-gray-500 text-sm break-words">
+                    {angler.email}
+                  </p>
                 </div>
 
                 {/* Catch Count - Full Width on Small Screens */}
                 <div className="w-full text-center sm:w-auto mt-2 sm:mt-0">
-                  <p className="font-medium text-gray-600">Catches: {angler.catches.length}</p>
+                  <p className="font-medium text-gray-600">
+                    Catches: {angler.catches.length}
+                  </p>
                 </div>
 
                 {/* Serial Number - Full Width on Small Screens */}
                 <div className="w-full text-center sm:w-auto mt-2 sm:mt-0 text-gray-600">
                   <span className="text-2xl font-bold">{index + 1}</span>
                 </div>
-
               </div>
             </div>
           ))}
