@@ -10,17 +10,21 @@ import Loader from "../Loader";
 import { XCircle } from "lucide-react";
 import axios from "axios";
 import { baseUrl } from "../../constants/APIs";
+import { useAuth } from "../contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 function AnglerDashboard() {
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [isEditProfileOpen, setIsEditProfileOpen] = useState(false);
   const [isAddCatchOpen, setIsAddCatchOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("yourCatches");
   const [visible, setVisible] = useState(true);
 
   const [lakes, setLakes] = useState([]);
-  const [msg, setMsg] = useState(null);
-  const [index, setIndex] = useState(0);
+  const { user } = useAuth();
+  const navigate = useNavigate();
+  // const [msg, setMsg] = useState(null);
+  // const [index, setIndex] = useState(0);
 
   const renderTabContent = () => {
     switch (activeTab) {
@@ -37,12 +41,11 @@ function AnglerDashboard() {
     }
   };
 
-  console.log("lakes", lakes);
 
   useEffect(() => {
     const fetchRecentLakes = async () => {
       try {
-        const response = await axios.get(`${baseUrl}/api/lakes/recent?days=1`, {
+        const response = await axios.get(`${baseUrl}/api/lakes/recent?userId=${user._id}`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
@@ -58,18 +61,24 @@ function AnglerDashboard() {
     fetchRecentLakes();
   }, []);
 
-  useEffect(() => {
-    if (lakes.length > 0) {
+  const handleViewNewLakes = () => {
+    navigate("/new-lakes"); // Change the route as per your project
+  };
 
-      setMsg(`${lakes[index].name} has been listed on ${new Date(lakes[index].createdAt).toLocaleDateString('en-GB').replace(/\//g, '-')} in ${lakes[index].location}`);
+  // useEffect(() => {
+  //   if (lakes.length > 0) {
+  //     setMsg(`${lakes.length} new lakes have been added since your last visit. Click 'View New Lakes' to explore.`);
+  //     if (visible === false) {
+  //       setVisible(true);
+  //     }
+  //     setMsg(`Recently added lake since your last login: ${lakes[index].name} (added on ${new Date(lakes[index].createdAt).toLocaleDateString('en-GB').replace(/\//g, '-')} at ${lakes[index].location}).`);
+  //     const interval = setInterval(() => {
+  //       setIndex((prevIndex) => (prevIndex + 1) % lakes.length);
+  //     }, 3000);
+  //     return () => clearInterval(interval);
+  //   }
+  // }, [index, lakes]);
 
-      const interval = setInterval(() => {
-        setIndex((prevIndex) => (prevIndex + 1) % lakes.length);
-      }, 3000);
-
-      return () => clearInterval(interval);
-    }
-  }, [index, lakes]);
 
   return (
     <div className="min-h-screen bg-gray-100 p-8">
@@ -77,10 +86,20 @@ function AnglerDashboard() {
         <Loader />
       ) : (
         <div className="max-w-full mx-auto md:mx-[5vw]">
-          <div className="py-6">
-            {visible && (
+          {visible && lakes.length > 0 && (
+            <div className="py-6">
               <div className="flex items-center justify-between p-4 border-l-4 border-blue-500 bg-blue-100 text-blue-700 rounded-lg shadow-md">
-                <span className="font-medium">{msg}</span>
+                <span className="font-medium">
+                  {`${lakes.length} new lakes have been added since your last visit. Click `}
+                  <span
+                    onClick={handleViewNewLakes}
+                    className="text-purple-600 font-semibold underline hover:text-purple-800 cursor-pointer transition"
+                  >
+                    View New Lakes
+                  </span>
+
+                  {` to explore.`}
+                </span>
                 <button
                   onClick={() => setVisible(false)}
                   className="text-lg text-gray-500 hover:text-gray-700"
@@ -88,8 +107,9 @@ function AnglerDashboard() {
                   <XCircle className="w-5 h-5" />
                 </button>
               </div>
-            )}
-          </div>
+            </div>
+          )}
+
           <h1 className="text-3xl font-bold text-gray-900 mb-8">
             Angler Dashboard
           </h1>

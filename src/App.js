@@ -24,6 +24,7 @@ import EditLake from "./components/dashboards/ManageLakes/EditLake.jsx";
 import CreateLake from "./components/dashboards/ManageLakes/CreateLake.jsx";
 import AddFishStock from "./components/dashboards/ManageFishStock/AddFishStock.jsx";
 import ManageFishStock from "./components/dashboards/ManageFishStock/ManageFishStock.jsx";
+import ViewNewLakes from "./pages/ViewNewLakes.jsx";
 
 const PrivateRoute = ({ children, allowedUserTypes }) => {
   const { user } = useAuth();
@@ -61,7 +62,6 @@ const App = () => {
               <Route path="/about" element={<AboutUs />} />
               <Route path="/lakes" element={<LakesPage />} />
               <Route path="/contact" element={<ContactUs />} />
-
               <Route
                 path="/admin-dashboard"
                 element={
@@ -70,12 +70,19 @@ const App = () => {
                   </PrivateRoute>
                 }
               />
-
               <Route
                 path="/angler-dashboard"
                 element={
                   <PrivateRoute allowedUserTypes={["angler"]}>
                     <AnglerDashboard />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path="/new-lakes"
+                element={
+                  <PrivateRoute allowedUserTypes={["angler"]}>
+                    <ViewNewLakes />
                   </PrivateRoute>
                 }
               />
@@ -100,7 +107,6 @@ const App = () => {
                   element={<ManageFishStock />}
                 />
               </Route>
-
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
           </main>
