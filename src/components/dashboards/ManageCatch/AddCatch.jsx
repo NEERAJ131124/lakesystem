@@ -90,9 +90,9 @@ function AddCatch({
     if (!newCatch.photo) {
       newErrors.photo = "Please upload a photo";
     }
-    if (newCatch.rating === 0 && (newCatch.rating < 1 || newCatch.rating > 5)) {
-      newErrors.rating = "Rating must be between 1 and 5";
-    }
+    // if (newCatch.rating === 0 && (newCatch.rating < 1 || newCatch.rating > 5)) {
+    //   newErrors.rating = "Rating must be between 1 and 5";
+    // }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -114,7 +114,7 @@ function AddCatch({
     formData.append("description", newCatch.description);
     formData.append("taggedUsers", newCatch.taggedUsers);
     formData.append("review", newCatch.review);
-    formData.append("rating", newCatch.rating);
+    formData.append("rating", newCatch.rating ? newCatch.rating : 4);
 
     try {
       const res = await axios.post(`${baseUrl}/api/catches`, formData, {
@@ -310,7 +310,7 @@ function AddCatch({
               )}
             </div>
 
-            <div className="mb-4 md:col-span-2">
+            {/* <div className="mb-4 md:col-span-2">
               <label
                 htmlFor="review"
                 className="block text-sm font-medium text-gray-700"
@@ -347,7 +347,7 @@ function AddCatch({
               {errors.rating && (
                 <span className="text-red-500 text-sm">{errors.rating}</span>
               )}
-            </div>
+            </div> */}
           </div>
 
           <div className="flex flex-row gap-3 w-full">

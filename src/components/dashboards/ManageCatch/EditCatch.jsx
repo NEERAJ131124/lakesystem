@@ -86,12 +86,12 @@ function EditCatch({
       newErrors.lake = "Please select a lake";
     }
 
-    if (
-      updatedCatch.rating &&
-      (updatedCatch.rating < 1 || updatedCatch.rating > 5)
-    ) {
-      newErrors.rating = "Rating must be between 1 and 5";
-    }
+    // if (
+    //   updatedCatch.rating &&
+    //   (updatedCatch.rating < 1 || updatedCatch.rating > 5)
+    // ) {
+    //   newErrors.rating = "Rating must be between 1 and 5";
+    // }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -115,7 +115,7 @@ function EditCatch({
     formData.append("description", updatedCatch.description);
     formData.append("taggedUsers", updatedCatch.taggedUsers);
     formData.append("review", updatedCatch.review);
-    formData.append("rating", updatedCatch.rating);
+    formData.append("rating", updatedCatch.rating ? updatedCatch.rating : 4);
 
     try {
       const res = await axios.put(
@@ -158,9 +158,8 @@ function EditCatch({
                 value={updatedCatch.species}
                 onChange={handleInputChange}
                 required
-                className={`p-2 border w-full rounded-md text-base ${
-                  errors.species ? "border-red-500" : "border-gray-300"
-                }`}
+                className={`p-2 border w-full rounded-md text-base ${errors.species ? "border-red-500" : "border-gray-300"
+                  }`}
               />
               {errors.species && (
                 <span className="text-red-500 text-sm">{errors.species}</span>
@@ -182,9 +181,8 @@ function EditCatch({
                 value={updatedCatch.weight}
                 onChange={handleInputChange}
                 required
-                className={`p-2 w-full border rounded-md text-base ${
-                  errors.weight ? "border-red-500" : "border-gray-300"
-                }`}
+                className={`p-2 w-full border rounded-md text-base ${errors.weight ? "border-red-500" : "border-gray-300"
+                  }`}
               />
               {errors.weight && (
                 <span className="text-red-500 text-sm">{errors.weight}</span>
@@ -206,9 +204,8 @@ function EditCatch({
                 value={updatedCatch.length}
                 onChange={handleInputChange}
                 required
-                className={`p-2 w-full border rounded-md text-base ${
-                  errors.length ? "border-red-500" : "border-gray-300"
-                }`}
+                className={`p-2 w-full border rounded-md text-base ${errors.length ? "border-red-500" : "border-gray-300"
+                  }`}
               />
               {errors.length && (
                 <span className="text-red-500 text-sm">{errors.length}</span>
@@ -229,9 +226,8 @@ function EditCatch({
                   value={updatedCatch.lake}
                   onChange={handleInputChange}
                   required
-                  className={`p-2 border w-full rounded-md text-base ${
-                    errors.lake ? "border-red-500" : "border-gray-300"
-                  }`}
+                  className={`p-2 border w-full rounded-md text-base ${errors.lake ? "border-red-500" : "border-gray-300"
+                    }`}
                 >
                   <option value="">Select a lake</option>
                   {lakes.map((lake) => (
@@ -240,7 +236,7 @@ function EditCatch({
                     </option>
                   ))}
                 </select>
-                {updatedCatch.lake && (
+                {/* {updatedCatch.lake && (
                   <button
                     type="button"
                     onClick={() => {
@@ -255,14 +251,14 @@ function EditCatch({
                   >
                     Follow Lake
                   </button>
-                )}
+                )} */}
               </div>
               {errors.lake && (
                 <span className="text-red-500 text-sm">{errors.lake}</span>
               )}
             </div>
 
-            <div className="mb-4">
+            <div className="mb-4 md:col-span-2">
               <label
                 htmlFor="photo"
                 className="block text-sm font-medium text-gray-700"
@@ -275,9 +271,8 @@ function EditCatch({
                 name="photo"
                 onChange={handleFileChange}
                 accept="image/*"
-                className={`p-2 border rounded-md text-base ${
-                  errors.photo ? "border-red-500" : "border-gray-300"
-                }`}
+                className={`p-2 w-full border rounded-md text-base ${errors.photo ? "border-red-500" : "border-gray-300"
+                  }`}
               />
               {errors.photo && (
                 <span className="text-red-500 text-sm">{errors.photo}</span>
@@ -297,9 +292,8 @@ function EditCatch({
                 value={updatedCatch.description}
                 onChange={handleInputChange}
                 rows={3}
-                className={`p-2 border w-full rounded-md text-base ${
-                  errors.description ? "border-red-500" : "border-gray-300"
-                }`}
+                className={`p-2 border w-full rounded-md text-base ${errors.description ? "border-red-500" : "border-gray-300"
+                  }`}
               />
               {errors.description && (
                 <span className="text-red-500 text-sm">
@@ -308,7 +302,7 @@ function EditCatch({
               )}
             </div>
 
-            <div className="mb-4 md:col-span-2">
+            {/* <div className="mb-4 md:col-span-2">
               <label
                 htmlFor="review"
                 className="block text-sm font-medium text-gray-700"
@@ -321,9 +315,8 @@ function EditCatch({
                 value={updatedCatch.review}
                 onChange={handleInputChange}
                 rows={3}
-                className={`p-2 border w-full rounded-md text-base ${
-                  errors.review ? "border-red-500" : "border-gray-300"
-                }`}
+                className={`p-2 border w-full rounded-md text-base ${errors.review ? "border-red-500" : "border-gray-300"
+                  }`}
               />
               {errors.review && (
                 <span className="text-red-500 text-sm">{errors.review}</span>
@@ -346,7 +339,7 @@ function EditCatch({
               {errors.rating && (
                 <span className="text-red-500 text-sm">{errors.rating}</span>
               )}
-            </div>
+            </div> */}
           </div>
 
           <div className="flex flex-row gap-3 w-full">

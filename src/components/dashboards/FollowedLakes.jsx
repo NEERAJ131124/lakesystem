@@ -61,7 +61,7 @@ function FollowedLakes() {
                 className="flex items-center cursor-pointer"
                 onClick={() => setSelectedLake(lake)}
               >
-                <StarRating rating={lake.averageRating} setRating={() => {}} />
+                <StarRating rating={lake.averageRating} setRating={() => { }} />
                 <span className="ml-2 text-gray-600">
                   ({lake.reviews.length} reviews)
                 </span>
@@ -77,7 +77,7 @@ function FollowedLakes() {
                   );
                 }}
               >
-                Unsubscribe
+                Remove from Profile
               </button>
             </div>
           ))}

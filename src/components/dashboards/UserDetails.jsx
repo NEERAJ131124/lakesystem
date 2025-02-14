@@ -12,9 +12,9 @@ function UserDetails({ onEditProfile, onAddCatch }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [imageSrc, setImageSrc] = useState(null);
   const [croppedArea, setCroppedArea] = useState(null);
-  const [croppedImage, setCroppedImage] = useState(null);
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
+  const [showProfilePhoto, setShowProfilePhoto] = useState(null);
 
   const getUser = async () => {
     try {
@@ -24,6 +24,8 @@ function UserDetails({ onEditProfile, onAddCatch }) {
         },
       });
       setUser(response.data);
+      setShowProfilePhoto(response?.data?.profilePhoto ?? null);
+
     } catch (error) {
       console.error("Error fetching users:", error);
     }
@@ -35,28 +37,27 @@ function UserDetails({ onEditProfile, onAddCatch }) {
     }
   }, []);
 
-  useEffect(() => {
-    const fetchAnglers = async () => {
-      try {
-        const response = await axios.get(`${baseUrl}/api/users/all`, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        });
-        const anglersData = response.data
-          .filter((user) => user.userType === "angler")
-          .sort((a, b) => b.catches.length - a.catches.length)
-          .map((angler, index) => ({ ...angler, rank: index + 1 }))
-          .filter((angler) => angler._id === user._id);
-        console.log("anglersData", anglersData);
-        setAnglers(anglersData);
-      } catch (error) {
-        console.error("Error fetching anglers:", error);
-      }
-    };
-
-    fetchAnglers();
-  }, []);
+  // useEffect(() => {
+  //   const fetchAnglers = async () => {
+  //     try {
+  //       const response = await axios.get(`${baseUrl}/api/users/all`, {
+  //         headers: {
+  //           Authorization: `Bearer ${localStorage.getItem("token")}`,
+  //         },
+  //       });
+  //       const anglersData = response.data
+  //         .filter((user) => user.userType === "angler")
+  //         .sort((a, b) => b.catches.length - a.catches.length)
+  //         .map((angler, index) => ({ ...angler, rank: index + 1 }))
+  //         .filter((angler) => angler._id === user._id);
+  //       console.log("anglersData", anglersData);
+  //       setAnglers(anglersData);
+  //     } catch (error) {
+  //       console.error("Error fetching anglers:", error);
+  //     }
+  //   };
+  //   fetchAnglers();
+  // }, []);
 
   const handleProfilePhotoClick = () => {
     setIsModalOpen(true);
@@ -93,13 +94,12 @@ function UserDetails({ onEditProfile, onAddCatch }) {
           },
         }
       );
-      console.log(res.data.profilePhoto);
-      setUser((prevUser) => ({
-        ...prevUser,
-        profilePhoto: res.data.profilePhoto,
-      }));
+      // setUser((prevUser) => ({
+      //   ...prevUser,
+      //   profilePhoto: res.data.profilePhoto,
+      // }));
       setIsModalOpen(false);
-      getUser(); // Refresh user data
+      getUser();
     } catch (error) {
       console.log(error);
       console.error("Error uploading profile photo:", error);
@@ -112,9 +112,7 @@ function UserDetails({ onEditProfile, onAddCatch }) {
         {/* User Profile Card */}
         <div className="bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-xl shadow-md p-6 flex items-center justify-between transition-transform transform hover:scale-105">
           <div>
-            <p className="font-semibold text-xl">
-              {users?.firstName} {users?.lastName}
-            </p>
+            <p className="font-semibold text-xl">{users?.firstName} {users?.lastName}</p>
             <p className="text-gray-200">{users?.email}</p>
             <button
               className="mt-4 px-4 py-2 bg-white text-purple-600 font-medium rounded-lg hover:bg-gray-100 transition"
@@ -127,10 +125,10 @@ function UserDetails({ onEditProfile, onAddCatch }) {
             className="rounded-full bg-white bg-opacity-20 w-16 h-16 flex items-center justify-center shadow-sm relative group cursor-pointer"
             onClick={handleProfilePhotoClick}
           >
-            {user?.profilePhoto ? (
+            {showProfilePhoto ? (
               <>
                 <img
-                  src={user.profilePhoto}
+                  src={showProfilePhoto}
                   alt="Profile"
                   className="rounded-full w-16 h-16 object-cover"
                 />
@@ -171,57 +169,57 @@ function UserDetails({ onEditProfile, onAddCatch }) {
           </div>
         </div>
 
-        {/* Following Lakes */}
-        <div className="flex items-center justify-between bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg shadow-lg p-6 hover:shadow-2xl transition-all duration-300">
-          <div>
-            <p className="text-lg font-semibold">Following Lakes</p>
-            <p className="text-3xl font-bold">
-              {users?.following?.length || 0}
-            </p>
-          </div>
-          <div className="bg-white bg-opacity-20 p-3 rounded-full">
-            {/* Water Waves Icon */}
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-10 w-10 text-white"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth="2"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M3 16s3-3 7-3 7 3 7 3M3 12s3-3 7-3 7 3 7 3M3 8s3-3 7-3 7 3 7 3"
-              />
-            </svg>
+
+        {/* Total Catches */}
+        <div className="flex flex-col bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-xl shadow-md p-6 hover:shadow-lg transition-transform transform hover:scale-105">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-lg font-semibold">Total Catches</p>
+              <p className="text-3xl font-bold">{users?.catches?.length || 0}</p>
+              <button
+                className="mt-4 px-4 py-2 bg-green-500 text-white font-medium rounded-lg hover:bg-green-600 transition"
+                onClick={onAddCatch}
+              >
+                Add Catch
+              </button>
+            </div>
+            <div className="bg-white bg-opacity-25 p-3 rounded-full">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M20 12c0 3.866-3.582 7-8 7s-8-3.134-8-7 3.582-7 8-7 8 3.134 8 7zM4 12h16M9 9l3 3m0 0l3-3m-3 3V6" />
+              </svg>
+            </div>
           </div>
         </div>
 
-        {/* Angular Rank */}
-        <div className="flex items-center justify-between bg-gradient-to-r from-yellow-500 to-yellow-600 text-white rounded-lg shadow-lg p-6 hover:shadow-2xl transition-all duration-300">
-          <div>
-            <p className="text-lg font-semibold">Your Rank</p>
-            <p className="text-3xl font-bold">{anglers?.[0]?.rank || "N/A"}</p>
-          </div>
-          <div className="bg-white bg-opacity-20 p-3 rounded-full">
-            {/* Star Icon for Ranking */}
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-10 w-10 text-white"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth="2"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"
-              />
-            </svg>
+        {/* Followed Lakes */}
+        <div className="flex flex-col bg-gradient-to-r from-green-500 to-teal-500 text-white rounded-xl shadow-md p-6 hover:shadow-lg transition-transform transform hover:scale-105">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-lg font-semibold">Followed Lakes</p>
+              <p className="text-3xl font-bold">{users?.following?.length || 0}</p>
+            </div>
+            <div className="bg-white bg-opacity-25 p-3 rounded-full">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M3 16s3-3 7-3 7 3 7 3M3 12s3-3 7-3 7 3 7 3M3 8s3-3 7-3 7 3 7 3" />
+              </svg>
+            </div>
           </div>
         </div>
+
+        {/* Angler Rank */}
+        {/* <div className="flex flex-col bg-gradient-to-r from-yellow-500 to-orange-500 text-white rounded-xl shadow-md p-6 hover:shadow-lg transition-transform transform hover:scale-105">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-lg font-semibold">Your Rank</p>
+              <p className="text-3xl font-bold">{anglers?.[0]?.rank || "N/A"}</p>
+            </div>
+            <div className="bg-white bg-opacity-25 p-3 rounded-full">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+              </svg>
+            </div>
+          </div>
+        </div> */}
       </div>
 
       {isModalOpen && (

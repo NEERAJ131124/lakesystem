@@ -105,11 +105,18 @@ function BrowseLakes({ setActiveTab }) {
                 </div>
 
                 <div className="flex flex-col">
+                  <span className="font-medium text-gray-700">Fish Types</span>
+                  <span className="text-gray-600">
+                    {lake.fishTypes.join(", ")}
+                  </span>
+                </div>
+
+                <div className="flex flex-col">
                   <span className="font-medium text-gray-700">Max Weight</span>
                   <span className="text-gray-600">{lake.maxWeight} kg</span>
                 </div>
 
-                <div className="flex flex-col">
+                {/* <div className="flex flex-col">
                   <span className="font-medium text-gray-700">
                     Average Rating
                   </span>
@@ -119,20 +126,13 @@ function BrowseLakes({ setActiveTab }) {
                   >
                     <StarRating
                       rating={lake.averageRating}
-                      setRating={() => {}}
+                      setRating={() => { }}
                     />
                     <span className="ml-2 text-gray-600">
                       ({lake.reviews.length} reviews)
                     </span>
                   </div>
-                </div>
-
-                <div className="flex flex-col col-span-2">
-                  <span className="font-medium text-gray-700">Fish Types</span>
-                  <span className="text-gray-600">
-                    {lake.fishTypes.join(", ")}
-                  </span>
-                </div>
+                </div> */}
 
                 <div className="flex flex-col col-span-2">
                   <span className="font-medium text-gray-700">Description</span>
@@ -147,7 +147,7 @@ function BrowseLakes({ setActiveTab }) {
                     handleFollowLake(lake._id, true, setLoading, handleFollow);
                   }}
                 >
-                  Subscribe
+                  Add to Profile
                 </button>
                 <button
                   className="mt-2 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"

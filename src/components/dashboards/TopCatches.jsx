@@ -75,9 +75,9 @@ function TopCatches() {
                 </div>
 
                 {/* Serial Number - Full Width on Small Screens */}
-                <div className="w-full text-center sm:w-auto mt-2 sm:mt-0 text-gray-600">
+                {/* <div className="w-full text-center sm:w-auto mt-2 sm:mt-0 text-gray-600">
                   <span className="text-2xl font-bold">{index + 1}</span>
-                </div>
+                </div> */}
               </div>
             </div>
           ))}
