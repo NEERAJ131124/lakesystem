@@ -11,6 +11,7 @@ const ManageFishStock = () => {
   const [fishStocks, setFishStocks] = useState([]);
   const [showEditModal, setShowEditModal] = useState(false);
   const [selectedFish, setSelectedFish] = useState(null);
+  const [hoveredImage, setHoveredImage] = useState(null);
   const [editForm, setEditForm] = useState({
     name: "",
     species: "",
@@ -173,6 +174,36 @@ const ManageFishStock = () => {
         </div>
       </div>
 
+      {hoveredImage && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="relative">
+            <button
+              className="absolute top-2 right-2 text-white bg-black bg-opacity-50 rounded-full p-1"
+              onClick={() => setHoveredImage(null)}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+            <img
+              src={hoveredImage}
+              alt="Enlarged fish"
+              className="max-h-[360px] object-contain rounded-lg"
+            />
+          </div>
+        </div>
+      )}
 
       {loading ? (
         <div className="flex justify-center items-center">
@@ -189,7 +220,8 @@ const ManageFishStock = () => {
                 <img
                   src={fish?.image}
                   alt={fish?.name}
-                  className="w-full md:w-48 h-48 object-cover rounded mb-4 md:mb-0 md:mr-4"
+                  className="w-full md:w-48 h-48 object-cover rounded mb-4 md:mb-0 md:mr-4 cursor-pointer"
+                  onClick={() => setHoveredImage(fish.image)}
                 />
               )}
               <div className="flex-1">

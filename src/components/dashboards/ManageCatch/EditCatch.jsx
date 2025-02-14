@@ -223,6 +223,7 @@ function EditCatch({
                 <select
                   id="lake"
                   name="lake"
+                  disabled
                   value={updatedCatch.lake}
                   onChange={handleInputChange}
                   required
