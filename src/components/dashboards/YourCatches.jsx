@@ -139,14 +139,20 @@ function YourCatches() {
                   {showOptions === fish._id && (
                     <div className="absolute right-0 mt-2 w-48 bg-white border rounded-lg shadow-lg z-10">
                       <button
-                        onClick={() => handleEdit(fish)}
+                        onClick={() => {
+                          handleEdit(fish);
+                          setShowOptions(null);
+                        }}
                         className="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100 w-full"
                       >
                         <Edit className="h-4 w-4 mr-2" />
                         Edit
                       </button>
                       <button
-                        onClick={() => handleDelete(fish._id)}
+                        onClick={() => {
+                          handleDelete(fish._id);
+                          setShowOptions(null);
+                        }}
                         className="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100 w-full"
                       >
                         <Trash2 className="h-4 w-4 mr-2" />
@@ -164,7 +170,9 @@ function YourCatches() {
               </div>
 
               {/* Description */}
-              <p className="w-full mb-4 max-w-full break-words">{fish.description}</p>
+              <p className="w-full mb-4 max-w-full break-words">
+                {fish.description}
+              </p>
 
               {/* Fish Image */}
               {fish.fish.image && (
