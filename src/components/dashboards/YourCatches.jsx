@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import axios from "axios";
 import { useAuth } from "../contexts/AuthContext";
 import { baseUrl } from "../../constants/APIs";
@@ -14,6 +14,7 @@ function YourCatches() {
   const [showOptions, setShowOptions] = useState(null);
   const [commentText, setCommentText] = useState("");
   const [commentingCatchId, setCommentingCatchId] = useState(null);
+  const optionsRef = useRef(null);
 
   const fetchCatches = useCallback(async () => {
     setLoading(true);
@@ -34,6 +35,19 @@ function YourCatches() {
   useEffect(() => {
     fetchCatches();
   }, [fetchCatches]);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (optionsRef.current && !optionsRef.current.contains(event.target)) {
+        setShowOptions(null);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   const handleEdit = (catchData) => {
     setSelectedCatch(catchData);
@@ -137,7 +151,10 @@ function YourCatches() {
                     <MoreVertical className="h-5 w-5" />
                   </button>
                   {showOptions === fish._id && (
-                    <div className="absolute right-0 mt-2 w-48 bg-white border rounded-lg shadow-lg z-10">
+                    <div
+                      className="absolute right-0 mt-2 w-48 bg-white border rounded-lg shadow-lg z-10"
+                      ref={optionsRef}
+                    >
                       <button
                         onClick={() => {
                           handleEdit(fish);
