@@ -86,7 +86,7 @@ function AnglerDashboard() {
     { id: "browseLakes", label: "Browse Lakes", icon: <WaterIcon /> },
     { id: "followedLakes", label: "Followed Lakes", icon: <StarIcon /> },
     { id: "yourCatches", label: "Your Catches", icon: <FishIcon /> },
-    { id: "topCatches", label: "Top Catches", icon: <TrophyIcon /> },
+    { id: "topCatches", label: "Users Favourites ", icon: <TrophyIcon /> },
   ];
 
   return (
@@ -127,6 +127,7 @@ function AnglerDashboard() {
             <UserDetails
               onEditProfile={() => setIsEditProfileOpen(true)}
               onAddCatch={() => setIsAddCatchOpen(true)}
+              setActiveTab={() => setActiveTab("followedLakes")}
             />
           </div>
 

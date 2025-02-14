@@ -57,7 +57,7 @@ function FollowedLakes() {
               <h3 className="font-semibold text-lg">{lake.name}</h3>
               <p className="text-gray-600">{lake.location}</p>
               {/* <p className="text-gray-600">Price: £{lake.price}/day</p> */}
-              <div
+              {/* <div
                 className="flex items-center cursor-pointer"
                 onClick={() => setSelectedLake(lake)}
               >
@@ -65,7 +65,7 @@ function FollowedLakes() {
                 <span className="ml-2 text-gray-600">
                   ({lake.reviews.length} reviews)
                 </span>
-              </div>
+              </div> */}
               <button
                 className="mt-4 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
                 onClick={() => {

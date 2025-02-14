@@ -8,12 +8,14 @@ import Modal from "../Modal";
 import StarRating from "../StarRating";
 import AddCatch from "./ManageCatch/AddCatch";
 import l0 from "../../assets/wlake.jpg";
+import { useNavigate } from "react-router-dom";
 
 function BrowseLakes({ setActiveTab }) {
   const [lakes, setLakes] = useState([]);
   const [loading, setLoading] = useState(false);
   const [selectedLake, setSelectedLake] = useState(null);
   const [isAddCatchOpen, setIsAddCatchOpen] = useState(false);
+  const navigate = useNavigate();
   // const { user } = useAuth();
   const [user, setUser] = useState([]);
   const getUser = async () => {
@@ -39,9 +41,9 @@ function BrowseLakes({ setActiveTab }) {
     setLoading(true);
     try {
       const response = await axios.get(`${baseUrl}/api/lakes/all`);
-      const filteredLakes = response.data.filter(
-        (lake) => !user.following.includes(lake._id)
-      );
+      const filteredLakes = response.data
+        .filter((lake) => !user.following.includes(lake._id))
+        .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));;
       setLakes(filteredLakes);
     } catch (error) {
       console.error("Error fetching lakes:", error);
@@ -151,10 +153,20 @@ function BrowseLakes({ setActiveTab }) {
                 </button>
                 <button
                   className="mt-2 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+                  onClick={() =>
+                    navigate(
+                      `/fish-stock/${lake._id}`
+                    )
+                  }
+                >
+                  See Stock
+                </button>
+                {/* <button
+                  className="mt-2 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
                   onClick={() => handleAddCatch(lake)}
                 >
                   Add Catch
-                </button>
+                </button> */}
               </div>
             </div>
           ))}
