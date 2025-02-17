@@ -138,12 +138,49 @@ function EditCatch({
     }
   };
 
+  const fishSpecies = [
+    { label: "Mirror", value: "Mirror" },
+    { label: "Common", value: "Common" },
+    { label: "Grass", value: "Grass" },
+    { label: "Leather", value: "Leather" },
+    { label: "Ghosty", value: "Ghosty" },
+    { label: "Koi", value: "Koi" },
+    { label: "Cat fish", value: "Cat fish" },
+    { label: "Other", value: "Other" }
+  ];
+
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <div className="bg-white rounded-lg shadow p-6">
         <h2 className="text-xl font-semibold text-gray-900 mb-4">Edit Catch</h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+            {/* <div className="mb-4">
+              <label htmlFor="species" className="block text-sm font-medium text-gray-700">
+                Fish Species
+              </label>
+              <select
+                id="species"
+                name="species"
+                value={updatedCatch.species}
+                onChange={handleInputChange}
+                required
+                className={`p-2 border w-full rounded-md text-base ${errors.species ? "border-red-500" : "border-gray-300"
+                  }`}
+              >
+                <option value="">Select a species</option>
+                {fishSpecies.map((species) => (
+                  <option key={species.value} value={species.value}>
+                    {species.label}
+                  </option>
+                ))}
+              </select>
+              
+              {errors.species && (
+                <span className="text-red-500 text-sm">{errors.species}</span>
+              )}
+            </div> */}
             <div className="mb-4">
               <label
                 htmlFor="species"
@@ -158,9 +195,8 @@ function EditCatch({
                 value={updatedCatch.species}
                 onChange={handleInputChange}
                 required
-                className={`p-2 border w-full rounded-md text-base ${
-                  errors.species ? "border-red-500" : "border-gray-300"
-                }`}
+                className={`p-2 border w-full rounded-md text-base ${errors.species ? "border-red-500" : "border-gray-300"
+                  }`}
               />
               {errors.species && (
                 <span className="text-red-500 text-sm">{errors.species}</span>
@@ -182,9 +218,8 @@ function EditCatch({
                 value={updatedCatch.weight}
                 onChange={handleInputChange}
                 required
-                className={`p-2 w-full border rounded-md text-base ${
-                  errors.weight ? "border-red-500" : "border-gray-300"
-                }`}
+                className={`p-2 w-full border rounded-md text-base ${errors.weight ? "border-red-500" : "border-gray-300"
+                  }`}
               />
               {errors.weight && (
                 <span className="text-red-500 text-sm">{errors.weight}</span>
@@ -206,9 +241,8 @@ function EditCatch({
                 value={updatedCatch.length}
                 onChange={handleInputChange}
                 required
-                className={`p-2 w-full border rounded-md text-base ${
-                  errors.length ? "border-red-500" : "border-gray-300"
-                }`}
+                className={`p-2 w-full border rounded-md text-base ${errors.length ? "border-red-500" : "border-gray-300"
+                  }`}
               />
               {errors.length && (
                 <span className="text-red-500 text-sm">{errors.length}</span>
@@ -230,9 +264,8 @@ function EditCatch({
                   value={updatedCatch.lake}
                   onChange={handleInputChange}
                   required
-                  className={`p-2 border w-full rounded-md text-base ${
-                    errors.lake ? "border-red-500" : "border-gray-300"
-                  }`}
+                  className={`p-2 border w-full rounded-md text-base ${errors.lake ? "border-red-500" : "border-gray-300"
+                    }`}
                 >
                   <option value="">Select a lake</option>
                   {lakes.map((lake) => (
@@ -276,9 +309,8 @@ function EditCatch({
                 name="photo"
                 onChange={handleFileChange}
                 accept="image/*"
-                className={`p-2 w-full border rounded-md text-base ${
-                  errors.photo ? "border-red-500" : "border-gray-300"
-                }`}
+                className={`p-2 w-full border rounded-md text-base ${errors.photo ? "border-red-500" : "border-gray-300"
+                  }`}
               />
               {errors.photo && (
                 <span className="text-red-500 text-sm">{errors.photo}</span>
@@ -298,9 +330,8 @@ function EditCatch({
                 value={updatedCatch.description}
                 onChange={handleInputChange}
                 rows={3}
-                className={`p-2 border w-full rounded-md text-base ${
-                  errors.description ? "border-red-500" : "border-gray-300"
-                }`}
+                className={`p-2 border w-full rounded-md text-base ${errors.description ? "border-red-500" : "border-gray-300"
+                  }`}
               />
               {errors.description && (
                 <span className="text-red-500 text-sm">

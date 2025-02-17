@@ -144,6 +144,17 @@ function AddCatch({
     }
   };
 
+  const fishSpecies = [
+    { label: "Mirror", value: "Mirror" },
+    { label: "Common", value: "Common" },
+    { label: "Grass", value: "Grass" },
+    { label: "Leather", value: "Leather" },
+    { label: "Ghosty", value: "Ghosty" },
+    { label: "Koi", value: "Koi" },
+    { label: "Cat fish", value: "Cat fish" },
+    { label: "Other", value: "Other" }
+  ];
+
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <div className="bg-white rounded-lg shadow p-6">
@@ -152,6 +163,30 @@ function AddCatch({
         </h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* <div className="mb-4">
+              <label htmlFor="species" className="block text-sm font-medium text-gray-700">
+                Fish Species
+              </label>
+              <select
+                id="species"
+                name="species"
+                value={newCatch.species}
+                onChange={handleInputChange}
+                required
+                className={`p-2 border w-full rounded-md text-base ${errors.species ? "border-red-500" : "border-gray-300"
+                  }`}
+              >
+                <option value="">Select a species</option>
+                {fishSpecies.map((species) => (
+                  <option key={species.value} value={species.value}>
+                    {species.label}
+                  </option>
+                ))}
+              </select>
+              {errors.species && (
+                <span className="text-red-500 text-sm">{errors.species}</span>
+              )}
+            </div> */}
             <div className="mb-4">
               <label
                 htmlFor="species"

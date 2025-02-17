@@ -5,11 +5,13 @@ import { handleFollowLake } from "../contexts/Methods";
 import Loader from "../Loader";
 import Modal from "../Modal";
 import StarRating from "../StarRating";
+import { useNavigate } from "react-router-dom";
 
 function FollowedLakes() {
   const [lakes, setLakes] = useState([]);
   const [loading, setLoading] = useState(false);
   const [selectedLake, setSelectedLake] = useState(null);
+  const navigate = useNavigate();
 
   const fetchFollowedLakes = useCallback(async () => {
     setLoading(true);
@@ -67,7 +69,17 @@ function FollowedLakes() {
                 </span>
               </div> */}
               <button
-                className="mt-4 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+                className="mt-2 px-4 py-2 mx-2 bg-green-500 text-white rounded hover:bg-green-600"
+                onClick={() =>
+                  navigate(
+                    `/fish-stock/${lake._id}`
+                  )
+                }
+              >
+                See Stock
+              </button>
+              <button
+                className="mt-4 px-4 py-2 mx-2 bg-red-500 text-white rounded hover:bg-red-600"
                 onClick={() => {
                   handleFollowLake(
                     lake._id,
@@ -79,6 +91,7 @@ function FollowedLakes() {
               >
                 Remove from Profile
               </button>
+
             </div>
           ))}
         </div>

@@ -12,10 +12,10 @@ const AddingFishStock = () => {
   const [formData, setFormData] = useState({
     name: "",
     species: "",
-    quantity: "",
+    // quantity: "",
     weight: "",
-    location: "",
-    averageSize: "",
+    // location: "",
+    // averageSize: "",
     notes: "",
     image: null,
     lake: id,
@@ -86,40 +86,41 @@ const AddingFishStock = () => {
     }
 
     // Quantity validation - required, positive integer
-    if (!formData.quantity) {
-      newErrors.quantity = "Quantity is required";
-    } else if (
-      !Number.isInteger(Number(formData.quantity)) ||
-      Number(formData.quantity) <= 0
-    ) {
-      newErrors.quantity = "Please enter a valid positive whole number";
-    }
+    // if (!formData.quantity) {
+    //   newErrors.quantity = "Quantity is required";
+    // } else if (
+    //   !Number.isInteger(Number(formData.quantity)) ||
+    //   Number(formData.quantity) <= 0
+    // ) {
+    //   newErrors.quantity = "Please enter a valid positive whole number";
+    // }
 
     // Weight validation - required, positive number with 2 decimal places
     if (!formData.weight) {
       newErrors.weight = "Weight is required";
     } else if (isNaN(formData.weight) || Number(formData.weight) <= 0) {
-      newErrors.weight = "Please enter a valid weight";
+      newErrors.weight = "Please enter a valid weight in lbs";
     } else if (!/^\d+(\.\d{1,2})?$/.test(formData.weight)) {
-      newErrors.weight = "Weight should have maximum 2 decimal places";
+      newErrors.weight = "Weight should have a maximum of 2 decimal places";
     }
 
-    // Location validation - required and alphanumeric with spaces
-    if (!formData.location.trim()) {
-      newErrors.location = "Location is required";
-    } else if (!/^[a-zA-Z0-9\s]+$/.test(formData.location)) {
-      newErrors.location =
-        "Location should contain only letters, numbers and spaces";
-    }
 
-    // Average Size validation - positive number with 2 decimal places if provided
-    if (formData.averageSize) {
-      if (isNaN(formData.averageSize) || Number(formData.averageSize) <= 0) {
-        newErrors.averageSize = "Please enter a valid size";
-      } else if (!/^\d+(\.\d{1,2})?$/.test(formData.averageSize)) {
-        newErrors.averageSize = "Size should have maximum 2 decimal places";
-      }
-    }
+    // // Location validation - required and alphanumeric with spaces
+    // if (!formData.location.trim()) {
+    //   newErrors.location = "Location is required";
+    // } else if (!/^[a-zA-Z0-9\s]+$/.test(formData.location)) {
+    //   newErrors.location =
+    //     "Location should contain only letters, numbers and spaces";
+    // }
+
+    // // Average Size validation - positive number with 2 decimal places if provided
+    // if (formData.averageSize) {
+    //   if (isNaN(formData.averageSize) || Number(formData.averageSize) <= 0) {
+    //     newErrors.averageSize = "Please enter a valid size";
+    //   } else if (!/^\d+(\.\d{1,2})?$/.test(formData.averageSize)) {
+    //     newErrors.averageSize = "Size should have maximum 2 decimal places";
+    //   }
+    // }
 
     // Notes validation - max length
     if (formData.notes.length > 500) {
@@ -167,10 +168,10 @@ const AddingFishStock = () => {
         setFormData({
           name: "",
           species: "",
-          quantity: "",
+          // quantity: "",
           weight: "",
-          location: "",
-          averageSize: "",
+          // location: "",
+          // averageSize: "",
           notes: "",
           image: null,
           lake: id,
@@ -197,6 +198,17 @@ const AddingFishStock = () => {
       }
     }
   };
+
+  const fishSpecies = [
+    { label: "Mirror", value: "Mirror" },
+    { label: "Common", value: "Common" },
+    { label: "Grass", value: "Grass" },
+    { label: "Leather", value: "Leather" },
+    { label: "Ghosty", value: "Ghosty" },
+    { label: "Koi", value: "Koi" },
+    { label: "Cat fish", value: "Cat fish" },
+    { label: "Other", value: "Other" }
+  ];
 
   if (isSubmitting) {
     return <Loader />;
@@ -229,6 +241,31 @@ const AddingFishStock = () => {
           <label htmlFor="species" className="font-bold">
             Species:
           </label>
+          <select
+            id="species"
+            name="species"
+            value={formData.species}
+            onChange={handleInputChange}
+            className={`p-2 border rounded-md text-base ${errors.species ? "border-red-500" : "border-gray-300"
+              }`}
+          >
+            <option value="">Select a species</option>
+            {fishSpecies.map((species) => (
+              <option key={species.value} value={species.value}>
+                {species.label}
+              </option>
+            ))}
+          </select>
+
+          {errors.species && (
+            <span className="text-red-500 text-sm">{errors.species}</span>
+          )}
+        </div>
+
+        {/* <div className="flex flex-col gap-2 flex-1 min-w-[300px]">
+          <label htmlFor="species" className="font-bold">
+            Species:
+          </label>
           <input
             type="text"
             id="species"
@@ -242,9 +279,9 @@ const AddingFishStock = () => {
           {errors.species && (
             <span className="text-red-500 text-sm">{errors.species}</span>
           )}
-        </div>
+        </div> */}
 
-        <div className="flex flex-col gap-2 flex-1 min-w-[300px]">
+        {/* <div className="flex flex-col gap-2 flex-1 min-w-[300px]">
           <label htmlFor="quantity" className="font-bold">
             Quantity:
           </label>
@@ -263,11 +300,11 @@ const AddingFishStock = () => {
           {errors.quantity && (
             <span className="text-red-500 text-sm">{errors.quantity}</span>
           )}
-        </div>
+        </div> */}
 
         <div className="flex flex-col gap-2 flex-1 min-w-[300px]">
           <label htmlFor="weight" className="font-bold">
-            Weight (kg):
+            Weight (lbs):
           </label>
           <input
             type="number"
@@ -286,7 +323,7 @@ const AddingFishStock = () => {
           )}
         </div>
 
-        <div className="flex flex-col gap-2 flex-1 min-w-[300px]">
+        {/* <div className="flex flex-col gap-2 flex-1 min-w-[300px]">
           <label htmlFor="location" className="font-bold">
             Location:
           </label>
@@ -324,7 +361,7 @@ const AddingFishStock = () => {
           {errors.averageSize && (
             <span className="text-red-500 text-sm">{errors.averageSize}</span>
           )}
-        </div>
+        </div> */}
 
         <div className="flex flex-col gap-2 w-full">
           <label htmlFor="image" className="font-bold">
