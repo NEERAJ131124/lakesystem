@@ -104,7 +104,6 @@ const AddingFishStock = () => {
       newErrors.weight = "Weight should have a maximum of 2 decimal places";
     }
 
-
     // // Location validation - required and alphanumeric with spaces
     // if (!formData.location.trim()) {
     //   newErrors.location = "Location is required";
@@ -129,7 +128,7 @@ const AddingFishStock = () => {
 
     //Fish image required msg
     if (!formData.image) {
-      newErrors.image = "Fish image is required"
+      newErrors.image = "Fish image is required";
     }
 
     setErrors(newErrors);
@@ -152,6 +151,7 @@ const AddingFishStock = () => {
             formDataToSend.append(key, formData[key]);
           }
         });
+        console.log(formData);
         const response = await axios.post(
           `${baseUrl}/api/fish`,
           formDataToSend,
@@ -163,7 +163,7 @@ const AddingFishStock = () => {
           }
         );
 
-
+        console.log(response);
         // Clear form
         setFormData({
           name: "",
@@ -207,7 +207,7 @@ const AddingFishStock = () => {
     { label: "Ghosty", value: "Ghosty" },
     { label: "Koi", value: "Koi" },
     { label: "Cat fish", value: "Cat fish" },
-    { label: "Other", value: "Other" }
+    { label: "Other", value: "Other" },
   ];
 
   if (isSubmitting) {
@@ -229,8 +229,9 @@ const AddingFishStock = () => {
             value={formData.name}
             onChange={handleInputChange}
             placeholder="Enter fish name"
-            className={`p-2 border rounded-md text-base ${errors.name ? "border-red-500" : "border-gray-300"
-              }`}
+            className={`p-2 border rounded-md text-base ${
+              errors.name ? "border-red-500" : "border-gray-300"
+            }`}
           />
           {errors.name && (
             <span className="text-red-500 text-sm">{errors.name}</span>
@@ -246,8 +247,9 @@ const AddingFishStock = () => {
             name="species"
             value={formData.species}
             onChange={handleInputChange}
-            className={`p-2 border rounded-md text-base ${errors.species ? "border-red-500" : "border-gray-300"
-              }`}
+            className={`p-2 border rounded-md text-base ${
+              errors.species ? "border-red-500" : "border-gray-300"
+            }`}
           >
             <option value="">Select a species</option>
             {fishSpecies.map((species) => (
@@ -315,8 +317,9 @@ const AddingFishStock = () => {
             placeholder="Enter weight"
             min="0.01"
             step="0.01"
-            className={`p-2 border rounded-md text-base ${errors.weight ? "border-red-500" : "border-gray-300"
-              }`}
+            className={`p-2 border rounded-md text-base ${
+              errors.weight ? "border-red-500" : "border-gray-300"
+            }`}
           />
           {errors.weight && (
             <span className="text-red-500 text-sm">{errors.weight}</span>
@@ -373,8 +376,9 @@ const AddingFishStock = () => {
             name="image"
             accept="image/*"
             onChange={handleImageChange}
-            className={`p-2 border rounded-md text-base ${errors.image ? "border-red-500" : "border-gray-300"
-              }`}
+            className={`p-2 border rounded-md text-base ${
+              errors.image ? "border-red-500" : "border-gray-300"
+            }`}
           />
           {errors.image && (
             <span className="text-red-500 text-sm">{errors.image}</span>
@@ -402,8 +406,9 @@ const AddingFishStock = () => {
             placeholder="Enter additional notes"
             rows="4"
             maxLength="500"
-            className={`p-2 border rounded-md text-base ${errors.notes ? "border-red-500" : "border-gray-300"
-              }`}
+            className={`p-2 border rounded-md text-base ${
+              errors.notes ? "border-red-500" : "border-gray-300"
+            }`}
           />
           {errors.notes && (
             <span className="text-red-500 text-sm">{errors.notes}</span>

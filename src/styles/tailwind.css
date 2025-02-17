@@ -2699,10 +2699,6 @@ body {
     width: 12rem;
   }
 
-  .md\:w-\[80\%\] {
-    width: 80%;
-  }
-
   .md\:max-w-2xl {
     max-width: 42rem;
   }
