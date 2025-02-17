@@ -81,7 +81,14 @@ function ManageLakes() {
     return matchesSearch && matchesFishType && matchesFacility && matchesPrice;
   });
 
-  const uniqueFishTypes = [...new Set(lakes.flatMap((lake) => lake.fishTypes))];
+  const allowedFishTypes = ["Common", "Mirror", "Grass", "Ghost"];
+
+  const uniqueFishTypes = [
+    ...new Set(
+      lakes.flatMap((lake) => lake.fishTypes).filter((fish) => allowedFishTypes.includes(fish))
+    ),
+  ];
+
 
   if (loading) {
     return <Loader />;
@@ -114,7 +121,7 @@ function ManageLakes() {
         </select>
 
         {/* New facility filter */}
-        <select
+        {/* <select
           value={facilityFilter}
           onChange={(e) => setFacilityFilter(e.target.value)}
           className="px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:border-blue-500"
@@ -125,10 +132,10 @@ function ManageLakes() {
               {facility}
             </option>
           ))}
-        </select>
+        </select> */}
 
         {/* Price range filters */}
-        <div className="flex gap-2 items-center">
+        {/* <div className="flex gap-2 items-center">
           <input
             type="number"
             placeholder="Min Price"
@@ -148,7 +155,7 @@ function ManageLakes() {
             }
             className="px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:border-blue-500 w-32"
           />
-        </div>
+        </div> */}
 
         {/* Optional: Clear filters button */}
         <button

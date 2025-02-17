@@ -44,7 +44,7 @@ const ViewModal = ({ selectedLake, setShowViewModal }) => (
           </p>
           <p className="text-sm sm:text-base">
             <span className="font-bold">Max Weight:</span>{" "}
-            {selectedLake?.maxWeight}kg
+            {selectedLake?.maxWeight} (lbs)
           </p>
         </div>
       </div>

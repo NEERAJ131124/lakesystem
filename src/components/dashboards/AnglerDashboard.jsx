@@ -83,9 +83,9 @@ function AnglerDashboard() {
   };
 
   const tabs = [
+    { id: "yourCatches", label: "Your Catches", icon: <FishIcon /> },
     { id: "browseLakes", label: "Browse Lakes", icon: <WaterIcon /> },
     { id: "followedLakes", label: "Followed Lakes", icon: <StarIcon /> },
-    { id: "yourCatches", label: "Your Catches", icon: <FishIcon /> },
     { id: "topCatches", label: "Users Favourites ", icon: <TrophyIcon /> },
   ];
 

@@ -18,7 +18,7 @@ function EditCatch({
   const [updatedCatch, setUpdatedCatch] = useState({
     species: catchData.fish.species,
     weight: catchData.fish.weight,
-    length: catchData.fish.length,
+    // length: catchData.fish.length,
     photo: null,
     lake: catchData.lake._id,
     description: catchData.description,
@@ -74,13 +74,13 @@ function EditCatch({
       newErrors.weight = "Please enter a valid weight";
     }
 
-    if (
-      !updatedCatch.length ||
-      isNaN(updatedCatch.length) ||
-      updatedCatch.length <= 0
-    ) {
-      newErrors.length = "Please enter a valid length";
-    }
+    // if (
+    //   !updatedCatch.length ||
+    //   isNaN(updatedCatch.length) ||
+    //   updatedCatch.length <= 0
+    // ) {
+    //   newErrors.length = "Please enter a valid length";
+    // }
 
     if (!updatedCatch.lake) {
       newErrors.lake = "Please select a lake";
@@ -107,7 +107,7 @@ function EditCatch({
     const formData = new FormData();
     formData.append("species", updatedCatch.species);
     formData.append("weight", updatedCatch.weight);
-    formData.append("length", updatedCatch.length);
+    // formData.append("length", updatedCatch.length);
     if (updatedCatch.photo) {
       formData.append("image", updatedCatch.photo);
     }
@@ -156,7 +156,7 @@ function EditCatch({
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 
-            {/* <div className="mb-4">
+            <div className="mb-4">
               <label htmlFor="species" className="block text-sm font-medium text-gray-700">
                 Fish Species
               </label>
@@ -176,12 +176,12 @@ function EditCatch({
                   </option>
                 ))}
               </select>
-              
+
               {errors.species && (
                 <span className="text-red-500 text-sm">{errors.species}</span>
               )}
-            </div> */}
-            <div className="mb-4">
+            </div>
+            {/* <div className="mb-4">
               <label
                 htmlFor="species"
                 className="block text-sm font-medium text-gray-700"
@@ -201,14 +201,14 @@ function EditCatch({
               {errors.species && (
                 <span className="text-red-500 text-sm">{errors.species}</span>
               )}
-            </div>
+            </div> */}
 
             <div className="mb-4">
               <label
                 htmlFor="weight"
                 className="block text-sm font-medium text-gray-700"
               >
-                Weight (kg)
+                Weight (lbs)
               </label>
               <input
                 type="number"
@@ -226,7 +226,7 @@ function EditCatch({
               )}
             </div>
 
-            <div className="mb-4">
+            {/* <div className="mb-4">
               <label
                 htmlFor="length"
                 className="block text-sm font-medium text-gray-700"
@@ -247,7 +247,7 @@ function EditCatch({
               {errors.length && (
                 <span className="text-red-500 text-sm">{errors.length}</span>
               )}
-            </div>
+            </div> */}
 
             <div className="mb-4">
               <label
@@ -387,7 +387,7 @@ function EditCatch({
                 setUpdatedCatch({
                   species: catchData.fish.species,
                   weight: catchData.fish.weight,
-                  length: catchData.fish.length,
+                  // length: catchData.fish.length,
                   photo: null,
                   lake: catchData.lake._id,
                   description: catchData.description,

@@ -18,7 +18,7 @@ function AddCatch({
   const [newCatch, setNewCatch] = useState({
     species: "",
     weight: "",
-    length: "",
+    // length: "",
     photo: null,
     lake: selectedLake ? selectedLake._id : "",
     description: "",
@@ -79,9 +79,9 @@ function AddCatch({
       newErrors.weight = "Please enter a valid weight";
     }
 
-    if (!newCatch.length || isNaN(newCatch.length) || newCatch.length <= 0) {
-      newErrors.length = "Please enter a valid length";
-    }
+    // if (!newCatch.length || isNaN(newCatch.length) || newCatch.length <= 0) {
+    //   newErrors.length = "Please enter a valid length";
+    // }
 
     if (!newCatch.lake) {
       newErrors.lake = "Please select a lake";
@@ -108,7 +108,7 @@ function AddCatch({
     const formData = new FormData();
     formData.append("species", newCatch.species);
     formData.append("weight", newCatch.weight);
-    formData.append("length", newCatch.length);
+    // formData.append("length", newCatch.length);
     formData.append("image", newCatch.photo);
     formData.append("lake", newCatch.lake);
     formData.append("description", newCatch.description);
@@ -126,7 +126,7 @@ function AddCatch({
       setNewCatch({
         species: "",
         weight: "",
-        length: "",
+        // length: "",
         photo: null,
         lake: "",
         description: "",
@@ -163,7 +163,7 @@ function AddCatch({
         </h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {/* <div className="mb-4">
+            <div className="mb-4">
               <label htmlFor="species" className="block text-sm font-medium text-gray-700">
                 Fish Species
               </label>
@@ -186,8 +186,8 @@ function AddCatch({
               {errors.species && (
                 <span className="text-red-500 text-sm">{errors.species}</span>
               )}
-            </div> */}
-            <div className="mb-4">
+            </div>
+            {/* <div className="mb-4">
               <label
                 htmlFor="species"
                 className="block text-sm font-medium text-gray-700"
@@ -207,14 +207,14 @@ function AddCatch({
               {errors.species && (
                 <span className="text-red-500 text-sm">{errors.species}</span>
               )}
-            </div>
+            </div> */}
 
             <div className="mb-4">
               <label
                 htmlFor="weight"
                 className="block text-sm font-medium text-gray-700"
               >
-                Weight (kg)
+                Weight (lbs)
               </label>
               <input
                 type="number"
@@ -232,7 +232,7 @@ function AddCatch({
               )}
             </div>
 
-            <div className="mb-4">
+            {/* <div className="mb-4">
               <label
                 htmlFor="length"
                 className="block text-sm font-medium text-gray-700"
@@ -253,7 +253,7 @@ function AddCatch({
               {errors.length && (
                 <span className="text-red-500 text-sm">{errors.length}</span>
               )}
-            </div>
+            </div> */}
 
             <div className="mb-4">
               <label
@@ -392,7 +392,7 @@ function AddCatch({
                 setNewCatch({
                   species: "",
                   weight: "",
-                  length: "",
+                  // length: "",
                   photo: null,
                   lake: "",
                   description: "",

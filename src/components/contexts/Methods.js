@@ -25,6 +25,7 @@ const handleFollowLake = async (
 
     await fetchFollowedLakes();
     toast.success(response.data.message);
+    window.location.reload();
   } catch (error) {
     console.log(error);
     if (error.response.status === 400) {

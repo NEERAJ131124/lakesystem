@@ -238,9 +238,9 @@ const ManageFishStock = () => {
               <div className="flex-1">
                 <h3 className="text-xl font-semibold mb-2">{fish?.name}</h3>
                 <p className="text-gray-600">Species: {fish?.species}</p>
-                <p className="text-gray-600">Quantity: {fish?.quantity}</p>
-                <p className="text-gray-600">Weight: {fish?.weight}kg</p>
-                <p className="text-gray-600">Location: {fish?.location}</p>
+                {/* <p className="text-gray-600">Quantity: {fish?.quantity}</p> */}
+                <p className="text-gray-600">Weight: {fish?.weight} (lbs)</p>
+                {/* <p className="text-gray-600">Location: {fish?.location}</p> */}
                 <p className="text-gray-600">
                   Date Added: {new Date(fish?.dateAdded).toLocaleDateString()}
                 </p>

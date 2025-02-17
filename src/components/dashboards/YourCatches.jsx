@@ -210,12 +210,12 @@ function YourCatches() {
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <p className="text-gray-500">Weight</p>
-                    <p className="font-medium">{fish.fish.weight} kg</p>{" "}
+                    <p className="font-medium">{fish.fish.weight} lbs</p>{" "}
                   </div>
-                  <div>
+                  {/* <div>
                     <p className="text-gray-500">Length</p>
                     <p className="font-medium">{fish.fish.length} cm</p>
-                  </div>
+                  </div> */}
                 </div>
               </div>
 
