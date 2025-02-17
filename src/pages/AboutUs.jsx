@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import StorySection from "../components/StorySection";
 
 const AboutUs = () => {
+  const gettoken = localStorage.getItem("token");
+
   const storyContent = [
     {
       title: "Hooked at Eleven",
@@ -65,18 +67,24 @@ const AboutUs = () => {
             enthusiasts
           </p>
           <div className="flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-4">
-            <Link
-              to="/login"
-              className="bg-carp-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-carp-700 transition-colors w-full sm:w-auto"
-            >
-              Login
-            </Link>
-            <Link
-              to="/register"
-              className="bg-white text-carp-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors w-full sm:w-auto"
-            >
-              Sign Up
-            </Link>
+            {
+              !gettoken && (
+                <>
+                  <Link
+                    to="/login"
+                    className="bg-carp-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-carp-700 transition-colors w-full sm:w-auto"
+                  >
+                    Login
+                  </Link>
+                  <Link
+                    to="/register"
+                    className="bg-white text-carp-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors w-full sm:w-auto"
+                  >
+                    Sign Up
+                  </Link>
+                </>
+              )
+            }
           </div>
         </motion.div>
       </div>
@@ -109,12 +117,16 @@ const AboutUs = () => {
             Whether you're an experienced angler or just starting out, there's a
             place for you in the Carpbook community.
           </p>
-          <Link
-            to="/register"
-            className="inline-block bg-white text-carp-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors"
-          >
-            Sign Up Now
-          </Link>
+          {
+            !gettoken && (
+              <Link
+                to="/register"
+                className="inline-block bg-white text-carp-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors"
+              >
+                Sign Up Now
+              </Link>
+            )
+          }
         </div>
       </motion.div>
     </div>
