@@ -117,7 +117,7 @@ function YourCatches() {
       ) : catches.length === 0 ? (
         <p className="text-gray-500">No catches recorded yet.</p>
       ) : (
-        <div className="grid gap-4 overflow-auto">
+        <div className="grid gap-4 md:grid-cols-3 overflow-auto">
           {catches.map((fish) => (
             <div
               key={fish._id}
