@@ -4,11 +4,13 @@ import { baseUrl } from "../constants/APIs";
 import Loader from "../components/Loader";
 import l0 from "../assets/wlake.jpg";
 import { useAuth } from "../components/contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const ViewNewLakes = () => {
     const [lakes, setLakes] = useState([]);
     const [loading, setLoading] = useState(true);
     const { user } = useAuth();
+    const navigate = useNavigate();
 
     // useEffect(() => {
     //     const fetchLakes = async () => {
@@ -84,7 +86,11 @@ const ViewNewLakes = () => {
 
                     <div className="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-12 lg:mx-0 lg:max-w-none lg:grid-cols-3">
                         {lakes.map((lake) => (
-                            <div key={lake._id} className="flex flex-col items-start">
+                            <div key={lake._id} className="shadow-md border p-4 rounded-md flex flex-col items-start cursor-pointer" onClick={() =>
+                                navigate(
+                                    `/fish-stock/${lake._id}`
+                                )
+                            }>
                                 <div className="relative w-full">
                                     <img
                                         src={lake.image || l0}
