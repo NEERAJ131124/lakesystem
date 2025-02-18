@@ -88,14 +88,7 @@ const App = () => {
                   </PrivateRoute>
                 }
               />
-              <Route
-                path="/fish-stock/:id"
-                element={
-                  <PrivateRoute allowedUserTypes={["angler"]}>
-                    <ManageFishStockUser />
-                  </PrivateRoute>
-                }
-              />
+              <Route path="/fish-stock/:id" element={<ManageFishStockUser />} />
 
               <Route
                 path="/lake-owner-dashboard"

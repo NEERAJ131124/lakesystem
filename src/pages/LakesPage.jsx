@@ -7,6 +7,7 @@ import l0 from "../assets/wlake.jpg";
 import l1 from "../assets/l1.png";
 import l2 from "../assets/l2.png";
 import l3 from "../assets/l3.png";
+import { useNavigate } from "react-router-dom";
 
 const FeatureCard = ({ icon, title, description, imageSrc }) => {
   return (
@@ -26,6 +27,7 @@ const FeatureCard = ({ icon, title, description, imageSrc }) => {
 const LakesPage = () => {
   const [lakes, setLakes] = useState([]);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchLakes = async () => {
@@ -83,7 +85,11 @@ const LakesPage = () => {
 
           <div className="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-12 lg:mx-0 lg:max-w-none lg:grid-cols-3">
             {lakes.map((lake) => (
-              <div key={lake._id} className="flex flex-col items-start">
+              <div key={lake._id} className="flex flex-col items-start cursor-pointer" onClick={() =>
+                navigate(
+                  `/fish-stock/${lake._id}`
+                )
+              }>
                 <div className="relative w-full">
                   <img
                     src={lake.image || l0}

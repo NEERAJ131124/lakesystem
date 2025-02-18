@@ -206,11 +206,14 @@ export function AuthProvider({ children }) {
 
       const normalizedUser = normalizeUserData(responseUser);
 
+      console.log("normalizedUser:", normalizedUser + " " + token);
+
       if (!token || !normalizedUser || !normalizedUser.userType) {
         throw new Error("Invalid response from server");
       }
 
-      localStorage.setItem("token", token);
+      // localStorage.setItem("token", token);
+      await setToken(token);
       api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
       setUser(normalizedUser);
       setError(null);

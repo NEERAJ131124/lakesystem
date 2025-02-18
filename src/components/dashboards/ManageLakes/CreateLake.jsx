@@ -153,6 +153,7 @@ function CreateLake() {
           Authorization: `Bearer ${token}`,
         },
       });
+
       toast.success("Lake created successfully!");
 
       setNewLake({
