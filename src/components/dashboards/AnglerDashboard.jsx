@@ -13,28 +13,81 @@ import { baseUrl } from "../../constants/APIs";
 import { useAuth } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 
-
 function WaterIcon() {
-  return <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2C12 2 4 10 4 16a8 8 0 1 0 16 0c0-6-8-14-8-14z"></path></svg>;
+  return (
+    <svg
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M12 2C12 2 4 10 4 16a8 8 0 1 0 16 0c0-6-8-14-8-14z"></path>
+    </svg>
+  );
 }
 
 function StarIcon() {
-  return <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 15 10 22 10 16 14 18 22 12 18 6 22 8 14 2 10 9 10"></polygon></svg>;
+  return (
+    <svg
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <polygon points="12 2 15 10 22 10 16 14 18 22 12 18 6 22 8 14 2 10 9 10"></polygon>
+    </svg>
+  );
 }
 
 function FishIcon() {
-  return <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 10c4.5 0 6 2 6 2s-1.5 2-6 2c-2.7 0-5.2 1.3-7 3-1.8-1.7-4.3-3-7-3-4.5 0-6-2-6-2s1.5-2 6-2c2.7 0 5.2-1.3 7-3 1.8 1.7 4.3 3 7 3z"></path></svg>;
+  return (
+    <svg
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M18 10c4.5 0 6 2 6 2s-1.5 2-6 2c-2.7 0-5.2 1.3-7 3-1.8-1.7-4.3-3-7-3-4.5 0-6-2-6-2s1.5-2 6-2c2.7 0 5.2-1.3 7-3 1.8 1.7 4.3 3 7 3z"></path>
+    </svg>
+  );
 }
 
 function TrophyIcon() {
-  return <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M8 21h8M12 17v4m5-4h1a4 4 0 0 0 4-4V5H3v8a4 4 0 0 0 4 4h1"></path></svg>;
+  return (
+    <svg
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M8 21h8M12 17v4m5-4h1a4 4 0 0 0 4-4V5H3v8a4 4 0 0 0 4 4h1"></path>
+    </svg>
+  );
 }
 
 function AnglerDashboard() {
   const [loading, setLoading] = useState(true);
   const [isEditProfileOpen, setIsEditProfileOpen] = useState(false);
   const [isAddCatchOpen, setIsAddCatchOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState("yourCatches");
+  const [activeTab, setActiveTab] = useState(
+    localStorage.getItem("activeTab") || "yourCatches"
+  );
   const [visible, setVisible] = useState(true);
 
   const [lakes, setLakes] = useState([]);
@@ -58,15 +111,17 @@ function AnglerDashboard() {
     }
   };
 
-
   useEffect(() => {
     const fetchRecentLakes = async () => {
       try {
-        const response = await axios.get(`${baseUrl}/api/lakes/recent?userId=${user._id}`, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        });
+        const response = await axios.get(
+          `${baseUrl}/api/lakes/recent?userId=${user._id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
         setLakes(response.data);
       } catch (error) {
         console.error("Error fetching recent lakes:", error);
@@ -77,6 +132,10 @@ function AnglerDashboard() {
 
     fetchRecentLakes();
   }, []);
+
+  useEffect(() => {
+    localStorage.setItem("activeTab", activeTab);
+  }, [activeTab]);
 
   const handleViewNewLakes = () => {
     navigate("/new-lakes");
@@ -137,10 +196,11 @@ function AnglerDashboard() {
                 <button
                   key={tab.id}
                   className={`flex flex-col sm:flex-row items-center sm:gap-2 px-4 py-2 rounded-lg transition duration-300
-              ${activeTab === tab.id
-                      ? "bg-blue-600 text-white shadow-md"
-                      : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                    }`}
+              ${
+                activeTab === tab.id
+                  ? "bg-blue-600 text-white shadow-md"
+                  : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+              }`}
                   onClick={() => setActiveTab(tab.id)}
                 >
                   <span>{tab.icon}</span>

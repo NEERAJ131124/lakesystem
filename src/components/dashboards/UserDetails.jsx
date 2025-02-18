@@ -25,7 +25,6 @@ function UserDetails({ onEditProfile, onAddCatch, setActiveTab }) {
       });
       setUser(response.data);
       setShowProfilePhoto(response?.data?.profilePhoto ?? null);
-
     } catch (error) {
       console.error("Error fetching users:", error);
     }
@@ -112,7 +111,9 @@ function UserDetails({ onEditProfile, onAddCatch, setActiveTab }) {
         {/* User Profile Card */}
         <div className="bg-gradient-to-r from-green-900 to-green-900 text-white rounded-xl shadow-md p-6 flex items-center justify-between transition-transform transform hover:scale-105">
           <div>
-            <p className="font-semibold text-xl">{users?.firstName} {users?.lastName}</p>
+            <p className="font-semibold text-xl">
+              {users?.firstName} {users?.lastName}
+            </p>
             <p className="text-gray-200">{users?.email}</p>
             <button
               className="mt-4 px-4 py-2 bg-white text-black font-medium rounded-lg hover:bg-gray-100 transition"
@@ -169,13 +170,14 @@ function UserDetails({ onEditProfile, onAddCatch, setActiveTab }) {
           </div>
         </div>
 
-
         {/* Total Catches */}
         <div className="flex flex-col bg-gradient-to-r from-gray-500 to-gray-500 text-white rounded-xl shadow-md p-6 hover:shadow-lg transition-transform transform hover:scale-105">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-lg font-semibold">Total Catches</p>
-              <p className="text-3xl font-bold">{users?.catches?.length || 0}</p>
+              <p className="text-3xl font-bold">
+                {users?.catches?.length || 0}
+              </p>
               <button
                 className="mt-4 px-4 py-2 bg-white text-black font-medium rounded-lg hover:bg-gray-100 transition"
                 onClick={onAddCatch}
@@ -184,8 +186,19 @@ function UserDetails({ onEditProfile, onAddCatch, setActiveTab }) {
               </button>
             </div>
             <div className="bg-white bg-opacity-25 p-3 rounded-full">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M20 12c0 3.866-3.582 7-8 7s-8-3.134-8-7 3.582-7 8-7 8 3.134 8 7zM4 12h16M9 9l3 3m0 0l3-3m-3 3V6" />
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-10 w-10 text-white"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth="2"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M20 12c0 3.866-3.582 7-8 7s-8-3.134-8-7 3.582-7 8-7 8 3.134 8 7zM4 12h16M9 9l3 3m0 0l3-3m-3 3V6"
+                />
               </svg>
             </div>
           </div>
@@ -196,7 +209,9 @@ function UserDetails({ onEditProfile, onAddCatch, setActiveTab }) {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-lg font-semibold">Followed Lakes</p>
-              <p className="text-3xl font-bold">{users?.following?.length || 0}</p>
+              <p className="text-3xl font-bold">
+                {users?.following?.length || 0}
+              </p>
               <button
                 className="mt-4 px-4 py-2 bg-white text-black font-medium rounded-lg hover:bg-gray-100 transition"
                 onClick={setActiveTab}
@@ -205,8 +220,19 @@ function UserDetails({ onEditProfile, onAddCatch, setActiveTab }) {
               </button>
             </div>
             <div className="bg-white bg-opacity-25 p-3 rounded-full">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M3 16s3-3 7-3 7 3 7 3M3 12s3-3 7-3 7 3 7 3M3 8s3-3 7-3 7 3 7 3" />
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-10 w-10 text-white"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth="2"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M3 16s3-3 7-3 7 3 7 3M3 12s3-3 7-3 7 3 7 3M3 8s3-3 7-3 7 3 7 3"
+                />
               </svg>
             </div>
           </div>
