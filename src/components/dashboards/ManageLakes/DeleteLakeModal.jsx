@@ -2,6 +2,7 @@ import axios from "axios";
 import { baseUrl } from "../../../constants/APIs";
 import Loader from "../../Loader";
 import { useState } from "react";
+import toast from "react-hot-toast";
 
 const DeleteModal = ({ setShowDeleteModal, name, id, fetchLakes }) => {
   const [loading, setLoading] = useState(false);
@@ -15,6 +16,7 @@ const DeleteModal = ({ setShowDeleteModal, name, id, fetchLakes }) => {
       });
       fetchLakes();
       setShowDeleteModal(false);
+      toast.success("Lake deleted successfully");
     } catch (error) {
       console.error("Error deleting lake:", error);
     } finally {
