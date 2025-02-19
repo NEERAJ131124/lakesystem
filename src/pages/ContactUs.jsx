@@ -62,8 +62,8 @@ const ContactUs = () => {
   };
 
   return (
-    <div className="flex flex-col min-h-screen">
-      {/* Hero Section */}
+    <div className="flex flex-col">
+      {/* Hero Section min-h-screen*/}
       <div className="relative overflow-hidden" style={{ minHeight: "500px" }}>
         <img
           src={l0}
@@ -84,7 +84,7 @@ const ContactUs = () => {
       </div>
 
       {/* Contact Form Section */}
-      <section className="py-16 bg-white">
+      {/* <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">
@@ -175,7 +175,7 @@ const ContactUs = () => {
             </form>
           </div>
         </div>
-      </section>
+      </section> */}
     </div>
   );
 };

@@ -29,6 +29,8 @@ import ViewNewLakes from "./pages/ViewNewLakes.jsx";
 import ManageFishStockUser from "./components/dashboards/ManageFishStock/ManageFishStockUser.jsx";
 import Loader from "./components/Loader.jsx";
 import ScrollToTop from "./components/ScrollToTop.jsx";
+import Privacy from "./pages/Privacy.jsx";
+import Terms from "./pages/Terms.jsx";
 
 const PrivateRoute = ({ children, allowedUserTypes }) => {
   const { user, loading } = useAuth();
@@ -63,7 +65,9 @@ const App = () => {
               <Route path="/register" element={<Register />} />
               <Route path="/about" element={<AboutUs />} />
               <Route path="/lakes" element={<LakesPage />} />
-              {/* <Route path="/contact" element={<ContactUs />} /> */}
+              <Route path="/contact" element={<ContactUs />} />
+              <Route path="/Privacy" element={<Privacy />} />
+              <Route path="/Terms" element={<Terms />} />
               <Route
                 path="/admin-dashboard"
                 element={

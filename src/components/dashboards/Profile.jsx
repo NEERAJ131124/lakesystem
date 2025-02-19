@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react";
-import { useAuth } from "../contexts/AuthContext";
+import React, { useState, useEffect, useRef } from "react";
 import { Edit } from "lucide-react";
 import { toast } from "react-toastify";
 import axios from "axios";
@@ -19,6 +18,40 @@ function UserProfile() {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [errors, setErrors] = useState({});
+
+  const firstNameRef = useRef(null);
+  const lastNameRef = useRef(null);
+  const emailRef = useRef(null);
+  const mobileNumberRef = useRef(null);
+  const complexNameRef = useRef(null);
+
+  const validateForm = () => {
+    const newErrors = {};
+
+    if (!editedUser.firstName.trim()) newErrors.firstName = "First name is required";
+    if (!editedUser.lastName.trim()) newErrors.lastName = "Last name is required";
+
+    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!editedUser.email.trim()) {
+      newErrors.email = "Email is required";
+    } else if (!emailPattern.test(editedUser.email)) {
+      newErrors.email = "Invalid email format";
+    }
+
+    const mobilePattern = /^[0-9]{10}$/;
+    if (!editedUser.mobileNumber.trim()) {
+      newErrors.mobileNumber = "Mobile Number is required";
+    } else if (!mobilePattern.test(editedUser.mobileNumber)) {
+      newErrors.mobileNumber = "Mobile Number must be 10 digits";
+    }
+
+    if (!editedUser.complexName.trim()) newErrors.complexName = "Complex Name is required";
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0; // Returns true if no errors
+  };
+
 
   useEffect(() => {
     const fetchUserDetails = async () => {
@@ -69,6 +102,16 @@ function UserProfile() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (isSubmitting) return;
+
+    const isValid = validateForm();
+    if (!isValid) {
+      if (errors.firstName) firstNameRef.current.focus();
+      else if (errors.lastName) lastNameRef.current.focus();
+      else if (errors.email) emailRef.current.focus();
+      else if (errors.mobileNumber) mobileNumberRef.current.focus();
+      else if (errors.complexName) complexNameRef.current.focus();
+      return;
+    }
 
     try {
       setIsSubmitting(true);
@@ -209,10 +252,13 @@ function UserProfile() {
                   name="firstName"
                   value={editedUser.firstName}
                   onChange={handleInputChange}
-                  required
+                  minLength={3}
+                  maxLength={50}
+                  ref={firstNameRef}
                   className="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400
                   focus:outline-none focus:border-[#ae7a31] focus:ring-1 focus:ring-[#ae7a31]"
                 />
+                {errors.firstName && <p className="text-red-500 text-sm">{errors.firstName}</p>}
               </div>
 
               <div>
@@ -226,12 +272,14 @@ function UserProfile() {
                   type="text"
                   id="lastName"
                   name="lastName"
+                  ref={lastNameRef}
                   value={editedUser.lastName}
                   onChange={handleInputChange}
-                  required
+                  maxLength={50}
                   className="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400
                   focus:outline-none focus:border-[#ae7a31] focus:ring-1 focus:ring-[#ae7a31]"
                 />
+                {errors.lastName && <p className="text-red-500 text-sm">{errors.lastName}</p>}
               </div>
 
               <div>
@@ -242,15 +290,17 @@ function UserProfile() {
                   Email
                 </label>
                 <input
-                  type="email"
+                  type="text"
                   id="email"
                   name="email"
+                  ref={emailRef}
                   value={editedUser.email}
                   onChange={handleInputChange}
-                  required
+                  maxLength={50}
                   className="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400
                   focus:outline-none focus:border-[#ae7a31] focus:ring-1 focus:ring-[#ae7a31]"
                 />
+                {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
               </div>
 
               <div>
@@ -261,14 +311,20 @@ function UserProfile() {
                   Mobile Number
                 </label>
                 <input
-                  type="tel"
+                  type="text"
                   id="mobileNumber"
                   name="mobileNumber"
+                  maxLength={10}
+                  ref={mobileNumberRef}
                   value={editedUser.mobileNumber}
                   onChange={handleInputChange}
+                  onInput={(e) => {
+                    e.target.value = e.target.value.replace(/[^0-9]/g, ""); // number only in react
+                  }}
                   className="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400
                   focus:outline-none focus:border-[#ae7a31] focus:ring-1 focus:ring-[#ae7a31]"
                 />
+                {errors.mobileNumber && <p className="text-red-500 text-sm">{errors.mobileNumber}</p>}
               </div>
 
               <div>
@@ -282,11 +338,14 @@ function UserProfile() {
                   type="text"
                   id="complexName"
                   name="complexName"
+                  maxLength={50}
+                  ref={complexNameRef}
                   value={editedUser.complexName}
                   onChange={handleInputChange}
                   className="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400
                   focus:outline-none focus:border-[#ae7a31] focus:ring-1 focus:ring-[#ae7a31]"
                 />
+                {errors.complexName && <p className="text-red-500 text-sm">{errors.complexName}</p>}
               </div>
 
               <button
