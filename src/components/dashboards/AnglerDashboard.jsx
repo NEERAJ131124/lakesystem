@@ -115,6 +115,11 @@ function AnglerDashboard() {
   };
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [refresshUser, refreshCatches, refreshFollowedLakes]);
+
+
+  useEffect(() => {
     const fetchRecentLakes = async () => {
       try {
         const response = await axios.get(
