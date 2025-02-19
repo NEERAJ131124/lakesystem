@@ -1,10 +1,9 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import Modal from "../Modal";
 import { useAuth } from "../contexts/AuthContext";
 import axios from "axios";
 import { baseUrl } from "../../constants/APIs";
 import Loader from "../Loader";
-import { set } from "date-fns";
 import toast from "react-hot-toast";
 
 function EditProfileModal({ isOpen, onClose, setLoading, setRefresshUser }) {
@@ -12,36 +11,80 @@ function EditProfileModal({ isOpen, onClose, setLoading, setRefresshUser }) {
   const [firstName, setFirstName] = useState(user.firstName);
   const [lastName, setLastName] = useState(user.lastName);
   const [email, setEmail] = useState(user.email);
-  const [dateOfBirth, setDateOfBirth] = useState(user.dateOfBirth ? new Date(user.dateOfBirth).toISOString().split("T")[0] : "");
+  const [dateOfBirth, setDateOfBirth] = useState(
+    user.dateOfBirth ? new Date(user.dateOfBirth).toISOString().split("T")[0] : ""
+  );
   const [mobileNumber, setMobileNumber] = useState(user.mobileNumber || "");
-  // const [complexName, setComplexName] = useState(user.complexName || "");
   const [loading, setLoadingState] = useState(false);
   const [error, setError] = useState(null);
+  const [errors, setErrors] = useState({}); // State to track field errors
+
+  // Create refs for input fields
+  const firstNameRef = useRef(null);
+  const lastNameRef = useRef(null);
+  const emailRef = useRef(null);
+  const dateOfBirthRef = useRef(null);
+  const mobileNumberRef = useRef(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoadingState(true);
     setError(null);
 
-    const updatedUser = {
-      firstName,
-      lastName,
-      email,
-      dateOfBirth,
-      mobileNumber,
-      // complexName,
-    };
+    // Validation
+    const newErrors = {};
+
+    // First Name validation
+    if (!firstName.trim()) newErrors.firstName = "First Name is required";
+
+    // Last Name validation
+    if (!lastName.trim()) newErrors.lastName = "Last Name is required";
+
+    // Email validation (basic regex check for email format)
+    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!email.trim()) {
+      newErrors.email = "Email is required";
+    } else if (!emailPattern.test(email)) {
+      newErrors.email = "Invalid email format";
+    }
+
+    // Date of Birth validation
+    if (!dateOfBirth) newErrors.dateOfBirth = "Date of Birth is required";
+
+    // Mobile Number validation (only numbers, exactly 10 digits)
+    const mobilePattern = /^[0-9]{10}$/;
+    if (!mobileNumber.trim()) {
+      newErrors.mobileNumber = "Mobile Number is required";
+    } else if (!mobilePattern.test(mobileNumber)) {
+      newErrors.mobileNumber = "Mobile Number must be 10 digits";
+    }
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      setLoadingState(false);
+
+      // Find the first error field and focus on it
+      if (newErrors.firstName) firstNameRef.current.focus();
+      else if (newErrors.lastName) lastNameRef.current.focus();
+      else if (newErrors.email) emailRef.current.focus();
+      else if (newErrors.dateOfBirth) dateOfBirthRef.current.focus();
+      else if (newErrors.mobileNumber) mobileNumberRef.current.focus();
+
+      return;
+    }
+
+    const updatedUser = { firstName, lastName, email, dateOfBirth, mobileNumber };
 
     try {
       setRefresshUser(true);
-      const response = await axios.put(`${baseUrl}/api/users/me`, updatedUser, {
+      await axios.put(`${baseUrl}/api/users/me`, updatedUser, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
       toast.success("Profile updated successfully!");
+      setErrors({});
       onClose();
-      // window.location.reload();
     } catch (error) {
       console.error("Error updating profile:", error);
       setError("Failed to update profile. Please try again.");
@@ -51,9 +94,8 @@ function EditProfileModal({ isOpen, onClose, setLoading, setRefresshUser }) {
       setRefresshUser(false);
     }
   };
-  if (loading) {
-    return <Loader />
-  }
+
+  if (loading) return <Loader />;
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
@@ -69,7 +111,9 @@ function EditProfileModal({ isOpen, onClose, setLoading, setRefresshUser }) {
               onChange={(e) => setFirstName(e.target.value)}
               className="w-full p-2 border rounded"
               maxLength={25}
+              ref={firstNameRef}
             />
+            {errors.firstName && <span className="text-red-500 text-sm">{errors.firstName}</span>}
           </div>
           <div className="mb-4">
             <label className="block text-gray-700">Last Name</label>
@@ -79,17 +123,21 @@ function EditProfileModal({ isOpen, onClose, setLoading, setRefresshUser }) {
               onChange={(e) => setLastName(e.target.value)}
               className="w-full p-2 border rounded"
               maxLength={25}
+              ref={lastNameRef}
             />
+            {errors.lastName && <span className="text-red-500 text-sm">{errors.lastName}</span>}
           </div>
           <div className="mb-4">
             <label className="block text-gray-700">Email</label>
             <input
-              type="email"
+              type="text"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="w-full p-2 border rounded"
               maxLength={50}
+              ref={emailRef}
             />
+            {errors.email && <span className="text-red-500 text-sm">{errors.email}</span>}
           </div>
           <div className="mb-4">
             <label className="block text-gray-700">Date of Birth</label>
@@ -98,7 +146,9 @@ function EditProfileModal({ isOpen, onClose, setLoading, setRefresshUser }) {
               value={dateOfBirth}
               onChange={(e) => setDateOfBirth(e.target.value)}
               className="w-full p-2 border rounded"
+              ref={dateOfBirthRef}
             />
+            {errors.dateOfBirth && <span className="text-red-500 text-sm">{errors.dateOfBirth}</span>}
           </div>
           <div className="mb-4">
             <label className="block text-gray-700">Mobile Number</label>
@@ -111,15 +161,13 @@ function EditProfileModal({ isOpen, onClose, setLoading, setRefresshUser }) {
                 e.target.value = e.target.value.replace(/[^0-9]/g, "");
               }}
               maxLength={10}
+              ref={mobileNumberRef}
             />
+            {errors.mobileNumber && <span className="text-red-500 text-sm">{errors.mobileNumber}</span>}
           </div>
           <div className="mb-4">
             <label className="block text-gray-700">User Type</label>
-            <select
-              value={user.userType}
-              className="w-full p-2 border rounded"
-              disabled
-            >
+            <select value={user.userType} className="w-full p-2 border rounded" disabled>
               <option value="angler">Angler</option>
               <option value="lakeOwner">Lake Owner</option>
               <option value="admin">Admin</option>
