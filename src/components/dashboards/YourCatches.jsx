@@ -6,7 +6,7 @@ import Loader from "../Loader";
 import { MoreVertical, Edit, Trash2 } from "lucide-react";
 import EditCatch from "./ManageCatch/EditCatch";
 
-function YourCatches() {
+function YourCatches({ setRefreshCatches }) {
   const [catches, setCatches] = useState([]);
   const [loading, setLoading] = useState(false);
   const { user } = useAuth();
@@ -56,6 +56,7 @@ function YourCatches() {
   const handleDelete = async (catchId) => {
     if (window.confirm("Are you sure you want to delete this catch?")) {
       setLoading(true);
+      setRefreshCatches(true)
       try {
         await axios.delete(`${baseUrl}/api/catches/${catchId}`, {
           headers: {
@@ -67,6 +68,7 @@ function YourCatches() {
         console.error("Error deleting catch:", error);
       } finally {
         setLoading(false);
+        setRefreshCatches(false)
       }
     }
   };

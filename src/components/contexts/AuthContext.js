@@ -38,6 +38,7 @@ export function AuthProvider({ children }) {
   const logout = useCallback(() => {
     localStorage.removeItem("token");
     localStorage.removeItem("tokenExpiry");
+    localStorage.removeItem("activeTab");
     delete api.defaults.headers.common["Authorization"];
     setUser(null);
     setError(null);
@@ -61,10 +62,7 @@ export function AuthProvider({ children }) {
     if (user) return;
     try {
       const token = await getToken();
-
       // const token = localStorage.getItem("token");
-
-      console.log("Token:", token);
       if (!token) {
         setLoading(false);
         return;
@@ -177,6 +175,7 @@ export function AuthProvider({ children }) {
     if (now > parseInt(expiry, 10)) {
       localStorage.removeItem("token");
       localStorage.removeItem("tokenExpiry");
+      localStorage.removeItem("activeTab");
       return null;
     }
     return token;

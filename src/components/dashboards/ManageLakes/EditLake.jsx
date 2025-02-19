@@ -171,7 +171,7 @@ export default function EditLake() {
       toast.dismiss(loadingToast);
       toast.error(
         error.response?.data?.message ||
-          "Failed to update lake. Please try again."
+        "Failed to update lake. Please try again."
       );
     } finally {
       setIsSubmitting(false);
@@ -202,6 +202,7 @@ export default function EditLake() {
                 value={lake.name}
                 onChange={handleInputChange}
                 required
+                maxLength={100}
                 className="mt-1 block w-full rounded-md border-2 border-[#ae7a31] py-2 px-3 shadow-sm focus:border-[#ae7a31] focus:outline-none focus:ring-[#ae7a31] sm:text-sm"
               />
             </div>
@@ -220,6 +221,7 @@ export default function EditLake() {
                 value={lake.location}
                 onChange={handleInputChange}
                 required
+                maxLength={100}
                 className="mt-1 block w-full rounded-md border-2 border-[#ae7a31] py-2 px-3 shadow-sm focus:border-[#ae7a31] focus:outline-none focus:ring-[#ae7a31] sm:text-sm"
               />
             </div>
@@ -232,12 +234,21 @@ export default function EditLake() {
                 Current Stock
               </label>
               <input
-                type="number"
+                type="text"
                 id="currentStock"
                 name="currentStock"
                 value={lake.currentStock}
                 onChange={handleInputChange}
                 required
+                onInput={(e) => {
+                  e.target.value = e.target.value.replace(/[^0-9]/g, ""); // Allow numbers and decimal
+                  if ((e.target.value.match(/\./g) || []).length > 1) {
+                    e.target.value = e.target.value.replace(/\.+$/, ""); // Prevent multiple decimals
+                  }
+                  if (e.target.value.length > 10) {
+                    e.target.value = e.target.value.slice(0, 10); // Limit input to 10 characters
+                  }
+                }}
                 className="mt-1 block w-full rounded-md border-2 border-[#ae7a31] py-2 px-3 shadow-sm focus:border-[#ae7a31] focus:outline-none focus:ring-[#ae7a31] sm:text-sm"
               />
             </div>
@@ -250,12 +261,21 @@ export default function EditLake() {
                 Maximum Weight (lbs)
               </label>
               <input
-                type="number"
+                type="text"
                 id="maxWeight"
                 name="maxWeight"
                 value={lake.maxWeight}
                 onChange={handleInputChange}
                 required
+                onInput={(e) => {
+                  e.target.value = e.target.value.replace(/[^0-9.]/g, ""); // Allow numbers and decimal
+                  if ((e.target.value.match(/\./g) || []).length > 1) {
+                    e.target.value = e.target.value.replace(/\.+$/, ""); // Prevent multiple decimals
+                  }
+                  if (e.target.value.length > 10) {
+                    e.target.value = e.target.value.slice(0, 10); // Limit input to 10 characters
+                  }
+                }}
                 className="mt-1 block w-full rounded-md border-2 border-[#ae7a31] py-2 px-3 shadow-sm focus:border-[#ae7a31] focus:outline-none focus:ring-[#ae7a31] sm:text-sm"
               />
             </div>
@@ -275,6 +295,7 @@ export default function EditLake() {
               onChange={handleInputChange}
               rows={4}
               required
+              maxLength={500}
               className="mt-1 block w-full rounded-md border-2 border-[#ae7a31] py-2 px-3 shadow-sm focus:border-[#ae7a31] focus:outline-none focus:ring-[#ae7a31] sm:text-sm"
             />
           </div>

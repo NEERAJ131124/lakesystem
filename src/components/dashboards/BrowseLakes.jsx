@@ -10,7 +10,7 @@ import AddCatch from "./ManageCatch/AddCatch";
 import l0 from "../../assets/wlake.jpg";
 import { useNavigate } from "react-router-dom";
 
-function BrowseLakes({ setActiveTab }) {
+function BrowseLakes({ setRefreshFollowedLakes, setActiveTab }) {
   const [lakes, setLakes] = useState([]);
   const [loading, setLoading] = useState(false);
   const [selectedLake, setSelectedLake] = useState(null);
@@ -65,12 +65,12 @@ function BrowseLakes({ setActiveTab }) {
     setIsAddCatchOpen(true);
   };
 
-  if (loading)
-    return (
-      <div className="bg-white rounded-lg shadow-2xl p-6">
-        <Loader />
-      </div>
-    );
+  // if (loading)
+  //   return (
+  //     <div className="bg-white rounded-lg shadow-2xl p-6">
+  //       <Loader />
+  //     </div>
+  //   );
 
   return (
     <div className="bg-white rounded-lg shadow-2xl p-6">
@@ -146,7 +146,7 @@ function BrowseLakes({ setActiveTab }) {
                 <button
                   className="mt-4 px-4 py-2 bg-[#ae7a31] text-white rounded hover:bg-blue-600  bottom-4 right-4"
                   onClick={() => {
-                    handleFollowLake(lake._id, true, setLoading, handleFollow);
+                    handleFollowLake(lake._id, true, setLoading, handleFollow, setRefreshFollowedLakes);
                   }}
                 >
                   Add to Profile

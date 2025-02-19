@@ -117,6 +117,7 @@ const ManageFishStock = () => {
           },
         }
       );
+      toast.success("Fish stock updated successfully!");
       fetchFishStocks();
     } catch (error) {
       setShowEditModal(true);
@@ -303,6 +304,7 @@ const ManageFishStock = () => {
                     }
                     className="w-full border rounded px-3 py-2"
                     required
+                    maxLength={100}
                   />
                 </div>
                 <div className="w-full md:w-1/2 px-2 mb-4">
@@ -359,6 +361,15 @@ const ManageFishStock = () => {
                     }
                     className="w-full border rounded px-3 py-2"
                     required
+                    onInput={(e) => {
+                      e.target.value = e.target.value.replace(/[^0-9.]/g, ""); // Allow numbers and decimal
+                      if ((e.target.value.match(/\./g) || []).length > 1) {
+                        e.target.value = e.target.value.replace(/\.+$/, ""); // Prevent multiple decimals
+                      }
+                      if (e.target.value.length > 10) {
+                        e.target.value = e.target.value.slice(0, 10); // Limit input to 10 characters
+                      }
+                    }}
                   />
                 </div>
                 {/* <div className="w-full md:w-1/2 px-2 mb-4">
@@ -416,6 +427,7 @@ const ManageFishStock = () => {
                       setEditForm({ ...editForm, notes: e.target.value })
                     }
                     className="w-full border rounded px-3 py-2"
+                    maxLength={500}
                   />
                 </div>
                 <div className="w-full px-2 mb-4">
@@ -448,7 +460,7 @@ const ManageFishStock = () => {
                   onClick={() => setShowEditModal(false)}
                   className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
                 >
-                  Cancel
+                  Close
                 </button>
                 <button
                   type="submit"

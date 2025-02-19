@@ -5,6 +5,7 @@ import { baseUrl } from "../../../constants/APIs";
 import { handleFollowLake } from "../../contexts/Methods";
 import Modal from "../../Modal";
 import StarRating from "../../StarRating";
+import toast from "react-hot-toast";
 
 function AddCatch({
   isOpen,
@@ -134,7 +135,7 @@ function AddCatch({
         review: "",
         rating: 0,
       });
-      console.log(res);
+      toast.success("Catch added successfully!");
       onCatchAdded();
       onClose();
     } catch (error) {
@@ -217,8 +218,8 @@ function AddCatch({
                 Weight (lbs)
               </label>
               <input
-                type="number"
-                step="0.01"
+                type="text"
+                maxLength={5}
                 id="weight"
                 name="weight"
                 value={newCatch.weight}
@@ -226,6 +227,12 @@ function AddCatch({
                 required
                 className={`p-2 w-full border rounded-md text-base ${errors.weight ? "border-red-500" : "border-gray-300"
                   }`}
+                onInput={(e) => {
+                  e.target.value = e.target.value.replace(/[^0-9.]/g, ""); // Allow numbers and decimal
+                  if ((e.target.value.match(/\./g) || []).length > 1) {
+                    e.target.value = e.target.value.replace(/\.+$/, ""); // Prevent multiple decimals
+                  }
+                }}
               />
               {errors.weight && (
                 <span className="text-red-500 text-sm">{errors.weight}</span>
@@ -337,6 +344,7 @@ function AddCatch({
                 rows={3}
                 className={`p-2 border w-full rounded-md text-base ${errors.description ? "border-red-500" : "border-gray-300"
                   }`}
+                maxLength={250}
               />
               {errors.description && (
                 <span className="text-red-500 text-sm">

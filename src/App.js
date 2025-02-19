@@ -26,17 +26,14 @@ import AddFishStock from "./components/dashboards/ManageFishStock/AddFishStock.j
 import ManageFishStock from "./components/dashboards/ManageFishStock/ManageFishStock.jsx";
 import ViewNewLakes from "./pages/ViewNewLakes.jsx";
 import ManageFishStockUser from "./components/dashboards/ManageFishStock/ManageFishStockUser.jsx";
+import Loader from "./components/Loader.jsx";
 
 const PrivateRoute = ({ children, allowedUserTypes }) => {
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
 
-  // console.log("User:", user);
-
-  // console.log("Allowed User Types:", allowedUserTypes);
-  // console.log(
-  //   "User Type Check:",
-  //   user ? allowedUserTypes.includes(user.userType) : false
-  // );
+  if (loading) {
+    return <Loader />;
+  }
 
   if (!user) {
     return <Navigate to="/login" replace />;

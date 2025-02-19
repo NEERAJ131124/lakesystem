@@ -5,6 +5,7 @@ import { baseUrl } from "../../../constants/APIs";
 import Modal from "../../Modal";
 import StarRating from "../../StarRating";
 import { handleFollowLake } from "../../contexts/Methods";
+import toast from "react-hot-toast";
 
 function EditCatch({
   isOpen,
@@ -128,7 +129,7 @@ function EditCatch({
           },
         }
       );
-      console.log(res);
+      toast.success("Catch updated successfully!");
       onCatchUpdated();
       onClose();
     } catch (error) {
@@ -384,21 +385,22 @@ function EditCatch({
             <button
               type="button"
               onClick={() =>
-                setUpdatedCatch({
-                  species: catchData.fish.species,
-                  weight: catchData.fish.weight,
-                  // length: catchData.fish.length,
-                  photo: null,
-                  lake: catchData.lake._id,
-                  description: catchData.description,
-                  taggedUsers: catchData.taggedUsers.join(", "),
-                  review: catchData.review || "",
-                  rating: catchData.rating || 0,
-                })
+                onClose()
+                // setUpdatedCatch({
+                //   species: catchData.fish.species,
+                //   weight: catchData.fish.weight,
+                //   // length: catchData.fish.length,
+                //   photo: null,
+                //   lake: catchData.lake._id,
+                //   description: catchData.description,
+                //   taggedUsers: catchData.taggedUsers.join(", "),
+                //   review: catchData.review || "",
+                //   rating: catchData.rating || 0,
+                // })
               }
               className="px-5 py-2.5 bg-gray-500 hover:bg-gray-600 text-white rounded-md cursor-pointer text-base flex-1 whitespace-nowrap"
             >
-              Clear
+              Close
             </button>
             <button
               type="submit"

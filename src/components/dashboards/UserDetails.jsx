@@ -5,7 +5,7 @@ import { baseUrl } from "../../constants/APIs";
 import Cropper from "react-easy-crop";
 import getCroppedImg from "../../utils/cropImage";
 
-function UserDetails({ onEditProfile, onAddCatch, setActiveTab }) {
+function UserDetails({ onEditProfile, onAddCatch, setActiveTab, refresshUser, refreshCatches, refreshFollowedLakes }) {
   const { user } = useAuth();
   const [users, setUser] = useState({});
   const [anglers, setAnglers] = useState([]);
@@ -31,10 +31,8 @@ function UserDetails({ onEditProfile, onAddCatch, setActiveTab }) {
   };
 
   useEffect(() => {
-    if (localStorage.getItem("token")) {
-      getUser();
-    }
-  }, []);
+    getUser();
+  }, [refresshUser, refreshCatches, refreshFollowedLakes]);
 
   // useEffect(() => {
   //   const fetchAnglers = async () => {

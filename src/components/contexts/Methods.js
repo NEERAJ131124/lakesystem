@@ -6,10 +6,12 @@ const handleFollowLake = async (
   lakeId,
   status,
   setLoading,
-  fetchFollowedLakes
+  fetchFollowedLakes,
+  setRefreshFollowedLakes
 ) => {
   try {
     setLoading(true);
+    setRefreshFollowedLakes(true);
     const response = await axios.put(
       `${baseUrl}/api/users/follow`,
       {
@@ -25,7 +27,7 @@ const handleFollowLake = async (
 
     await fetchFollowedLakes();
     toast.success(response.data.message);
-    window.location.reload();
+    // window.location.reload();
   } catch (error) {
     console.log(error);
     if (error.response.status === 400) {
@@ -35,6 +37,7 @@ const handleFollowLake = async (
     console.error("Error following lake:", error);
   } finally {
     setLoading(false);
+    setRefreshFollowedLakes(false);
   }
 };
 

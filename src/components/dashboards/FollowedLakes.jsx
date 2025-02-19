@@ -7,7 +7,7 @@ import Modal from "../Modal";
 import StarRating from "../StarRating";
 import { useNavigate } from "react-router-dom";
 
-function FollowedLakes() {
+function FollowedLakes({ setRefreshFollowedLakes }) {
   const [lakes, setLakes] = useState([]);
   const [loading, setLoading] = useState(false);
   const [selectedLake, setSelectedLake] = useState(null);
@@ -85,7 +85,8 @@ function FollowedLakes() {
                     lake._id,
                     false,
                     setLoading,
-                    fetchFollowedLakes
+                    fetchFollowedLakes,
+                    setRefreshFollowedLakes
                   );
                 }}
               >

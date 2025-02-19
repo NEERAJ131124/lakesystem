@@ -95,15 +95,18 @@ function AnglerDashboard() {
   const navigate = useNavigate();
   // const [msg, setMsg] = useState(null);
   // const [index, setIndex] = useState(0);
+  const [refresshUser, setRefresshUser] = useState(false);
+  const [refreshCatches, setRefreshCatches] = useState(false);
+  const [refreshFollowedLakes, setRefreshFollowedLakes] = useState(false);
 
   const renderTabContent = () => {
     switch (activeTab) {
       case "browseLakes":
-        return <BrowseLakes setActiveTab={setActiveTab} />;
+        return <BrowseLakes setRefreshFollowedLakes={setRefreshFollowedLakes} setActiveTab={setActiveTab} />;
       case "followedLakes":
-        return <FollowedLakes />;
+        return <FollowedLakes setRefreshFollowedLakes={setRefreshFollowedLakes} />;
       case "yourCatches":
-        return <YourCatches />;
+        return <YourCatches setRefreshCatches={setRefreshCatches} />;
       case "topCatches":
         return <TopCatches />;
       default:
@@ -187,6 +190,9 @@ function AnglerDashboard() {
               onEditProfile={() => setIsEditProfileOpen(true)}
               onAddCatch={() => setIsAddCatchOpen(true)}
               setActiveTab={() => setActiveTab("followedLakes")}
+              refresshUser={refresshUser}
+              refreshCatches={refreshCatches}
+              refreshFollowedLakes={refreshFollowedLakes}
             />
           </div>
 
@@ -196,11 +202,10 @@ function AnglerDashboard() {
                 <button
                   key={tab.id}
                   className={`flex flex-col sm:flex-row items-center sm:gap-2 px-4 py-2 rounded-lg transition duration-300
-              ${
-                activeTab === tab.id
-                  ? "bg-blue-600 text-white shadow-md"
-                  : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-              }`}
+              ${activeTab === tab.id
+                      ? "bg-blue-600 text-white shadow-md"
+                      : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                    }`}
                   onClick={() => setActiveTab(tab.id)}
                 >
                   <span>{tab.icon}</span>
@@ -257,6 +262,7 @@ function AnglerDashboard() {
             isOpen={isEditProfileOpen}
             onClose={() => setIsEditProfileOpen(false)}
             setLoading={setLoading}
+            setRefresshUser={setRefresshUser}
           />
           <AddCatch
             isOpen={isAddCatchOpen}

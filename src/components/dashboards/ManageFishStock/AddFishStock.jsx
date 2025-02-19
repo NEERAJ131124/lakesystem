@@ -151,7 +151,6 @@ const AddingFishStock = () => {
             formDataToSend.append(key, formData[key]);
           }
         });
-        console.log(formData);
         const response = await axios.post(
           `${baseUrl}/api/fish`,
           formDataToSend,
@@ -162,8 +161,9 @@ const AddingFishStock = () => {
             },
           }
         );
+        // Show success message
+        toast.success("Fish stock added successfully!");
 
-        console.log(response);
         // Clear form
         setFormData({
           name: "",
@@ -178,8 +178,6 @@ const AddingFishStock = () => {
         });
         setImagePreview(null);
 
-        // Show success message
-        toast.success("Fish stock added successfully!");
         if (response.status === 201) {
           navigate(`/lake-owner-dashboard/manage-fish-stock/${id}`);
         }
@@ -229,9 +227,9 @@ const AddingFishStock = () => {
             value={formData.name}
             onChange={handleInputChange}
             placeholder="Enter fish name"
-            className={`p-2 border rounded-md text-base ${
-              errors.name ? "border-red-500" : "border-gray-300"
-            }`}
+            className={`p-2 border rounded-md text-base ${errors.name ? "border-red-500" : "border-gray-300"
+              }`}
+            maxLength={100}
           />
           {errors.name && (
             <span className="text-red-500 text-sm">{errors.name}</span>
@@ -247,9 +245,8 @@ const AddingFishStock = () => {
             name="species"
             value={formData.species}
             onChange={handleInputChange}
-            className={`p-2 border rounded-md text-base ${
-              errors.species ? "border-red-500" : "border-gray-300"
-            }`}
+            className={`p-2 border rounded-md text-base ${errors.species ? "border-red-500" : "border-gray-300"
+              }`}
           >
             <option value="">Select a species</option>
             {fishSpecies.map((species) => (
@@ -309,17 +306,24 @@ const AddingFishStock = () => {
             Weight (lbs):
           </label>
           <input
-            type="number"
+            type="text"
             id="weight"
             name="weight"
             value={formData.weight}
             onChange={handleInputChange}
             placeholder="Enter weight"
-            min="0.01"
-            step="0.01"
-            className={`p-2 border rounded-md text-base ${
-              errors.weight ? "border-red-500" : "border-gray-300"
-            }`}
+            className={`p-2 border rounded-md text-base ${errors.weight ? "border-red-500" : "border-gray-300"
+              }`}
+            onInput={(e) => {
+              e.target.value = e.target.value.replace(/[^0-9.]/g, ""); // Allow numbers and decimal
+              if ((e.target.value.match(/\./g) || []).length > 1) {
+                e.target.value = e.target.value.replace(/\.+$/, ""); // Prevent multiple decimals
+              }
+              if (e.target.value.length > 10) {
+                e.target.value = e.target.value.slice(0, 10); // Limit input to 10 characters
+              }
+            }}
+
           />
           {errors.weight && (
             <span className="text-red-500 text-sm">{errors.weight}</span>
@@ -376,9 +380,8 @@ const AddingFishStock = () => {
             name="image"
             accept="image/*"
             onChange={handleImageChange}
-            className={`p-2 border rounded-md text-base ${
-              errors.image ? "border-red-500" : "border-gray-300"
-            }`}
+            className={`p-2 border rounded-md text-base ${errors.image ? "border-red-500" : "border-gray-300"
+              }`}
           />
           {errors.image && (
             <span className="text-red-500 text-sm">{errors.image}</span>
@@ -406,9 +409,8 @@ const AddingFishStock = () => {
             placeholder="Enter additional notes"
             rows="4"
             maxLength="500"
-            className={`p-2 border rounded-md text-base ${
-              errors.notes ? "border-red-500" : "border-gray-300"
-            }`}
+            className={`p-2 border rounded-md text-base ${errors.notes ? "border-red-500" : "border-gray-300"
+              }`}
           />
           {errors.notes && (
             <span className="text-red-500 text-sm">{errors.notes}</span>
