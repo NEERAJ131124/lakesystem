@@ -24,6 +24,7 @@ function YourCatches({ setRefreshCatches }) {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
+      console.log(response.data);
       setCatches(response.data.catches);
     } catch (error) {
       console.error("Error fetching catches:", error);
@@ -56,7 +57,7 @@ function YourCatches({ setRefreshCatches }) {
   const handleDelete = async (catchId) => {
     if (window.confirm("Are you sure you want to delete this catch?")) {
       setLoading(true);
-      setRefreshCatches(true)
+      setRefreshCatches(true);
       try {
         await axios.delete(`${baseUrl}/api/catches/${catchId}`, {
           headers: {
@@ -68,7 +69,7 @@ function YourCatches({ setRefreshCatches }) {
         console.error("Error deleting catch:", error);
       } finally {
         setLoading(false);
-        setRefreshCatches(false)
+        setRefreshCatches(false);
       }
     }
   };
@@ -116,11 +117,11 @@ function YourCatches({ setRefreshCatches }) {
       <h2 className="text-xl font-semibold text-gray-900 mb-4">Your Catches</h2>
       {loading ? (
         <Loader />
-      ) : catches.length === 0 ? (
+      ) : catches?.length === 0 ? (
         <p className="text-gray-500">No catches recorded yet.</p>
       ) : (
         <div className="grid gap-4 md:grid-cols-3 overflow-auto">
-          {catches.map((fish) => (
+          {catches?.map((fish) => (
             <div
               key={fish._id}
               className="bg-white border rounded-lg p-6 shadow-2xl border-[1px] border-[#ae7a31] relative max-w-full overflow-hidden"
@@ -185,7 +186,7 @@ function YourCatches({ setRefreshCatches }) {
               {/* Location */}
               <div className="mb-4 text-gray-600 text-sm">
                 <i className="fas fa-map-marker-alt mr-2"></i>
-                {fish.lake.name}, {fish.lake.location}
+                {fish?.lake?.name}, {fish?.lake?.location}
               </div>
 
               {/* Description */}

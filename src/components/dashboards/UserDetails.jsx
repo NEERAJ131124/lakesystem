@@ -5,7 +5,14 @@ import { baseUrl } from "../../constants/APIs";
 import Cropper from "react-easy-crop";
 import getCroppedImg from "../../utils/cropImage";
 
-function UserDetails({ onEditProfile, onAddCatch, setActiveTab, refresshUser, refreshCatches, refreshFollowedLakes }) {
+function UserDetails({
+  onEditProfile,
+  onAddCatch,
+  setActiveTab,
+  refresshUser,
+  refreshCatches,
+  refreshFollowedLakes,
+}) {
   const { user } = useAuth();
   const [users, setUser] = useState({});
   const [anglers, setAnglers] = useState([]);
@@ -33,28 +40,6 @@ function UserDetails({ onEditProfile, onAddCatch, setActiveTab, refresshUser, re
   useEffect(() => {
     getUser();
   }, [refresshUser, refreshCatches, refreshFollowedLakes]);
-
-  // useEffect(() => {
-  //   const fetchAnglers = async () => {
-  //     try {
-  //       const response = await axios.get(`${baseUrl}/api/users/all`, {
-  //         headers: {
-  //           Authorization: `Bearer ${localStorage.getItem("token")}`,
-  //         },
-  //       });
-  //       const anglersData = response.data
-  //         .filter((user) => user.userType === "angler")
-  //         .sort((a, b) => b.catches.length - a.catches.length)
-  //         .map((angler, index) => ({ ...angler, rank: index + 1 }))
-  //         .filter((angler) => angler._id === user._id);
-  //       console.log("anglersData", anglersData);
-  //       setAnglers(anglersData);
-  //     } catch (error) {
-  //       console.error("Error fetching anglers:", error);
-  //     }
-  //   };
-  //   fetchAnglers();
-  // }, []);
 
   const handleProfilePhotoClick = () => {
     setIsModalOpen(true);
@@ -91,10 +76,7 @@ function UserDetails({ onEditProfile, onAddCatch, setActiveTab, refresshUser, re
           },
         }
       );
-      // setUser((prevUser) => ({
-      //   ...prevUser,
-      //   profilePhoto: res.data.profilePhoto,
-      // }));
+
       setIsModalOpen(false);
       getUser();
     } catch (error) {
@@ -105,151 +87,138 @@ function UserDetails({ onEditProfile, onAddCatch, setActiveTab, refresshUser, re
 
   return (
     <>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-6 mt-6">
         {/* User Profile Card */}
-        <div className="bg-gradient-to-r from-green-900 to-green-900 text-white rounded-xl shadow-md p-6 flex items-center justify-between transition-transform transform hover:scale-105">
-          <div>
-            <p className="font-semibold text-xl">
-              {users?.firstName} {users?.lastName}
-            </p>
-            <p className="text-gray-200">{users?.email}</p>
-            <button
-              className="mt-4 px-4 py-2 bg-white text-black font-medium rounded-lg hover:bg-gray-100 transition"
-              onClick={onEditProfile}
+        <div className="bg-gradient-to-r col-span-8 md:col-span-4 from-green-900 to-green-900 text-white rounded-xl shadow-md p-6 flex  items-center md:items-start justify-between flex-wrap transition-transform transform hover:scale-105">
+          <div className="flex gap-2">
+            <div
+              className="rounded-full bg-white bg-opacity-20 w-16 h-16 flex items-center justify-center shadow-sm relative group cursor-pointer"
+              onClick={handleProfilePhotoClick}
             >
-              Edit Profile
-            </button>
-          </div>
-          <div
-            className="rounded-full bg-white bg-opacity-20 w-16 h-16 flex items-center justify-center shadow-sm relative group cursor-pointer"
-            onClick={handleProfilePhotoClick}
-          >
-            {showProfilePhoto ? (
-              <>
-                <img
-                  src={showProfilePhoto}
-                  alt="Profile"
-                  className="rounded-full w-16 h-16 object-cover"
-                />
-                <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-40 rounded-full transition-all duration-200 flex items-center justify-center">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-6 w-6 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-200"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
-                    />
-                  </svg>
-                </div>
-              </>
-            ) : (
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-8 w-8 text-white"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={2}
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
+              {showProfilePhoto ? (
+                <>
+                  <img
+                    src={showProfilePhoto}
+                    alt="Profile"
+                    className="rounded-full w-16 h-16 object-cover"
+                  />
+                  <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-40 rounded-full transition-all duration-200 flex items-center justify-center">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-6 w-6 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
+                      />
+                    </svg>
+                  </div>
+                </>
+              ) : (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-8 w-8 text-white"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
                   strokeWidth={2}
-                  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                />
-              </svg>
-            )}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                  />
+                </svg>
+              )}
+            </div>
+            <div>
+              <p className="font-semibold text-xl">
+                {users?.firstName} {users?.lastName}
+              </p>
+              <p className="text-gray-200">{users?.email}</p>
+            </div>
           </div>
+          <button
+            className="mt-4 px-4 py-2 bg-white text-black font-medium rounded-lg hover:bg-gray-100 transition"
+            onClick={onEditProfile}
+          >
+            Edit Profile
+          </button>
         </div>
 
         {/* Total Catches */}
-        <div className="flex flex-col bg-gradient-to-r from-gray-500 to-gray-500 text-white rounded-xl shadow-md p-6 hover:shadow-lg transition-transform transform hover:scale-105">
-          <div className="flex items-center justify-between">
-            <div>
+        <div className="flex col-span-8 flex-col md:col-span-2 bg-gradient-to-r from-gray-500 to-gray-500 text-white rounded-xl shadow-md p-6 hover:shadow-lg transition-transform transform hover:scale-105">
+          <div className="flex items-start justify-between flex-col">
+            <div className="flex items-center justify-between gap-4 w-full">
               <p className="text-lg font-semibold">Total Catches</p>
-              <p className="text-3xl font-bold">
-                {users?.catches?.length || 0}
-              </p>
-              <button
-                className="mt-4 px-4 py-2 bg-white text-black font-medium rounded-lg hover:bg-gray-100 transition"
-                onClick={onAddCatch}
-              >
-                Add Catch
-              </button>
+              <div className="flex items-center justify-end">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-4 w-4 text-white"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M20 12c0 3.866-3.582 7-8 7s-8-3.134-8-7 3.582-7 8-7 8 3.134 8 7zM4 12h16M9 9l3 3m0 0l3-3m-3 3V6"
+                  />
+                </svg>
+              </div>
             </div>
-            <div className="bg-white bg-opacity-25 p-3 rounded-full">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-10 w-10 text-white"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth="2"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M20 12c0 3.866-3.582 7-8 7s-8-3.134-8-7 3.582-7 8-7 8 3.134 8 7zM4 12h16M9 9l3 3m0 0l3-3m-3 3V6"
-                />
-              </svg>
-            </div>
+            <p className="text-3xl font-bold text-left">
+              {users?.catches?.length || 0}
+            </p>
+            <button
+              className="mt-4 px-4 py-1 w-full bg-white text-black font-medium rounded-lg hover:bg-gray-100 transition"
+              onClick={onAddCatch}
+            >
+              Add Catch
+            </button>
           </div>
         </div>
 
         {/* Followed Lakes */}
-        <div className="flex flex-col bg-gradient-to-r from-gray-900 to-gray-900 text-white rounded-xl shadow-md p-6 hover:shadow-lg transition-transform transform hover:scale-105">
-          <div className="flex items-center justify-between">
-            <div>
+        <div className="flex col-span-8 flex-col md:col-span-2 bg-gradient-to-r from-gray-900 to-gray-900 text-white rounded-xl shadow-md p-6 hover:shadow-lg transition-transform transform hover:scale-105">
+          <div className="flex items-start justify-between flex-col">
+            <div className="flex items-center justify-between gap-4 w-full">
               <p className="text-lg font-semibold">Followed Lakes</p>
-              <p className="text-3xl font-bold">
-                {users?.following?.length || 0}
-              </p>
-              <button
-                className="mt-4 px-4 py-2 bg-white text-black font-medium rounded-lg hover:bg-gray-100 transition"
-                onClick={setActiveTab}
-              >
-                Followed Lakes
-              </button>
+              <div className="flex items-center justify-center">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-4 w-4 text-white"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M3 16s3-3 7-3 7 3 7 3M3 12s3-3 7-3 7 3 7 3M3 8s3-3 7-3 7 3 7 3"
+                  />
+                </svg>
+              </div>
             </div>
-            <div className="bg-white bg-opacity-25 p-3 rounded-full">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-10 w-10 text-white"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth="2"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M3 16s3-3 7-3 7 3 7 3M3 12s3-3 7-3 7 3 7 3M3 8s3-3 7-3 7 3 7 3"
-                />
-              </svg>
-            </div>
+            <p className="text-3xl font-bold text-left">
+              {users?.following?.length || 0}
+            </p>
+            <button
+              className="mt-4 px-4 py-1 w-full bg-white text-black font-medium rounded-lg hover:bg-gray-100 transition"
+              onClick={setActiveTab}
+            >
+              Followed Lakes
+            </button>
           </div>
         </div>
-
-        {/* Angler Rank */}
-        {/* <div className="flex flex-col bg-gradient-to-r from-yellow-500 to-orange-500 text-white rounded-xl shadow-md p-6 hover:shadow-lg transition-transform transform hover:scale-105">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-lg font-semibold">Your Rank</p>
-              <p className="text-3xl font-bold">{anglers?.[0]?.rank || "N/A"}</p>
-            </div>
-            <div className="bg-white bg-opacity-25 p-3 rounded-full">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
-              </svg>
-            </div>
-          </div>
-        </div> */}
       </div>
 
       {isModalOpen && (
