@@ -66,10 +66,10 @@ function FollowedLakes({ setRefreshFollowedLakes }) {
       ) : (
         <div className="grid gap-4">
           {lakes.map((lake) => {
-            const caughtCount = lake.catchPosts.filter(
-              (post) => post.status === "caught"
+            const caughtCount = lake?.catchPosts?.filter(
+              (post) => post?.status === "caught"
             ).length;
-            const totalCount = lake.catchPosts.length;
+            const totalCount = lake?.catchPosts?.length;
             const caughtPercentage = (caughtCount / totalCount) * 100;
 
             return (
