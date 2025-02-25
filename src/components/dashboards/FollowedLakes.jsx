@@ -20,8 +20,8 @@ function FollowedLakes({ setRefreshFollowedLakes }) {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
-      console.log(response.data);
-      setLakes(response.data.followedLakes);
+      console.log(response?.data);
+      setLakes(response?.data?.followedLakes || []);
     } catch (error) {
       console.error("Error fetching followed lakes:", error);
     } finally {
@@ -61,28 +61,29 @@ function FollowedLakes({ setRefreshFollowedLakes }) {
     <div className=" p-6 px-0">
       {loading ? (
         <Loader />
-      ) : lakes.length === 0 ? (
+      ) : lakes?.length === 0 ? (
         <p className="text-gray-500">No lakes followed yet.</p>
       ) : (
         <div className="grid gap-4">
-          {lakes.map((lake) => {
-            const caughtCount = lake?.catchPosts?.filter(
-              (post) => post?.status === "caught"
-            ).length;
-            const totalCount = lake?.catchPosts?.length;
-            const caughtPercentage = (caughtCount / totalCount) * 100;
+          {lakes?.map((lake) => {
+            const caughtCount =
+              lake?.catchPosts?.filter((post) => post?.status === "caught")
+                ?.length || 0;
+            const totalCount = lake?.catchPosts?.length || 0;
+            const caughtPercentage =
+              totalCount > 0 ? (caughtCount / totalCount) * 100 : 0;
 
             return (
               <div
-                key={lake._id}
+                key={lake?._id}
                 className="border-[1px] shadow-2xl rounded-lg p-4 relative bg-white"
               >
                 <div className="flex justify-between items-center">
-                  <h3 className="font-semibold text-lg">{lake.name}</h3>
+                  <h3 className="font-semibold text-lg">{lake?.name}</h3>
                 </div>
 
                 <div className="flex justify-between items-center mb-4">
-                  <p className="text-gray-600">{lake.location}</p>
+                  <p className="text-gray-600">{lake?.location}</p>
                   <div className="flex items-center">
                     <span className="text-gray-600 mr-2">
                       <div className="w-32 bg-gray-200 rounded-full h-5 ">
@@ -106,25 +107,25 @@ function FollowedLakes({ setRefreshFollowedLakes }) {
 
                 <h5 className="mb-2">Fish Stock : </h5>
                 <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-5 gap-4">
-                  {lake.catchPosts
-                    .sort((a, b) => (a.status === "caught" ? -1 : 1))
-                    .map((post) => (
+                  {lake?.catchPosts
+                    ?.sort((a, b) => (a?.status === "caught" ? -1 : 1))
+                    ?.map((post) => (
                       <div
-                        key={post._id}
+                        key={post?._id}
                         className="relative bg-cover text-white bg-center rounded-lg shadow-md p-4 aspect-square group"
-                        style={{ backgroundImage: `url(${post.fish.image})` }}
+                        style={{ backgroundImage: `url(${post?.fish?.image})` }}
                       >
-                        {post.status === "caught" ? (
+                        {post?.status === "caught" ? (
                           <>
                             <div
                               className="absolute top-2 right-2 rounded-full p-1 cursor-pointer"
                               onClick={() =>
-                                handleFavourite(post._id, !post.favourite)
+                                handleFavourite(post?._id, !post?.favourite)
                               }
                             >
                               <Star
                                 className={`${
-                                  post.favourite
+                                  post?.favourite
                                     ? "text-yellow-500"
                                     : "text-white"
                                 }`}
@@ -135,9 +136,11 @@ function FollowedLakes({ setRefreshFollowedLakes }) {
                                 Caught
                               </p>
                               <p className="text-lg font-semibold">
-                                {post.fish.species}
+                                {post?.fish?.species}
                               </p>
-                              <p className="text-sm">{post.fish.weight} lbs</p>
+                              <p className="text-sm">
+                                {post?.fish?.weight} lbs
+                              </p>
                             </div>
                           </>
                         ) : (
@@ -147,9 +150,11 @@ function FollowedLakes({ setRefreshFollowedLakes }) {
                                 Uncaught
                               </p>
                               <p className="text-lg font-semibold">
-                                {post.fish.species}
+                                {post?.fish?.species}
                               </p>
-                              <p className="text-sm">{post.fish.weight} lbs</p>
+                              <p className="text-sm">
+                                {post?.fish?.weight} lbs
+                              </p>
                             </div>
                             <div className="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                               <button
