@@ -166,13 +166,13 @@ function FollowedLakes({ setRefreshFollowedLakes }) {
                     </button>
                   </div>
                 ) : (
-                  <div className="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-8 gap-1">
+                  <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-2">
                     {lake?.catchPosts
                       ?.sort((a, b) => (a?.status === "caught" ? -1 : 1))
                       ?.map((post) => (
                         <div
                           key={post?._id}
-                          className="relative bg-cover text-white bg-center rounded-lg shadow-md p-1 aspect-square group"
+                          className="relative bg-cover text-white bg-center rounded-lg shadow-md p-2 aspect-square group"
                           style={{
                             backgroundImage: `url(${post?.fish?.image})`,
                           }}
@@ -196,13 +196,13 @@ function FollowedLakes({ setRefreshFollowedLakes }) {
                                 />
                               </div>
                               <div className="absolute bottom-1.5 left-2 ">
-                                <p className="text-xs font-semibold bg-[#22c55e] rounded-lg px-1.5 py-0.5">
+                                <p className="text-xs font-semibold bg-[#22c55e] rounded-full px-2 py-1 m-auto pt-0.5">
                                   Caught
                                 </p>
-                                <p className="text-lg font-semibold">
+                                <p className="text-lg font-semibold ml-0.5">
                                   {post?.fish?.species}
                                 </p>
-                                <p className="text-xs">
+                                <p className="text-xs ml-0.5">
                                   {post?.fish?.weight} lbs
                                 </p>
                               </div>
@@ -211,19 +211,19 @@ function FollowedLakes({ setRefreshFollowedLakes }) {
                             <>
                               <div className="absolute inset-0 bg-black bg-opacity-40 rounded-lg"></div>
                               <div className="absolute top-1.5 left-1.5">
-                                <p className="text-xs font-semibold bg-[#3B82F6] rounded-lg px-1.5 py-0.5">
+                                <p className="text-xs font-semibold bg-[#3B82F6] rounded-full px-1.5 py-1 m-auto pt-0.5">
                                   Uncaught
                                 </p>
-                                <p className="text-md font-bold">
+                                <p className="text-lg font-semibold ml-0.5">
                                   {post?.fish?.species}
                                 </p>
-                                <p className="text-xs">
+                                <p className="text-xs ml-0.5">
                                   {post?.fish?.weight} lbs
                                 </p>
                               </div>
                               <div className="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                                 <button
-                                  className="bg-white text-white font-semibold bg-opacity-30 px-1 py-0.5 rounded-lg text-[10px] transition-colors"
+                                  className="bg-white text-white font-semibold bg-opacity-30 px-2 py-1.5 rounded-full text-md pt-1 transition-colors"
                                   onClick={() => setSelectedCatch(post)}
                                 >
                                   Catch Now

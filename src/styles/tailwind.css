@@ -750,6 +750,10 @@ body {
   grid-column: span 8 / span 8;
 }
 
+.m-auto {
+  margin: auto;
+}
+
 .mx-1 {
   margin-left: 0.25rem;
   margin-right: 0.25rem;
@@ -852,6 +856,14 @@ body {
 
 .mt-8 {
   margin-top: 2rem;
+}
+
+.ml-0\.5 {
+  margin-left: 0.125rem;
+}
+
+.mt-auto {
+  margin-top: auto;
 }
 
 .line-clamp-3 {
@@ -1041,6 +1053,11 @@ body {
   width: 100%;
 }
 
+.w-fit {
+  width: -webkit-fit-content;
+  width: fit-content;
+}
+
 .min-w-0 {
   min-width: 0px;
 }
@@ -1135,6 +1152,10 @@ body {
 
 .grid-cols-4 {
   grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.grid-cols-3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
 .flex-row {
@@ -1847,6 +1868,14 @@ body {
 
 .pt-8 {
   padding-top: 2rem;
+}
+
+.pt-1 {
+  padding-top: 0.25rem;
+}
+
+.pt-0\.5 {
+  padding-top: 0.125rem;
 }
 
 .text-left {
@@ -2849,6 +2878,10 @@ body {
 
   .md\:grid-cols-8 {
     grid-template-columns: repeat(8, minmax(0, 1fr));
+  }
+
+  .md\:grid-cols-6 {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
   }
 
   .md\:flex-row {

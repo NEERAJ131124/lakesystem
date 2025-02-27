@@ -9,7 +9,14 @@ import { baseUrl } from "../constants/APIs";
 import Loader from "../components/Loader";
 import l0 from "../assets/wlake.jpg";
 
-const FeatureCard = ({ icon, title, description, imageSrc }) => {
+const FeatureCard = ({
+  icon,
+  title,
+  description,
+  imageSrc,
+  buttonText,
+  buttonLink,
+}) => {
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200">
       <img src={imageSrc} alt={title} className="w-full h-48 object-cover" />
@@ -18,7 +25,15 @@ const FeatureCard = ({ icon, title, description, imageSrc }) => {
           {icon}
         </div>
         <h3 className="text-xl font-semibold text-gray-900 mb-2">{title}</h3>
-        <p className="text-gray-600">{description}</p>
+        <p className="text-gray-600 mb-4">{description}</p>
+        <div className="flex justify-end items-end">
+          <Link
+            to={buttonLink}
+            className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-carp-600 hover:bg-carp-700 transition-all duration-300 ease-in-out"
+          >
+            {buttonText}
+          </Link>
+        </div>
       </div>
     </div>
   );
@@ -142,18 +157,24 @@ const HomePage = () => {
               title="Discover New Lakes"
               description="Explore a vast network of carp fishing locations, from hidden gems to popular hotspots."
               imageSrc="/images/discover-lakes.jpg"
+              buttonText="Explore Lakes"
+              buttonLink="/lakes"
             />
             <FeatureCard
               icon={<Fish className="w-6 h-6 text-carp-600" />}
               title="View Lake Stock"
               description="Get up-to-date information on lake stocks, including species, sizes, and recent catches."
               imageSrc="/images/lake-stock.jpg"
+              buttonText="View Stock"
+              buttonLink="/lake-stock"
             />
             <FeatureCard
               icon={<Target className="w-6 h-6 text-carp-600" />}
               title="Capture Your Goals"
               description="Set personal fishing goals, track your progress, and celebrate your achievements."
               imageSrc="/images/goals.jpg"
+              buttonText="Set Goals"
+              buttonLink="/goals"
             />
           </div>
         </div>
