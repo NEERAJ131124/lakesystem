@@ -85,9 +85,7 @@ function AnglerDashboard() {
   const [loading, setLoading] = useState(true);
   const [isEditProfileOpen, setIsEditProfileOpen] = useState(false);
   const [isAddCatchOpen, setIsAddCatchOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState(
-    localStorage.getItem("activeTab") || "yourCatches"
-  );
+  const [activeTab, setActiveTab] = useState("yourCatches");
   const [visible, setVisible] = useState(true);
 
   const [lakes, setLakes] = useState([]);
@@ -95,29 +93,21 @@ function AnglerDashboard() {
   const navigate = useNavigate();
   // const [msg, setMsg] = useState(null);
   // const [index, setIndex] = useState(0);
-  const [refresshUser, setRefresshUser] = useState(false);
-  const [refreshCatches, setRefreshCatches] = useState(false);
-  const [refreshFollowedLakes, setRefreshFollowedLakes] = useState(false);
 
   const renderTabContent = () => {
     switch (activeTab) {
       case "browseLakes":
-        return <BrowseLakes setRefreshFollowedLakes={setRefreshFollowedLakes} setActiveTab={setActiveTab} />;
+        return <BrowseLakes setActiveTab={setActiveTab} />;
       case "followedLakes":
-        return <FollowedLakes setRefreshFollowedLakes={setRefreshFollowedLakes} />;
+        return <FollowedLakes />;
       case "yourCatches":
-        return <YourCatches setRefreshCatches={setRefreshCatches} />;
+        return <YourCatches />;
       case "topCatches":
         return <TopCatches />;
       default:
         return null;
     }
   };
-
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [refresshUser, refreshCatches, refreshFollowedLakes]);
-
 
   useEffect(() => {
     const fetchRecentLakes = async () => {
@@ -140,10 +130,6 @@ function AnglerDashboard() {
 
     fetchRecentLakes();
   }, []);
-
-  useEffect(() => {
-    localStorage.setItem("activeTab", activeTab);
-  }, [activeTab]);
 
   const handleViewNewLakes = () => {
     navigate("/new-lakes");
@@ -195,9 +181,6 @@ function AnglerDashboard() {
               onEditProfile={() => setIsEditProfileOpen(true)}
               onAddCatch={() => setIsAddCatchOpen(true)}
               setActiveTab={() => setActiveTab("followedLakes")}
-              refresshUser={refresshUser}
-              refreshCatches={refreshCatches}
-              refreshFollowedLakes={refreshFollowedLakes}
             />
           </div>
 
@@ -207,10 +190,11 @@ function AnglerDashboard() {
                 <button
                   key={tab.id}
                   className={`flex flex-col sm:flex-row items-center sm:gap-2 px-4 py-2 rounded-lg transition duration-300
-              ${activeTab === tab.id
-                      ? "bg-blue-600 text-white shadow-md"
-                      : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                    }`}
+              ${
+                activeTab === tab.id
+                  ? "bg-blue-600 text-white shadow-md"
+                  : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+              }`}
                   onClick={() => setActiveTab(tab.id)}
                 >
                   <span>{tab.icon}</span>
@@ -267,7 +251,6 @@ function AnglerDashboard() {
             isOpen={isEditProfileOpen}
             onClose={() => setIsEditProfileOpen(false)}
             setLoading={setLoading}
-            setRefresshUser={setRefresshUser}
           />
           <AddCatch
             isOpen={isAddCatchOpen}

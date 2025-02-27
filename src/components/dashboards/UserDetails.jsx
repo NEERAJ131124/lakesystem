@@ -4,6 +4,7 @@ import { useAuth } from "../contexts/AuthContext";
 import { baseUrl } from "../../constants/APIs";
 import Cropper from "react-easy-crop";
 import getCroppedImg from "../../utils/cropImage";
+import { Fish, Mountain } from "lucide-react";
 
 function UserDetails({
   onEditProfile,
@@ -158,20 +159,7 @@ function UserDetails({
             <div className="flex items-center justify-between gap-4 w-full">
               <p className="text-lg font-semibold">Total Catches</p>
               <div className="flex items-center justify-end">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-4 w-4 text-white"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M20 12c0 3.866-3.582 7-8 7s-8-3.134-8-7 3.582-7 8-7 8 3.134 8 7zM4 12h16M9 9l3 3m0 0l3-3m-3 3V6"
-                  />
-                </svg>
+                <Fish className="h-8 w-8 text-white" />
               </div>
             </div>
             <p className="text-3xl font-bold text-left">
@@ -192,20 +180,7 @@ function UserDetails({
             <div className="flex items-center justify-between gap-4 w-full">
               <p className="text-lg font-semibold">Followed Lakes</p>
               <div className="flex items-center justify-center">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-4 w-4 text-white"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M3 16s3-3 7-3 7 3 7 3M3 12s3-3 7-3 7 3 7 3M3 8s3-3 7-3 7 3 7 3"
-                  />
-                </svg>
+                <Mountain className="h-8 w-8 text-white" />
               </div>
             </div>
             <p className="text-3xl font-bold text-left">

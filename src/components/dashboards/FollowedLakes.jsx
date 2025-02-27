@@ -85,10 +85,6 @@ function FollowedLakes({ setRefreshFollowedLakes }) {
               >
                 <div className="flex justify-between items-center">
                   <h3 className="font-semibold text-lg">{lake?.name}</h3>
-                </div>
-
-                <div className="flex justify-between items-center mb-4">
-                  <p className="text-gray-600">{lake?.location}</p>
                   <div className="flex items-center">
                     <span className="text-gray-600 mr-2">
                       <div className="w-32 bg-gray-200 rounded-full h-5 ">
@@ -108,6 +104,29 @@ function FollowedLakes({ setRefreshFollowedLakes }) {
                       </span>
                     </div>
                   </div>
+                </div>
+
+                <div className="flex justify-between items-center mb-4">
+                  {/* <p className="text-gray-600">{lake?.location}</p> */}
+                  {/* <div className="flex items-center">
+                    <span className="text-gray-600 mr-2">
+                      <div className="w-32 bg-gray-200 rounded-full h-5 ">
+                        <div
+                          className="bg-green-500 h-5 rounded-full"
+                          style={{ width: `${caughtPercentage}%` }}
+                        ></div>
+                      </div>
+                    </span>
+                    <div className="flex items-center">
+                      <span className="text-green-500 font-semibold">
+                        {caughtCount}
+                      </span>
+                      <span className="text-gray-500 mx-1">/</span>
+                      <span className="text-gray-500 font-semibold">
+                        {totalCount}
+                      </span>
+                    </div>
+                  </div> */}
                 </div>
 
                 <h5 className="mb-2">Fish Stock : </h5>
