@@ -80,7 +80,7 @@ function BrowseLakes({ setRefreshFollowedLakes, setActiveTab }) {
       ) : lakes.length === 0 ? (
         <p className="text-gray-500">No lakes available.</p>
       ) : (
-        <div className="grid gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {lakes.map((lake) => (
             <div
               key={lake._id}
@@ -89,7 +89,7 @@ function BrowseLakes({ setRefreshFollowedLakes, setActiveTab }) {
               <img
                 src={lake.image || l0}
                 alt={lake.name}
-                className="w-full h-48 object-fill rounded-lg mb-4"
+                className="w-full h-72 object-fill rounded-lg mb-4"
               />
               <h3 className="font-semibold text-lg mb-4">{lake.name}</h3>
 
@@ -138,13 +138,21 @@ function BrowseLakes({ setRefreshFollowedLakes, setActiveTab }) {
 
                 <div className="flex flex-col col-span-2">
                   <span className="font-medium text-gray-700">Description</span>
-                  <span className="text-gray-600">{lake.description}</span>
+                  <span className="text-gray-600 line-clamp-3 hover:line-clamp-none">
+                    {lake.description}
+                  </span>
                 </div>
               </div>
 
-              <div className="flex flex-col items-end">
+              <div className="flex justify-between w-full mt-4">
                 <button
-                  className="mt-4 px-4 py-2 bg-[#ae7a31] text-white rounded hover:bg-blue-600  bottom-4 right-4"
+                  className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+                  onClick={() => navigate(`/fish-stock/${lake._id}`)}
+                >
+                  See Stock
+                </button>
+                <button
+                  className="px-4 py-2 bg-[#ae7a31] text-white rounded hover:bg-blue-600"
                   onClick={() => {
                     handleFollowLake(
                       lake._id,
@@ -156,12 +164,6 @@ function BrowseLakes({ setRefreshFollowedLakes, setActiveTab }) {
                   }}
                 >
                   Add to Profile
-                </button>
-                <button
-                  className="mt-2 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
-                  onClick={() => navigate(`/fish-stock/${lake._id}`)}
-                >
-                  See Stock
                 </button>
                 {/* <button
                   className="mt-2 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"

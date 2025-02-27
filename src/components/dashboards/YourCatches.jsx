@@ -124,7 +124,7 @@ function YourCatches({ setRefreshCatches }) {
           {catches?.map((fish) => (
             <div
               key={fish._id}
-              className="bg-white border rounded-lg p-6 shadow-2xl border-[1px] border-[#ae7a31] relative max-w-full overflow-hidden"
+              className="bg-white border rounded-lg p-4 shadow-2xl border-[1px] border-[#ae7a31] relative max-w-full overflow-hidden pb-4"
             >
               {/* Post Header */}
               <div className="flex items-center justify-between mb-4">
@@ -195,7 +195,7 @@ function YourCatches({ setRefreshCatches }) {
                   <img
                     src={fish.fish.image}
                     alt={fish.fish.species}
-                    className="w-full h-96 object-fill rounded-lg max-w-full"
+                    className="w-full h-48 object-fill rounded-lg max-w-full"
                   />
                 </div>
               )}
@@ -206,7 +206,7 @@ function YourCatches({ setRefreshCatches }) {
               </p>
 
               {/* Fish Details */}
-              <div className="bg-gray-50 p-4 rounded-lg mb-4">
+              <div className="bg-gray-50 p-4 rounded-lg pb-0">
                 <h3 className="font-semibold text-lg mb-2">
                   {fish.fish.species}
                 </h3>
