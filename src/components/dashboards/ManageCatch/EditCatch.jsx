@@ -18,9 +18,11 @@ function EditCatch({
   const [lakes, setLakes] = useState([]);
   const [updatedCatch, setUpdatedCatch] = useState({
     species: catchData.fish.species,
+    fishName: catchData.fish.name || "",
     weight: catchData.fish.weight,
+    status: catchData.status || "caught",
     // length: catchData.fish.length,
-    photo: null,
+    photo: catchData.fish.image || null,
     lake: catchData.lake._id,
     description: catchData.description,
     taggedUsers: catchData.taggedUsers.join(", "),
@@ -107,9 +109,11 @@ function EditCatch({
 
     const formData = new FormData();
     formData.append("species", updatedCatch.species);
+    formData.append("name", updatedCatch.fishName);
     formData.append("weight", updatedCatch.weight);
+    formData.append("status", updatedCatch.status);
     // formData.append("length", updatedCatch.length);
-    if (updatedCatch.photo) {
+    if (updatedCatch.photo && typeof updatedCatch.photo !== "string") {
       formData.append("image", updatedCatch.photo);
     }
     formData.append("lake", updatedCatch.lake);
@@ -147,7 +151,12 @@ function EditCatch({
     { label: "Ghosty", value: "Ghosty" },
     { label: "Koi", value: "Koi" },
     { label: "Cat fish", value: "Cat fish" },
-    { label: "Other", value: "Other" }
+    { label: "Other", value: "Other" },
+  ];
+
+  const statusOptions = [
+    { label: "Caught", value: "caught" },
+    { label: "Uncaught", value: "uncaught" },
   ];
 
   return (
@@ -156,9 +165,11 @@ function EditCatch({
         <h2 className="text-xl font-semibold text-gray-900 mb-4">Edit Catch</h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-
             <div className="mb-4">
-              <label htmlFor="species" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="species"
+                className="block text-sm font-medium text-gray-700"
+              >
                 Fish Species
               </label>
               <select
@@ -167,8 +178,9 @@ function EditCatch({
                 value={updatedCatch.species}
                 onChange={handleInputChange}
                 required
-                className={`p-2 border w-full rounded-md text-base ${errors.species ? "border-red-500" : "border-gray-300"
-                  }`}
+                className={`p-2 border w-full rounded-md text-base ${
+                  errors.species ? "border-red-500" : "border-gray-300"
+                }`}
               >
                 <option value="">Select a species</option>
                 {fishSpecies.map((species) => (
@@ -182,27 +194,57 @@ function EditCatch({
                 <span className="text-red-500 text-sm">{errors.species}</span>
               )}
             </div>
+
             {/* <div className="mb-4">
               <label
-                htmlFor="species"
+                htmlFor="fishName"
                 className="block text-sm font-medium text-gray-700"
               >
-                Fish Species
+                Fish Name
               </label>
               <input
                 type="text"
-                id="species"
-                name="species"
-                value={updatedCatch.species}
+                id="fishName"
+                name="fishName"
+                value={updatedCatch.fishName}
                 onChange={handleInputChange}
-                required
-                className={`p-2 border w-full rounded-md text-base ${errors.species ? "border-red-500" : "border-gray-300"
-                  }`}
+                className={`p-2 w-full border rounded-md text-base ${
+                  errors.fishName ? "border-red-500" : "border-gray-300"
+                }`}
+                maxLength={50}
               />
-              {errors.species && (
-                <span className="text-red-500 text-sm">{errors.species}</span>
+              {errors.fishName && (
+                <span className="text-red-500 text-sm">{errors.fishName}</span>
               )}
             </div> */}
+
+            <div className="mb-4">
+              <label
+                htmlFor="status"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Status
+              </label>
+              <select
+                id="status"
+                name="status"
+                value={updatedCatch.status}
+                onChange={handleInputChange}
+                required
+                className={`p-2 border w-full rounded-md text-base ${
+                  errors.status ? "border-red-500" : "border-gray-300"
+                }`}
+              >
+                {statusOptions.map((status) => (
+                  <option key={status.value} value={status.value}>
+                    {status.label}
+                  </option>
+                ))}
+              </select>
+              {errors.status && (
+                <span className="text-red-500 text-sm">{errors.status}</span>
+              )}
+            </div>
 
             <div className="mb-4">
               <label
@@ -219,8 +261,9 @@ function EditCatch({
                 value={updatedCatch.weight}
                 onChange={handleInputChange}
                 required
-                className={`p-2 w-full border rounded-md text-base ${errors.weight ? "border-red-500" : "border-gray-300"
-                  }`}
+                className={`p-2 w-full border rounded-md text-base ${
+                  errors.weight ? "border-red-500" : "border-gray-300"
+                }`}
               />
               {errors.weight && (
                 <span className="text-red-500 text-sm">{errors.weight}</span>
@@ -265,8 +308,9 @@ function EditCatch({
                   value={updatedCatch.lake}
                   onChange={handleInputChange}
                   required
-                  className={`p-2 border w-full rounded-md text-base ${errors.lake ? "border-red-500" : "border-gray-300"
-                    }`}
+                  className={`p-2 border w-full rounded-md text-base ${
+                    errors.lake ? "border-red-500" : "border-gray-300"
+                  }`}
                 >
                   <option value="">Select a lake</option>
                   {lakes.map((lake) => (
@@ -310,11 +354,19 @@ function EditCatch({
                 name="photo"
                 onChange={handleFileChange}
                 accept="image/*"
-                className={`p-2 w-full border rounded-md text-base ${errors.photo ? "border-red-500" : "border-gray-300"
-                  }`}
+                className={`p-2 w-full border rounded-md text-base ${
+                  errors.photo ? "border-red-500" : "border-gray-300"
+                }`}
               />
               {errors.photo && (
                 <span className="text-red-500 text-sm">{errors.photo}</span>
+              )}
+              {updatedCatch.photo && typeof updatedCatch.photo === "string" && (
+                <img
+                  src={updatedCatch.photo}
+                  alt="Catch"
+                  className="mt-4 w-full h-48 object-cover rounded-lg"
+                />
               )}
             </div>
 
@@ -331,8 +383,9 @@ function EditCatch({
                 value={updatedCatch.description}
                 onChange={handleInputChange}
                 rows={3}
-                className={`p-2 border w-full rounded-md text-base ${errors.description ? "border-red-500" : "border-gray-300"
-                  }`}
+                className={`p-2 border w-full rounded-md text-base ${
+                  errors.description ? "border-red-500" : "border-gray-300"
+                }`}
               />
               {errors.description && (
                 <span className="text-red-500 text-sm">
@@ -384,8 +437,8 @@ function EditCatch({
           <div className="flex flex-row gap-3 w-full">
             <button
               type="button"
-              onClick={() =>
-                onClose()
+              onClick={
+                () => onClose()
                 // setUpdatedCatch({
                 //   species: catchData.fish.species,
                 //   weight: catchData.fish.weight,

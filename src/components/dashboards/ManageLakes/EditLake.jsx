@@ -64,11 +64,6 @@ export default function EditLake() {
       return false;
     }
 
-    if (!lake.description.trim()) {
-      toast.error("Description is required");
-      return false;
-    }
-
     if (!lake.currentStock || lake.currentStock < 0) {
       toast.error("Current stock must be a positive number");
       return false;
@@ -171,7 +166,7 @@ export default function EditLake() {
       toast.dismiss(loadingToast);
       toast.error(
         error.response?.data?.message ||
-        "Failed to update lake. Please try again."
+          "Failed to update lake. Please try again."
       );
     } finally {
       setIsSubmitting(false);
@@ -286,7 +281,7 @@ export default function EditLake() {
               htmlFor="description"
               className="block text-sm font-medium text-gray-700"
             >
-              Description
+              Description (Optional)
             </label>
             <textarea
               id="description"
@@ -294,7 +289,6 @@ export default function EditLake() {
               value={lake.description}
               onChange={handleInputChange}
               rows={4}
-              required
               maxLength={500}
               className="mt-1 block w-full rounded-md border-2 border-[#ae7a31] py-2 px-3 shadow-sm focus:border-[#ae7a31] focus:outline-none focus:ring-[#ae7a31] sm:text-sm"
             />

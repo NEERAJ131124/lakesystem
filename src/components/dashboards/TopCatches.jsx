@@ -96,7 +96,7 @@ function TopCatches() {
                     className="text-yellow-500 hover:text-yellow-600"
                     onClick={() => handleFavourite(fish._id, false)}
                   >
-                    <Star className="h-5 w-5" />
+                    <Star className="h-5 w-5 fill-yellow-500" />
                   </button>
                 </div>
               </div>

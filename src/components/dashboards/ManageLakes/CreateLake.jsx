@@ -35,12 +35,6 @@ function CreateLake() {
       tempErrors.name = "Lake name must be at least 3 characters";
     }
 
-    if (!newLake.description.trim()) {
-      tempErrors.description = "Description is required";
-    } else if (newLake.description.length < 20) {
-      tempErrors.description = "Description must be at least 20 characters";
-    }
-
     if (!newLake.location.trim() || newLake.location.length > 50) {
       tempErrors.location = "Location is required";
     }
@@ -174,7 +168,7 @@ function CreateLake() {
       console.error("Error details:", error.response || error);
       toast.error(
         error.response?.data?.message ||
-        "Error creating lake. Please try again."
+          "Error creating lake. Please try again."
       );
     } finally {
       setIsSubmitting(false);
@@ -213,10 +207,11 @@ function CreateLake() {
               minLength={3}
               maxLength={100}
               className={`w-full rounded-xl border bg-white py-3 px-5 text-gray-800 text-lg shadow-md focus:ring-2 focus:outline-none transition duration-200 ease-in-out 
-              ${errors.name
+              ${
+                errors.name
                   ? "border-red-500 focus:ring-red-500"
                   : "border-gray-300 focus:ring-[#ae7a31] focus:border-[#ae7a31]"
-                }
+              }
             `}
               placeholder="Lake Name"
             />
@@ -241,10 +236,11 @@ function CreateLake() {
               onChange={handleInputChange}
               required
               className={`w-full rounded-xl border bg-white py-3 px-5 text-gray-800 text-lg shadow-md focus:ring-2 focus:outline-none transition duration-200 ease-in-out 
-              ${errors.location
+              ${
+                errors.location
                   ? "border-red-500 focus:ring-red-500"
                   : "border-gray-300 focus:ring-[#ae7a31] focus:border-[#ae7a31]"
-                }
+              }
             `}
               placeholder="Location"
             />
@@ -278,10 +274,11 @@ function CreateLake() {
                 }
               }}
               className={`w-full rounded-xl border bg-white py-3 px-5 text-gray-800 text-lg shadow-md focus:ring-2 focus:outline-none transition duration-200 ease-in-out 
-            ${errors.currentStock
-                  ? "border-red-500 focus:ring-red-500"
-                  : "border-gray-300 focus:ring-[#ae7a31] focus:border-[#ae7a31]"
-                }
+            ${
+              errors.currentStock
+                ? "border-red-500 focus:ring-red-500"
+                : "border-gray-300 focus:ring-[#ae7a31] focus:border-[#ae7a31]"
+            }
           `}
               placeholder="Current Stock"
             />
@@ -314,10 +311,11 @@ function CreateLake() {
               }}
               required
               className={`w-full rounded-xl border bg-white py-3 px-5 text-gray-800 text-lg shadow-md focus:ring-2 focus:outline-none transition duration-200 ease-in-out 
-            ${errors.maxWeight
-                  ? "border-red-500 focus:ring-red-500"
-                  : "border-gray-300 focus:ring-[#ae7a31] focus:border-[#ae7a31]"
-                }
+            ${
+              errors.maxWeight
+                ? "border-red-500 focus:ring-red-500"
+                : "border-gray-300 focus:ring-[#ae7a31] focus:border-[#ae7a31]"
+            }
           `}
               placeholder="Maximum Weight (lbs)"
             />
@@ -356,7 +354,7 @@ function CreateLake() {
               htmlFor="description"
               className="block text-sm font-medium text-gray-700 mb-2"
             >
-              Description
+              Description (Optional)
             </label>
             <textarea
               id="description"
@@ -364,14 +362,13 @@ function CreateLake() {
               value={newLake.description}
               onChange={handleInputChange}
               rows={3}
-              required
-              minLength={20}
               maxLength={500}
               className={`w-full rounded-xl border bg-white py-3 px-5 text-gray-800 text-lg shadow-md focus:ring-2 focus:outline-none transition duration-200 ease-in-out 
-              ${errors.description
+              ${
+                errors.description
                   ? "border-red-500 focus:ring-red-500"
                   : "border-gray-300 focus:ring-[#ae7a31] focus:border-[#ae7a31]"
-                }`}
+              }`}
               placeholder="Description"
             />
             {errors.description && (
@@ -385,10 +382,11 @@ function CreateLake() {
             </label>
             <div
               className={`bg-white p-5 rounded-xl border shadow-md grid grid-cols-2 md:grid-cols-4 gap-4 
-              ${errors.fishTypes
+              ${
+                errors.fishTypes
                   ? "border-red-500 focus:ring-red-500"
                   : "border-gray-300 focus:ring-[#ae7a31] focus:border-[#ae7a31]"
-                }
+              }
             `}
             >
               {fishTypeOptions.map((type) => (
@@ -435,10 +433,11 @@ function CreateLake() {
               {/* Custom Button */}
               <label
                 htmlFor="image"
-                className={`cursor-pointer bg-[#ae7a31] py-2 px-5 text-white text-md rounded-md shadow-md flex items-center space-x-2 transition-all duration-200 ease-in-out hover:bg-[#945f26] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#ae7a31] ${errors.image
-                  ? "border border-red-500"
-                  : "border border-transparent"
-                  }`}
+                className={`cursor-pointer bg-[#ae7a31] py-2 px-5 text-white text-md rounded-md shadow-md flex items-center space-x-2 transition-all duration-200 ease-in-out hover:bg-[#945f26] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#ae7a31] ${
+                  errors.image
+                    ? "border border-red-500"
+                    : "border border-transparent"
+                }`}
               >
                 <PlusCircle className="h-6 w-6" />
                 <span>Upload Image</span>

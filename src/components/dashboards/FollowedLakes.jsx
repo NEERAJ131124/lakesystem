@@ -6,10 +6,12 @@ import Loader from "../Loader";
 import { Star } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import EditCatch from "./ManageCatch/EditCatch";
 
 function FollowedLakes({ setRefreshFollowedLakes }) {
   const [lakes, setLakes] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [selectedCatch, setSelectedCatch] = useState(null);
   const navigate = useNavigate();
 
   const fetchFollowedLakes = useCallback(async () => {
@@ -106,60 +108,61 @@ function FollowedLakes({ setRefreshFollowedLakes }) {
                 </div>
 
                 <h5 className="mb-2">Fish Stock : </h5>
-                <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-5 gap-4">
+                <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-2">
                   {lake?.catchPosts
                     ?.sort((a, b) => (a?.status === "caught" ? -1 : 1))
                     ?.map((post) => (
                       <div
                         key={post?._id}
-                        className="relative bg-cover text-white bg-center rounded-lg shadow-md p-4 aspect-square group"
+                        className="relative bg-cover text-white bg-center rounded-lg shadow-md p-2 aspect-square group"
                         style={{ backgroundImage: `url(${post?.fish?.image})` }}
                       >
                         {post?.status === "caught" ? (
                           <>
                             <div
-                              className="absolute top-2 right-2 rounded-full p-1 cursor-pointer"
+                              className="absolute top-1 right-1 rounded-full p-0.5 cursor-pointer"
                               onClick={() =>
                                 handleFavourite(post?._id, !post?.favourite)
                               }
                             >
                               <Star
+                                size={16}
                                 className={`${
                                   post?.favourite
-                                    ? "text-yellow-500"
+                                    ? "text-yellow-500 fill-yellow-500"
                                     : "text-white"
                                 }`}
                               />
                             </div>
-                            <div className="absolute bottom-2 left-2">
-                              <p className="text-sm font-semibold bg-[#22c55e] rounded-lg px-2 py-1">
+                            <div className="absolute bottom-1 left-1">
+                              <p className="text-xs font-semibold bg-[#22c55e] rounded-lg px-1 py-0.5">
                                 Caught
                               </p>
-                              <p className="text-lg font-semibold">
+                              <p className="text-sm font-semibold">
                                 {post?.fish?.species}
                               </p>
-                              <p className="text-sm">
+                              <p className="text-xs">
                                 {post?.fish?.weight} lbs
                               </p>
                             </div>
                           </>
                         ) : (
                           <>
-                            <div className="absolute top-2 left-2">
-                              <p className="text-sm font-semibold bg-[#3B82F6] rounded-lg px-2 py-1">
+                            <div className="absolute top-1 left-1">
+                              <p className="text-xs font-semibold bg-[#3B82F6] rounded-lg px-1 py-0.5">
                                 Uncaught
                               </p>
-                              <p className="text-lg font-semibold">
+                              <p className="text-sm font-semibold">
                                 {post?.fish?.species}
                               </p>
-                              <p className="text-sm">
+                              <p className="text-xs">
                                 {post?.fish?.weight} lbs
                               </p>
                             </div>
                             <div className="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                               <button
-                                className="bg-white text-white font-semibold bg-opacity-30 px-3 py-1 rounded-lg text-lg transition-colors"
-                                onClick={() => console.log("button clicked")}
+                                className="bg-white text-white font-semibold bg-opacity-30 px-2 py-0.5 rounded-lg text-sm transition-colors"
+                                onClick={() => setSelectedCatch(post)}
                               >
                                 Catch
                               </button>
@@ -179,6 +182,16 @@ function FollowedLakes({ setRefreshFollowedLakes }) {
             );
           })}
         </div>
+      )}
+      {selectedCatch && (
+        <EditCatch
+          catchData={selectedCatch}
+          onClose={() => setSelectedCatch(null)}
+          onSave={fetchFollowedLakes}
+          isOpen={!!selectedCatch}
+          setLoading={setLoading}
+          onCatchUpdated={fetchFollowedLakes}
+        />
       )}
     </div>
   );
