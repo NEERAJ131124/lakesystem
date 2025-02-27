@@ -181,7 +181,7 @@ function FollowedLakes({ setRefreshFollowedLakes }) {
                             <>
                               <div className="absolute inset-0 bg-black bg-opacity-40 rounded-lg"></div>
                               <div
-                                className="absolute top-0.5 right-0.5 rounded-full p-0.5 cursor-pointer"
+                                className="absolute top-0.5 right-0.5 rounded-full p-2 cursor-pointer"
                                 onClick={() =>
                                   handleFavourite(post?._id, !post?.favourite)
                                 }
@@ -195,28 +195,28 @@ function FollowedLakes({ setRefreshFollowedLakes }) {
                                   }`}
                                 />
                               </div>
-                              <div className="absolute bottom-0.5 left-0.5">
-                                <p className="text-md font-semibold bg-[#22c55e] rounded-lg px-0.5 py-0.5">
+                              <div className="absolute bottom-1.5 left-2 ">
+                                <p className="text-xs font-semibold bg-[#22c55e] rounded-lg px-1.5 py-0.5">
                                   Caught
                                 </p>
                                 <p className="text-lg font-semibold">
                                   {post?.fish?.species}
                                 </p>
-                                <p className="text-md">
+                                <p className="text-xs">
                                   {post?.fish?.weight} lbs
                                 </p>
                               </div>
                             </>
                           ) : (
                             <>
-                              <div className="absolute top-0.5 left-0.5">
-                                <p className="text-md font-semibold bg-[#3B82F6] rounded-lg px-0.5 py-0.5">
+                              <div className="absolute top-1.5 left-1.5">
+                                <p className="text-xs font-semibold bg-[#3B82F6] rounded-lg px-1.5 py-0.5">
                                   Uncaught
                                 </p>
                                 <p className="text-lg font-semibold">
                                   {post?.fish?.species}
                                 </p>
-                                <p className="text-md">
+                                <p className="text-xs">
                                   {post?.fish?.weight} lbs
                                 </p>
                               </div>
