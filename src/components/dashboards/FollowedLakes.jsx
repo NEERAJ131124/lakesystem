@@ -3,7 +3,7 @@ import axios from "axios";
 import { baseUrl } from "../../constants/APIs";
 import { handleFollowLake } from "../contexts/Methods";
 import Loader from "../Loader";
-import { Star } from "lucide-react";
+import { Star, Trash2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import EditCatch from "./ManageCatch/EditCatch";
@@ -62,6 +62,22 @@ function FollowedLakes({ setRefreshFollowedLakes }) {
     }
   };
 
+  const handleUnfollowLake = async (lakeId) => {
+    try {
+      await handleFollowLake(
+        lakeId,
+        false,
+        setLoading,
+        fetchFollowedLakes,
+        setRefreshFollowedLakes
+      );
+      // toast.success("Lake removed from followed lakes.");
+    } catch (error) {
+      console.error("Error unfollowing lake:", error);
+      toast.error("Failed to unfollow lake.");
+    }
+  };
+
   return (
     <div className=" p-6 px-0">
       {loading ? (
@@ -103,6 +119,12 @@ function FollowedLakes({ setRefreshFollowedLakes }) {
                         {totalCount}
                       </span>
                     </div>
+                    <button
+                      className="ml-4 text-red-500 hover:text-red-700"
+                      onClick={() => handleUnfollowLake(lake._id)}
+                    >
+                      <Trash2 className="h-5 w-5" />
+                    </button>
                   </div>
                 </div>
 

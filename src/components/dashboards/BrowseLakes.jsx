@@ -43,7 +43,7 @@ function BrowseLakes({ setRefreshFollowedLakes, setActiveTab }) {
       const response = await axios.get(`${baseUrl}/api/lakes/all`);
       const filteredLakes = response.data
         .filter((lake) => !user.following.includes(lake._id))
-        .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));;
+        .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
       setLakes(filteredLakes);
     } catch (error) {
       console.error("Error fetching lakes:", error);
@@ -146,18 +146,20 @@ function BrowseLakes({ setRefreshFollowedLakes, setActiveTab }) {
                 <button
                   className="mt-4 px-4 py-2 bg-[#ae7a31] text-white rounded hover:bg-blue-600  bottom-4 right-4"
                   onClick={() => {
-                    handleFollowLake(lake._id, true, setLoading, handleFollow, setRefreshFollowedLakes);
+                    handleFollowLake(
+                      lake._id,
+                      true,
+                      setLoading,
+                      handleFollow,
+                      setRefreshFollowedLakes
+                    );
                   }}
                 >
                   Add to Profile
                 </button>
                 <button
                   className="mt-2 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
-                  onClick={() =>
-                    navigate(
-                      `/fish-stock/${lake._id}`
-                    )
-                  }
+                  onClick={() => navigate(`/fish-stock/${lake._id}`)}
                 >
                   See Stock
                 </button>
