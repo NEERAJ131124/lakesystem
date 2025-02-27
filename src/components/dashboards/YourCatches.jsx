@@ -189,11 +189,6 @@ function YourCatches({ setRefreshCatches }) {
                 {fish?.lake?.name}, {fish?.lake?.location}
               </div>
 
-              {/* Description */}
-              <p className="w-full mb-4 max-w-full break-words">
-                {fish.description}
-              </p>
-
               {/* Fish Image */}
               {fish.fish.image && (
                 <div className="mb-4">
@@ -204,6 +199,11 @@ function YourCatches({ setRefreshCatches }) {
                   />
                 </div>
               )}
+
+              {/* Description */}
+              <p className="w-full mb-4 max-w-full break-words line-clamp-3 hover:line-clamp-none transition-all duration-300">
+                {fish.description}
+              </p>
 
               {/* Fish Details */}
               <div className="bg-gray-50 p-4 rounded-lg mb-4">

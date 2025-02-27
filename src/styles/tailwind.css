@@ -2242,6 +2242,13 @@ body {
   }
 }
 
+.hover\:line-clamp-none:hover {
+  overflow: visible;
+  display: block;
+  -webkit-box-orient: horizontal;
+  -webkit-line-clamp: none;
+}
+
 .hover\:scale-105:hover {
   --tw-scale-x: 1.05;
   --tw-scale-y: 1.05;
