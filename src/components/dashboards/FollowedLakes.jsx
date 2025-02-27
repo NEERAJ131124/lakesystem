@@ -187,7 +187,7 @@ function FollowedLakes({ setRefreshFollowedLakes }) {
                                 }
                               >
                                 <Star
-                                  size={24}
+                                  size={20}
                                   className={`${
                                     post?.favourite
                                       ? "text-yellow-500 fill-yellow-500"
@@ -209,11 +209,12 @@ function FollowedLakes({ setRefreshFollowedLakes }) {
                             </>
                           ) : (
                             <>
+                              <div className="absolute inset-0 bg-black bg-opacity-40 rounded-lg"></div>
                               <div className="absolute top-1.5 left-1.5">
                                 <p className="text-xs font-semibold bg-[#3B82F6] rounded-lg px-1.5 py-0.5">
                                   Uncaught
                                 </p>
-                                <p className="text-lg font-semibold">
+                                <p className="text-md font-bold">
                                   {post?.fish?.species}
                                 </p>
                                 <p className="text-xs">
@@ -225,7 +226,7 @@ function FollowedLakes({ setRefreshFollowedLakes }) {
                                   className="bg-white text-white font-semibold bg-opacity-30 px-1 py-0.5 rounded-lg text-[10px] transition-colors"
                                   onClick={() => setSelectedCatch(post)}
                                 >
-                                  Catch
+                                  Catch Now
                                 </button>
                               </div>
                             </>
