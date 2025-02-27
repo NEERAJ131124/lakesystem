@@ -412,7 +412,7 @@ function CreateLake() {
           <div className="col-span-12">
             {/* Label */}
             <label
-              htmlFor="image"
+              htmlFor="image-label"
               className="block text-lg font-semibold text-gray-800 mb-2"
             >
               Lake Image (Add Your Lake Image here)
@@ -455,7 +455,7 @@ function CreateLake() {
                 <img
                   src={previewImage}
                   alt="Preview"
-                  className="h-32 w-32 md:h-40 md:w-40 rounded-xl shadow-md border border-gray-300 object-contain"
+                  className="h-32 w-full md:h-40 max-w-lg rounded-xl shadow-md border border-gray-300 object-fill"
                 />
               </div>
             )}

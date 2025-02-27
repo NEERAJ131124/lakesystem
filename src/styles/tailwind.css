@@ -650,8 +650,8 @@ body {
   bottom: 0px;
 }
 
-.bottom-0\.5 {
-  bottom: 0.125rem;
+.bottom-1\.5 {
+  bottom: 0.375rem;
 }
 
 .bottom-4 {
@@ -662,8 +662,12 @@ body {
   left: 0px;
 }
 
-.left-0\.5 {
-  left: 0.125rem;
+.left-1\.5 {
+  left: 0.375rem;
+}
+
+.left-2 {
+  left: 0.5rem;
 }
 
 .right-0 {
@@ -690,6 +694,10 @@ body {
   top: 0.125rem;
 }
 
+.top-1\.5 {
+  top: 0.375rem;
+}
+
 .top-1\/2 {
   top: 50%;
 }
@@ -700,22 +708,6 @@ body {
 
 .top-20 {
   top: 5rem;
-}
-
-.bottom-1\.5 {
-  bottom: 0.375rem;
-}
-
-.left-1\.5 {
-  left: 0.375rem;
-}
-
-.top-1\.5 {
-  top: 0.375rem;
-}
-
-.left-2 {
-  left: 0.5rem;
 }
 
 .z-10 {
@@ -802,6 +794,10 @@ body {
   margin-bottom: 2rem;
 }
 
+.ml-0\.5 {
+  margin-left: 0.125rem;
+}
+
 .ml-2 {
   margin-left: 0.5rem;
 }
@@ -856,14 +852,6 @@ body {
 
 .mt-8 {
   margin-top: 2rem;
-}
-
-.ml-0\.5 {
-  margin-left: 0.125rem;
-}
-
-.mt-auto {
-  margin-top: auto;
 }
 
 .line-clamp-3 {
@@ -1053,11 +1041,6 @@ body {
   width: 100%;
 }
 
-.w-fit {
-  width: -webkit-fit-content;
-  width: fit-content;
-}
-
 .min-w-0 {
   min-width: 0px;
 }
@@ -1102,6 +1085,10 @@ body {
   max-width: 20rem;
 }
 
+.max-w-lg {
+  max-width: 32rem;
+}
+
 .flex-1 {
   flex: 1 1 0%;
 }
@@ -1137,6 +1124,10 @@ body {
   cursor: pointer;
 }
 
+.cursor-not-allowed {
+  cursor: not-allowed;
+}
+
 .appearance-none {
   -webkit-appearance: none;
           appearance: none;
@@ -1148,10 +1139,6 @@ body {
 
 .grid-cols-2 {
   grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-
-.grid-cols-4 {
-  grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
 .grid-cols-3 {
@@ -1200,10 +1187,6 @@ body {
 
 .justify-around {
   justify-content: space-around;
-}
-
-.gap-1 {
-  gap: 0.25rem;
 }
 
 .gap-2 {
@@ -1570,6 +1553,11 @@ body {
   background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
 }
 
+.bg-gray-400 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(156 163 175 / var(--tw-bg-opacity, 1));
+}
+
 .bg-opacity-0 {
   --tw-bg-opacity: 0;
 }
@@ -1666,12 +1654,12 @@ body {
   object-fit: cover;
 }
 
-.object-center {
-  object-position: center;
+.object-fill {
+  object-fit: fill;
 }
 
-.p-0\.5 {
-  padding: 0.125rem;
+.object-center {
+  object-position: center;
 }
 
 .p-1 {
@@ -1703,14 +1691,9 @@ body {
   padding-right: 0px;
 }
 
-.px-0\.5 {
-  padding-left: 0.125rem;
-  padding-right: 0.125rem;
-}
-
-.px-1 {
-  padding-left: 0.25rem;
-  padding-right: 0.25rem;
+.px-1\.5 {
+  padding-left: 0.375rem;
+  padding-right: 0.375rem;
 }
 
 .px-2 {
@@ -1741,11 +1724,6 @@ body {
 .px-8 {
   padding-left: 2rem;
   padding-right: 2rem;
-}
-
-.py-0\.5 {
-  padding-top: 0.125rem;
-  padding-bottom: 0.125rem;
 }
 
 .py-1 {
@@ -1813,11 +1791,6 @@ body {
   padding-bottom: 10vh;
 }
 
-.px-1\.5 {
-  padding-left: 0.375rem;
-  padding-right: 0.375rem;
-}
-
 .pb-0 {
   padding-bottom: 0px;
 }
@@ -1854,6 +1827,14 @@ body {
   padding-top: 0px;
 }
 
+.pt-0\.5 {
+  padding-top: 0.125rem;
+}
+
+.pt-1 {
+  padding-top: 0.25rem;
+}
+
 .pt-16 {
   padding-top: 4rem;
 }
@@ -1868,14 +1849,6 @@ body {
 
 .pt-8 {
   padding-top: 2rem;
-}
-
-.pt-1 {
-  padding-top: 0.25rem;
-}
-
-.pt-0\.5 {
-  padding-top: 0.125rem;
 }
 
 .text-left {
@@ -1903,10 +1876,6 @@ body {
 .text-4xl {
   font-size: 2.25rem;
   line-height: 2.5rem;
-}
-
-.text-\[10px\] {
-  font-size: 10px;
 }
 
 .text-base {
@@ -2403,6 +2372,11 @@ body {
   color: rgb(107 33 168 / var(--tw-text-opacity, 1));
 }
 
+.hover\:text-red-700:hover {
+  --tw-text-opacity: 1;
+  color: rgb(185 28 28 / var(--tw-text-opacity, 1));
+}
+
 .hover\:text-white:hover {
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity, 1));
@@ -2411,11 +2385,6 @@ body {
 .hover\:text-yellow-600:hover {
   --tw-text-opacity: 1;
   color: rgb(202 138 4 / var(--tw-text-opacity, 1));
-}
-
-.hover\:text-red-700:hover {
-  --tw-text-opacity: 1;
-  color: rgb(185 28 28 / var(--tw-text-opacity, 1));
 }
 
 .hover\:opacity-100:hover {
@@ -2629,10 +2598,6 @@ body {
 
   .sm\:grid-cols-4 {
     grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
-
-  .sm\:grid-cols-5 {
-    grid-template-columns: repeat(5, minmax(0, 1fr));
   }
 
   .sm\:flex-row {
@@ -2874,10 +2839,6 @@ body {
 
   .md\:grid-cols-4 {
     grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
-
-  .md\:grid-cols-8 {
-    grid-template-columns: repeat(8, minmax(0, 1fr));
   }
 
   .md\:grid-cols-6 {

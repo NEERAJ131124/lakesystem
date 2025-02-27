@@ -30,6 +30,7 @@ function AddCatch({
     rating: 0,
   });
   const [errors, setErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const { user } = useAuth();
 
   useEffect(() => {
@@ -106,6 +107,7 @@ function AddCatch({
     if (!validateForm()) {
       return;
     }
+    setIsSubmitting(true);
     setLoading(true);
 
     const formData = new FormData();
@@ -148,6 +150,7 @@ function AddCatch({
       console.error("Error adding new catch:", error);
     } finally {
       setLoading(false);
+      setIsSubmitting(false);
     }
   };
 
@@ -460,14 +463,20 @@ function AddCatch({
                 })
               }
               className="px-5 py-2.5 bg-gray-500 hover:bg-gray-600 text-white rounded-md cursor-pointer text-base flex-1 whitespace-nowrap"
+              disabled={isSubmitting}
             >
               Clear
             </button>
             <button
               type="submit"
-              className="px-5 py-2.5 bg-[#ae7a31] hover:bg-[#8e6429] text-white rounded-md cursor-pointer text-base flex-1 whitespace-nowrap"
+              className={`px-5 py-2.5 ${
+                isSubmitting
+                  ? "bg-gray-400 cursor-not-allowed"
+                  : "bg-[#ae7a31] hover:bg-[#8e6429] cursor-pointer"
+              } text-white rounded-md text-base flex-1 whitespace-nowrap`}
+              disabled={isSubmitting}
             >
-              Add Catch
+              {isSubmitting ? "Adding..." : "Add Catch"}
             </button>
           </div>
         </form>
