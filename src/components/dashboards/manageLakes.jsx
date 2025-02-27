@@ -85,10 +85,11 @@ function ManageLakes() {
 
   const uniqueFishTypes = [
     ...new Set(
-      lakes.flatMap((lake) => lake.fishTypes).filter((fish) => allowedFishTypes.includes(fish))
+      lakes
+        .flatMap((lake) => lake.fishTypes)
+        .filter((fish) => allowedFishTypes.includes(fish))
     ),
   ];
-
 
   if (loading) {
     return <Loader />;
@@ -183,7 +184,7 @@ function ManageLakes() {
               <img
                 src={lake.image || "/placeholder.svg?height=200&width=300"}
                 alt={lake.name}
-                className="w-full sm:w-1/4 h-48 object-cover rounded-lg"
+                className="w-full sm:w-1/4 h-48 object-fill rounded-lg"
               />
               <div className="flex-1 px-2 sm:px-6">
                 <h3 className="text-xl sm:text-2xl font-bold text-black">

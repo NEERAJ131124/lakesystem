@@ -227,8 +227,9 @@ const AddingFishStock = () => {
             value={formData.name}
             onChange={handleInputChange}
             placeholder="Enter fish name"
-            className={`p-2 border rounded-md text-base ${errors.name ? "border-red-500" : "border-gray-300"
-              }`}
+            className={`p-2 border rounded-md text-base ${
+              errors.name ? "border-red-500" : "border-gray-300"
+            }`}
             maxLength={100}
           />
           {errors.name && (
@@ -245,8 +246,9 @@ const AddingFishStock = () => {
             name="species"
             value={formData.species}
             onChange={handleInputChange}
-            className={`p-2 border rounded-md text-base ${errors.species ? "border-red-500" : "border-gray-300"
-              }`}
+            className={`p-2 border rounded-md text-base ${
+              errors.species ? "border-red-500" : "border-gray-300"
+            }`}
           >
             <option value="">Select a species</option>
             {fishSpecies.map((species) => (
@@ -312,8 +314,9 @@ const AddingFishStock = () => {
             value={formData.weight}
             onChange={handleInputChange}
             placeholder="Enter weight"
-            className={`p-2 border rounded-md text-base ${errors.weight ? "border-red-500" : "border-gray-300"
-              }`}
+            className={`p-2 border rounded-md text-base ${
+              errors.weight ? "border-red-500" : "border-gray-300"
+            }`}
             onInput={(e) => {
               e.target.value = e.target.value.replace(/[^0-9.]/g, ""); // Allow numbers and decimal
               if ((e.target.value.match(/\./g) || []).length > 1) {
@@ -323,7 +326,6 @@ const AddingFishStock = () => {
                 e.target.value = e.target.value.slice(0, 10); // Limit input to 10 characters
               }
             }}
-
           />
           {errors.weight && (
             <span className="text-red-500 text-sm">{errors.weight}</span>
@@ -380,8 +382,9 @@ const AddingFishStock = () => {
             name="image"
             accept="image/*"
             onChange={handleImageChange}
-            className={`p-2 border rounded-md text-base ${errors.image ? "border-red-500" : "border-gray-300"
-              }`}
+            className={`p-2 border rounded-md text-base ${
+              errors.image ? "border-red-500" : "border-gray-300"
+            }`}
           />
           {errors.image && (
             <span className="text-red-500 text-sm">{errors.image}</span>
@@ -391,7 +394,7 @@ const AddingFishStock = () => {
               <img
                 src={imagePreview}
                 alt="Fish preview"
-                className="max-w-[200px] max-h-[200px] object-contain"
+                className="max-w-[200px] max-h-[200px] object-fill"
               />
             </div>
           )}
@@ -409,8 +412,9 @@ const AddingFishStock = () => {
             placeholder="Enter additional notes"
             rows="4"
             maxLength="500"
-            className={`p-2 border rounded-md text-base ${errors.notes ? "border-red-500" : "border-gray-300"
-              }`}
+            className={`p-2 border rounded-md text-base ${
+              errors.notes ? "border-red-500" : "border-gray-300"
+            }`}
           />
           {errors.notes && (
             <span className="text-red-500 text-sm">{errors.notes}</span>

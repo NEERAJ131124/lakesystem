@@ -15,7 +15,7 @@ const ViewModal = ({ selectedLake, setShowViewModal }) => (
         <img
           src={selectedLake?.image}
           alt={selectedLake?.name}
-          className="rounded-lg w-full h-48 sm:h-56 md:h-64 object-cover"
+          className="rounded-lg w-full h-48 sm:h-56 md:h-64 object-fill"
         />
         <div className="text-black space-y-2 sm:space-y-4">
           <p className="text-sm sm:text-base">

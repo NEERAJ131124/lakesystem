@@ -144,7 +144,7 @@ const ManageFishStock = () => {
     { label: "Ghosty", value: "Ghosty" },
     { label: "Koi", value: "Koi" },
     { label: "Cat fish", value: "Cat fish" },
-    { label: "Other", value: "Other" }
+    { label: "Other", value: "Other" },
   ];
 
   return (
@@ -165,7 +165,9 @@ const ManageFishStock = () => {
             Back
           </button>
           <button
-            onClick={() => navigate(`/lake-owner-dashboard/add-fish-stock/${lakeId}`)}
+            onClick={() =>
+              navigate(`/lake-owner-dashboard/add-fish-stock/${lakeId}`)
+            }
             className="bg-[#ae7a31] hover:bg-[#8e6429] text-white px-4 py-2 rounded-md 
       flex items-center gap-2 transition-colors duration-200"
           >
@@ -211,7 +213,7 @@ const ManageFishStock = () => {
             <img
               src={hoveredImage}
               alt="Enlarged fish"
-              className="max-h-[360px] object-contain rounded-lg"
+              className="max-h-[360px] object-fill rounded-lg"
             />
           </div>
         </div>
@@ -232,7 +234,7 @@ const ManageFishStock = () => {
                 <img
                   src={fish?.image}
                   alt={fish?.name}
-                  className="w-full md:w-48 h-48 object-cover rounded mb-4 md:mb-0 md:mr-4 cursor-pointer"
+                  className="w-full md:w-48 h-48 object-fill rounded mb-4 md:mb-0 md:mr-4 cursor-pointer"
                   onClick={() => setHoveredImage(fish.image)}
                 />
               )}
@@ -278,10 +280,11 @@ const ManageFishStock = () => {
           <button
             key={index}
             onClick={() => handlePageChange(index + 1)}
-            className={`px-3 py-1 mx-1 rounded ${currentPage === index + 1
-              ? "bg-blue-500 text-white"
-              : "bg-gray-200 text-gray-700"
-              }`}
+            className={`px-3 py-1 mx-1 rounded ${
+              currentPage === index + 1
+                ? "bg-blue-500 text-white"
+                : "bg-gray-200 text-gray-700"
+            }`}
           >
             {index + 1}
           </button>
@@ -312,7 +315,11 @@ const ManageFishStock = () => {
                   <select
                     value={editForm.species}
                     onChange={(e) =>
-                      setEditForm({ ...editForm, species: e.target.value, customSpecies: "" })
+                      setEditForm({
+                        ...editForm,
+                        species: e.target.value,
+                        customSpecies: "",
+                      })
                     }
                     className="w-full border rounded px-3 py-2"
                     required
@@ -448,7 +455,7 @@ const ManageFishStock = () => {
                             : editForm.image
                         }
                         alt="Preview"
-                        className="w-48 h-48 object-cover rounded"
+                        className="w-48 h-48 object-fill rounded"
                       />
                     </div>
                   )}

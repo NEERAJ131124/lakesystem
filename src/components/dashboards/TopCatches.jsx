@@ -118,7 +118,7 @@ function TopCatches() {
                   <img
                     src={fish.fish.image}
                     alt={fish.fish.species}
-                    className="w-full h-48 object-cover rounded-lg max-w-full"
+                    className="w-full h-48 object-fill rounded-lg max-w-full"
                   />
                 </div>
               )}

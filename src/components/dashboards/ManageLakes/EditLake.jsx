@@ -342,7 +342,7 @@ export default function EditLake() {
               <img
                 src={previewImage}
                 alt="Preview"
-                className="mt-4 h-48 w-full object-cover border-2 rounded-lg"
+                className="mt-4 h-48 w-full object-fill border-2 rounded-lg"
               />
             )}
           </div>

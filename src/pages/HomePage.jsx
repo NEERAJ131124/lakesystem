@@ -19,7 +19,7 @@ const FeatureCard = ({
 }) => {
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200">
-      <img src={imageSrc} alt={title} className="w-full h-48 object-cover" />
+      <img src={imageSrc} alt={title} className="w-full h-48 object-fill" />
       <div className="p-6">
         <div className="flex items-center justify-center w-12 h-12 bg-carp-100 rounded-full mb-4">
           {icon}
@@ -106,7 +106,7 @@ const HomePage = () => {
         <img
           src="/images/hero-image.jpeg"
           alt="Carp fishing scene"
-          className="absolute inset-0 w-full h-full object-cover object-center"
+          className="absolute inset-0 w-full h-full object-fill object-center"
         />
         <div className="absolute inset-0 bg-black opacity-50" />
         <div className="relative z-10 mx-auto max-w-7xl px-6 py-24 sm:py-32 lg:px-8">
@@ -217,7 +217,7 @@ const HomePage = () => {
                       <img
                         src={lake.image || l0}
                         alt={lake.name}
-                        className="aspect-[16/9] w-full rounded-lg bg-gray-100 object-cover sm:aspect-[2/1] lg:aspect-[3/2]"
+                        className="aspect-[16/9] w-full rounded-lg bg-gray-100 object-fill sm:aspect-[2/1] lg:aspect-[3/2]"
                       />
                     </div>
                     <div className="max-w-xl">

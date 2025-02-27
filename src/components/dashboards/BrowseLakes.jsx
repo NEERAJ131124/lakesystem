@@ -89,7 +89,7 @@ function BrowseLakes({ setRefreshFollowedLakes, setActiveTab }) {
               <img
                 src={lake.image || l0}
                 alt={lake.name}
-                className="w-full h-48 object-cover rounded-lg mb-4"
+                className="w-full h-48 object-fill rounded-lg mb-4"
               />
               <h3 className="font-semibold text-lg mb-4">{lake.name}</h3>
 
