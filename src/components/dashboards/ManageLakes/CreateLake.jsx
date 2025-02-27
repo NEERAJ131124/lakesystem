@@ -415,7 +415,7 @@ function CreateLake() {
               htmlFor="image"
               className="block text-lg font-semibold text-gray-800 mb-2"
             >
-              Lake Image
+              Lake Image (Add Your Lake Image here)
             </label>
 
             {/* File Input Wrapper */}

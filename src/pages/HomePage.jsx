@@ -9,14 +9,7 @@ import { baseUrl } from "../constants/APIs";
 import Loader from "../components/Loader";
 import l0 from "../assets/wlake.jpg";
 
-const FeatureCard = ({
-  icon,
-  title,
-  description,
-  imageSrc,
-  buttonText,
-  buttonLink,
-}) => {
+const FeatureCard = ({ icon, title, description, imageSrc }) => {
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200">
       <img src={imageSrc} alt={title} className="w-full h-48 object-cover" />
@@ -25,15 +18,7 @@ const FeatureCard = ({
           {icon}
         </div>
         <h3 className="text-xl font-semibold text-gray-900 mb-2">{title}</h3>
-        <p className="text-gray-600 mb-4">{description}</p>
-        <div className="flex justify-end">
-          <Link
-            to={buttonLink}
-            className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-carp-600 hover:bg-carp-700 transition-all duration-300 ease-in-out"
-          >
-            {buttonText}
-          </Link>
-        </div>
+        <p className="text-gray-600">{description}</p>
       </div>
     </div>
   );
@@ -157,24 +142,18 @@ const HomePage = () => {
               title="Discover New Lakes"
               description="Explore a vast network of carp fishing locations, from hidden gems to popular hotspots."
               imageSrc="/images/discover-lakes.jpg"
-              buttonText="Explore Lakes"
-              buttonLink="/lakes"
             />
             <FeatureCard
               icon={<Fish className="w-6 h-6 text-carp-600" />}
               title="View Lake Stock"
               description="Get up-to-date information on lake stocks, including species, sizes, and recent catches."
               imageSrc="/images/lake-stock.jpg"
-              buttonText="View Stock"
-              buttonLink="/lake-stock"
             />
             <FeatureCard
               icon={<Target className="w-6 h-6 text-carp-600" />}
               title="Capture Your Goals"
               description="Set personal fishing goals, track your progress, and celebrate your achievements."
               imageSrc="/images/goals.jpg"
-              buttonText="Set Goals"
-              buttonLink="/goals"
             />
           </div>
         </div>
@@ -186,7 +165,7 @@ const HomePage = () => {
       {/* Lakes Section */}
       <div className="bg-white py-24 sm:py-32 sm:pt-12">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="mx-auto max-w-2xl text-center">
+          <div className="mx-auto max-w-full text-center">
             <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
               Explore Our Lakes
             </h2>
@@ -194,6 +173,14 @@ const HomePage = () => {
               Discover the Perfect Fishing Spot from Our Curated Selection of
               Premium Carp Fishing Lakes
             </p>
+            {/* <div className="text-right mt-4">
+              <Link
+                to="/login"
+                className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-carp-600 hover:bg-carp-700 transition-all duration-300 ease-in-out"
+              >
+                Add Your Lake Image here
+              </Link>
+            </div> */}
           </div>
 
           <div className="relative">

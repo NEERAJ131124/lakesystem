@@ -7,11 +7,14 @@ import { Star } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import EditCatch from "./ManageCatch/EditCatch";
+import AddCatch from "./ManageCatch/AddCatch";
 
 function FollowedLakes({ setRefreshFollowedLakes }) {
   const [lakes, setLakes] = useState([]);
   const [loading, setLoading] = useState(false);
   const [selectedCatch, setSelectedCatch] = useState(null);
+  const [selectedLake, setSelectedLake] = useState(null);
+  const [isAddCatchOpen, setIsAddCatchOpen] = useState(false);
   const navigate = useNavigate();
 
   const fetchFollowedLakes = useCallback(async () => {
@@ -108,76 +111,88 @@ function FollowedLakes({ setRefreshFollowedLakes }) {
                 </div>
 
                 <h5 className="mb-2">Fish Stock : </h5>
-                <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-2">
-                  {lake?.catchPosts
-                    ?.sort((a, b) => (a?.status === "caught" ? -1 : 1))
-                    ?.map((post) => (
-                      <div
-                        key={post?._id}
-                        className="relative bg-cover text-white bg-center rounded-lg shadow-md p-2 aspect-square group"
-                        style={{ backgroundImage: `url(${post?.fish?.image})` }}
-                      >
-                        {post?.status === "caught" ? (
-                          <>
-                            <div
-                              className="absolute top-1 right-1 rounded-full p-0.5 cursor-pointer"
-                              onClick={() =>
-                                handleFavourite(post?._id, !post?.favourite)
-                              }
-                            >
-                              <Star
-                                size={16}
-                                className={`${
-                                  post?.favourite
-                                    ? "text-yellow-500 fill-yellow-500"
-                                    : "text-white"
-                                }`}
-                              />
-                            </div>
-                            <div className="absolute bottom-1 left-1">
-                              <p className="text-xs font-semibold bg-[#22c55e] rounded-lg px-1 py-0.5">
-                                Caught
-                              </p>
-                              <p className="text-sm font-semibold">
-                                {post?.fish?.species}
-                              </p>
-                              <p className="text-xs">
-                                {post?.fish?.weight} lbs
-                              </p>
-                            </div>
-                          </>
-                        ) : (
-                          <>
-                            <div className="absolute top-1 left-1">
-                              <p className="text-xs font-semibold bg-[#3B82F6] rounded-lg px-1 py-0.5">
-                                Uncaught
-                              </p>
-                              <p className="text-sm font-semibold">
-                                {post?.fish?.species}
-                              </p>
-                              <p className="text-xs">
-                                {post?.fish?.weight} lbs
-                              </p>
-                            </div>
-                            <div className="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                              <button
-                                className="bg-white text-white font-semibold bg-opacity-30 px-2 py-0.5 rounded-lg text-sm transition-colors"
-                                onClick={() => setSelectedCatch(post)}
+                {lake?.catchPosts?.length === 0 ? (
+                  <div className="flex justify-center items-center h-24">
+                    <p className="text-gray-500">No catches in this lake.</p>
+                    <button
+                      className="ml-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                      onClick={() => {
+                        setSelectedLake(lake);
+                        setIsAddCatchOpen(true);
+                      }}
+                    >
+                      Add Catch
+                    </button>
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-8 gap-1">
+                    {lake?.catchPosts
+                      ?.sort((a, b) => (a?.status === "caught" ? -1 : 1))
+                      ?.map((post) => (
+                        <div
+                          key={post?._id}
+                          className="relative bg-cover text-white bg-center rounded-lg shadow-md p-1 aspect-square group"
+                          style={{
+                            backgroundImage: `url(${post?.fish?.image})`,
+                          }}
+                        >
+                          {post?.status === "caught" ? (
+                            <>
+                              <div className="absolute inset-0 bg-black bg-opacity-40 rounded-lg"></div>
+                              <div
+                                className="absolute top-0.5 right-0.5 rounded-full p-0.5 cursor-pointer"
+                                onClick={() =>
+                                  handleFavourite(post?._id, !post?.favourite)
+                                }
                               >
-                                Catch
-                              </button>
-                            </div>
-                          </>
-                        )}
-                      </div>
-                    ))}
-                </div>
-                {/* <button
-                className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-                onClick={() => navigate(`/fish-stock/${lake._id}`)}
-              >
-                See Stock
-              </button> */}
+                                <Star
+                                  size={24}
+                                  className={`${
+                                    post?.favourite
+                                      ? "text-yellow-500 fill-yellow-500"
+                                      : "text-white"
+                                  }`}
+                                />
+                              </div>
+                              <div className="absolute bottom-0.5 left-0.5">
+                                <p className="text-md font-semibold bg-[#22c55e] rounded-lg px-0.5 py-0.5">
+                                  Caught
+                                </p>
+                                <p className="text-lg font-semibold">
+                                  {post?.fish?.species}
+                                </p>
+                                <p className="text-md">
+                                  {post?.fish?.weight} lbs
+                                </p>
+                              </div>
+                            </>
+                          ) : (
+                            <>
+                              <div className="absolute top-0.5 left-0.5">
+                                <p className="text-md font-semibold bg-[#3B82F6] rounded-lg px-0.5 py-0.5">
+                                  Uncaught
+                                </p>
+                                <p className="text-lg font-semibold">
+                                  {post?.fish?.species}
+                                </p>
+                                <p className="text-md">
+                                  {post?.fish?.weight} lbs
+                                </p>
+                              </div>
+                              <div className="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                <button
+                                  className="bg-white text-white font-semibold bg-opacity-30 px-1 py-0.5 rounded-lg text-[10px] transition-colors"
+                                  onClick={() => setSelectedCatch(post)}
+                                >
+                                  Catch
+                                </button>
+                              </div>
+                            </>
+                          )}
+                        </div>
+                      ))}
+                  </div>
+                )}
               </div>
             );
           })}
@@ -191,6 +206,16 @@ function FollowedLakes({ setRefreshFollowedLakes }) {
           isOpen={!!selectedCatch}
           setLoading={setLoading}
           onCatchUpdated={fetchFollowedLakes}
+        />
+      )}
+      {isAddCatchOpen && (
+        <AddCatch
+          isOpen={isAddCatchOpen}
+          onClose={() => setIsAddCatchOpen(false)}
+          onCatchAdded={fetchFollowedLakes}
+          fetchFollowedLakes={fetchFollowedLakes}
+          setLoading={setLoading}
+          selectedLake={selectedLake}
         />
       )}
     </div>

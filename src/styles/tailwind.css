@@ -710,6 +710,22 @@ body {
   top: 0.25rem;
 }
 
+.bottom-0\.5 {
+  bottom: 0.125rem;
+}
+
+.left-0\.5 {
+  left: 0.125rem;
+}
+
+.right-0\.5 {
+  right: 0.125rem;
+}
+
+.top-0\.5 {
+  top: 0.125rem;
+}
+
 .z-10 {
   z-index: 10;
 }
@@ -957,6 +973,10 @@ body {
   height: 100vh;
 }
 
+.h-24 {
+  height: 6rem;
+}
+
 .max-h-60 {
   max-height: 15rem;
 }
@@ -1133,6 +1153,10 @@ body {
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
+.grid-cols-4 {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
 .flex-row {
   flex-direction: row;
 }
@@ -1199,6 +1223,10 @@ body {
 
 .gap-8 {
   gap: 2rem;
+}
+
+.gap-1 {
+  gap: 0.25rem;
 }
 
 .gap-x-4 {
@@ -1779,6 +1807,11 @@ body {
   padding-bottom: 0.125rem;
 }
 
+.px-0\.5 {
+  padding-left: 0.125rem;
+  padding-right: 0.125rem;
+}
+
 .pb-2 {
   padding-bottom: 0.5rem;
 }
@@ -1835,12 +1868,20 @@ body {
   padding-bottom: 0px;
 }
 
+.pr-8 {
+  padding-right: 2rem;
+}
+
 .text-left {
   text-align: left;
 }
 
 .text-center {
   text-align: center;
+}
+
+.text-right {
+  text-align: right;
 }
 
 .text-2xl {
@@ -1881,6 +1922,14 @@ body {
 .text-xs {
   font-size: 0.75rem;
   line-height: 1rem;
+}
+
+.text-\[10px\] {
+  font-size: 10px;
+}
+
+.text-\[8px\] {
+  font-size: 8px;
 }
 
 .font-bold {
@@ -2575,6 +2624,10 @@ body {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 
+  .sm\:grid-cols-5 {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+
   .sm\:flex-row {
     flex-direction: row;
   }
@@ -2822,6 +2875,10 @@ body {
 
   .md\:grid-cols-6 {
     grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+
+  .md\:grid-cols-8 {
+    grid-template-columns: repeat(8, minmax(0, 1fr));
   }
 
   .md\:flex-row {
