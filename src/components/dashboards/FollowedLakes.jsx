@@ -101,7 +101,7 @@ function FollowedLakes({ setRefreshFollowedLakes }) {
               >
                 <div className="flex justify-between items-center">
                   <h3 className="font-semibold text-lg">{lake?.name}</h3>
-                  <div className="flex items-center flex-wrap">
+                  <div className="flex items-center">
                     <span className="text-gray-600 mr-2">
                       <div className="w-32 bg-gray-200 rounded-full h-5 ">
                         <div
@@ -166,7 +166,7 @@ function FollowedLakes({ setRefreshFollowedLakes }) {
                     </button>
                   </div>
                 ) : (
-                  <div className="grid grid-cols-1 xs:grid-cols-3 sm:grid-cols-6 gap-2">
+                  <div className="grid grid-cols-1 xs:grid-cols-3 sm:grid-cols-6 gap-4">
                     {lake?.catchPosts
                       ?.sort((a, b) => (a?.status === "caught" ? -1 : 1))
                       ?.map((post) => (
