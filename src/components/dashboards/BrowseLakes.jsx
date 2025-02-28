@@ -19,6 +19,7 @@ function BrowseLakes({ setRefreshFollowedLakes, setActiveTab }) {
   // const { user } = useAuth();
   const [user, setUser] = useState([]);
   const getUser = async () => {
+    setLoading(true);
     try {
       const response = await axios.get(`${baseUrl}/api/users/me`, {
         headers: {
@@ -29,10 +30,14 @@ function BrowseLakes({ setRefreshFollowedLakes, setActiveTab }) {
       setUser(response.data);
     } catch (error) {
       console.error("Error fetching user:", error);
+    } finally {
+      setLoading(false);
     }
   };
   useEffect(() => {
     if (localStorage.getItem("token")) {
+      fetchLakes();
+
       getUser();
     }
   }, []);
@@ -40,11 +45,19 @@ function BrowseLakes({ setRefreshFollowedLakes, setActiveTab }) {
   const fetchLakes = async () => {
     setLoading(true);
     try {
-      const response = await axios.get(`${baseUrl}/api/lakes/all`);
-      const filteredLakes = response.data
-        .filter((lake) => !user.following.includes(lake._id))
-        .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-      setLakes(filteredLakes);
+      const response = await axios.get(
+        `${baseUrl}/api/users/unfollowed-lakes`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      // const filteredLakes = response.data
+      //   .filter((lake) => !user.following.includes(lake._id))
+      //   .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+      console.log(response);
+      setLakes(response?.data?.unfollowedLakes);
     } catch (error) {
       console.error("Error fetching lakes:", error);
     } finally {
@@ -52,9 +65,9 @@ function BrowseLakes({ setRefreshFollowedLakes, setActiveTab }) {
     }
   };
 
-  useEffect(() => {
-    fetchLakes();
-  }, [user.following]);
+  // useEffect(() => {
+  //   fetchLakes();
+  // }, [user.following]);
 
   const handleFollow = async () => {
     setActiveTab("followedLakes");

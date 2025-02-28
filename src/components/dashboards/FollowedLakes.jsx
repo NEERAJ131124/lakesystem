@@ -103,9 +103,9 @@ function FollowedLakes({ setRefreshFollowedLakes }) {
                   <h3 className="font-semibold text-lg">{lake?.name}</h3>
                   <div className="flex items-center">
                     <span className="text-gray-600 mr-2">
-                      <div className="w-32 bg-gray-200 rounded-full h-5 ">
+                      <div className="w-16 md:w-32 bg-gray-200 rounded-full h-2 md:h-5">
                         <div
-                          className="bg-green-500 h-5 rounded-full"
+                          className="bg-green-500 h-2 md:h-5 rounded-full"
                           style={{ width: `${caughtPercentage}%` }}
                         ></div>
                       </div>
