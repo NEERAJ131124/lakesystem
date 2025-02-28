@@ -155,12 +155,11 @@ const ManageFishStock = () => {
         <h2 className="text-2xl font-bold text-gray-800">
           Fish Stock Management
         </h2>
-
         {/* Buttons Container */}
-        <div className="flex items-center gap-6">
+        <div className="flex flex-col-reverse sm:flex-row items-center gap-3 sm:gap-6">
           <button
             onClick={() => navigate(-1)}
-            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
+            className="w-full sm:w-auto px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
           >
             Back
           </button>
@@ -168,8 +167,8 @@ const ManageFishStock = () => {
             onClick={() =>
               navigate(`/lake-owner-dashboard/add-fish-stock/${lakeId}`)
             }
-            className="bg-[#ae7a31] hover:bg-[#8e6429] text-white px-4 py-2 rounded-md 
-      flex items-center gap-2 transition-colors duration-200"
+            className="w-full sm:w-auto bg-[#ae7a31] hover:bg-[#8e6429] text-white px-4 py-2 rounded-md 
+flex items-center justify-center gap-2 transition-colors duration-200"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -185,7 +184,7 @@ const ManageFishStock = () => {
             </svg>
             Add Fish Stock
           </button>
-        </div>
+        </div>{" "}
       </div>
 
       {hoveredImage && (

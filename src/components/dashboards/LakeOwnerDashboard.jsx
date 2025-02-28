@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { PlusCircle, User, Map, LogOut, Menu } from "lucide-react";
 import { Link, Outlet, useLocation } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
@@ -8,6 +8,24 @@ function LakeOwnerDashboard() {
   const location = useLocation();
   const currentPath = location.pathname.split("/").pop();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const sidebarRef = useRef(null);
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (
+        sidebarRef.current &&
+        !sidebarRef.current.contains(event.target) &&
+        sidebarOpen
+      ) {
+        setSidebarOpen(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [sidebarOpen]);
 
   return (
     <div className="flex min-h-screen bg-gray-100">
@@ -21,6 +39,7 @@ function LakeOwnerDashboard() {
 
       {/* Sidebar */}
       <div
+        ref={sidebarRef}
         className={`${
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
         } lg:translate-x-0 fixed lg:static z-10 w-16 lg:w-64 bg-[#ae7a31] text-white transition-transform duration-300 ease-in-out h-screen`}
@@ -32,6 +51,7 @@ function LakeOwnerDashboard() {
         <nav className="mt-8">
           <Link
             to="profile"
+            onClick={() => setSidebarOpen(false)}
             className={`flex items-center py-3 px-5 transition-colors duration-200 w-full text-left ${
               currentPath === "profile"
                 ? "bg-[#8e6429] text-white"
@@ -43,6 +63,7 @@ function LakeOwnerDashboard() {
           </Link>
           <Link
             to="manage-lakes"
+            onClick={() => setSidebarOpen(false)}
             className={`flex items-center py-3 px-5 transition-colors duration-200 w-full text-left ${
               currentPath === "manage-lakes"
                 ? "bg-[#8e6429] text-white"
@@ -54,6 +75,7 @@ function LakeOwnerDashboard() {
           </Link>
           <Link
             to="create-lake"
+            onClick={() => setSidebarOpen(false)}
             className={`flex items-center py-3 px-5 transition-colors duration-200 w-full text-left ${
               currentPath === "create-lake"
                 ? "bg-[#8e6429] text-white"
