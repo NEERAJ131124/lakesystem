@@ -17,28 +17,28 @@ function BrowseLakes({ setRefreshFollowedLakes, setActiveTab }) {
   const [isAddCatchOpen, setIsAddCatchOpen] = useState(false);
   const navigate = useNavigate();
   // const { user } = useAuth();
-  const [user, setUser] = useState([]);
-  const getUser = async () => {
-    setLoading(true);
-    try {
-      const response = await axios.get(`${baseUrl}/api/users/me`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
-      console.log("response", response.data);
-      setUser(response.data);
-    } catch (error) {
-      console.error("Error fetching user:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  // const [user, setUser] = useState([]);
+  // const getUser = async () => {
+  //   setLoading(true);
+  //   try {
+  //     const response = await axios.get(`${baseUrl}/api/users/me`, {
+  //       headers: {
+  //         Authorization: `Bearer ${localStorage.getItem("token")}`,
+  //       },
+  //     });
+  //     console.log("response", response.data);
+  //     setUser(response.data);
+  //   } catch (error) {
+  //     console.error("Error fetching user:", error);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
   useEffect(() => {
     if (localStorage.getItem("token")) {
       fetchLakes();
 
-      getUser();
+      // getUser();
     }
   }, []);
 
@@ -73,10 +73,10 @@ function BrowseLakes({ setRefreshFollowedLakes, setActiveTab }) {
     setActiveTab("followedLakes");
   };
 
-  const handleAddCatch = (lake) => {
-    setSelectedLake(lake);
-    setIsAddCatchOpen(true);
-  };
+  // const handleAddCatch = (lake) => {
+  //   setSelectedLake(lake);
+  //   setIsAddCatchOpen(true);
+  // };
 
   // if (loading)
   //   return (
