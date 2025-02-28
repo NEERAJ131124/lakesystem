@@ -365,7 +365,7 @@ function EditCatch({
                 <img
                   src={updatedCatch.photo}
                   alt="Catch"
-                  className="mt-4 w-full h-48 object-fill rounded-lg"
+                  className="mt-4 w-full h-48 object-contain rounded-lg"
                 />
               )}
             </div>

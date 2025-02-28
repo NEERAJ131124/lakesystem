@@ -1049,6 +1049,10 @@ body {
   width: 100%;
 }
 
+.w-56 {
+  width: 14rem;
+}
+
 .min-w-0 {
   min-width: 0px;
 }
@@ -1656,6 +1660,10 @@ body {
 
 .fill-yellow-500 {
   fill: #eab308;
+}
+
+.object-contain {
+  object-fit: contain;
 }
 
 .object-cover {
