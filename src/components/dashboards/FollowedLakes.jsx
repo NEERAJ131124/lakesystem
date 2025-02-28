@@ -166,7 +166,7 @@ function FollowedLakes({ setRefreshFollowedLakes }) {
                     </button>
                   </div>
                 ) : (
-                  <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 gap-2">
+                  <div className="grid grid-cols-1 xs:grid-cols-3 sm:grid-cols-6 gap-2">
                     {lake?.catchPosts
                       ?.sort((a, b) => (a?.status === "caught" ? -1 : 1))
                       ?.map((post) => (
