@@ -9,6 +9,7 @@ import toast from "react-hot-toast";
 function TopCatches() {
   const [favoriteCatches, setFavoriteCatches] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [requestInProgress, setRequestInProgress] = useState(false);
   const { user } = useAuth();
 
   useEffect(() => {
@@ -32,6 +33,7 @@ function TopCatches() {
   }, []);
 
   const handleFavourite = async (postId, favourite) => {
+    setRequestInProgress(true);
     try {
       const res = await axios.put(
         `${baseUrl}/api/users/favourite`,
@@ -54,6 +56,8 @@ function TopCatches() {
     } catch (error) {
       console.error("Error updating favorite status:", error);
       toast.error("Failed to update favorite status.");
+    } finally {
+      setRequestInProgress(false);
     }
   };
 
@@ -95,6 +99,7 @@ function TopCatches() {
                   <button
                     className="text-yellow-500 hover:text-yellow-600"
                     onClick={() => handleFavourite(fish._id, false)}
+                    disabled={requestInProgress}
                   >
                     <Star className="h-5 w-5 fill-yellow-500" />
                   </button>

@@ -4,7 +4,7 @@ import { baseUrl } from "../../constants/APIs";
 import { handleFollowLake } from "../contexts/Methods";
 import Loader from "../Loader";
 import { Star, Trash2 } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import EditCatch from "./ManageCatch/EditCatch";
 import AddCatch from "./ManageCatch/AddCatch";
@@ -15,7 +15,8 @@ function FollowedLakes({ setRefreshFollowedLakes }) {
   const [selectedCatch, setSelectedCatch] = useState(null);
   const [selectedLake, setSelectedLake] = useState(null);
   const [isAddCatchOpen, setIsAddCatchOpen] = useState(false);
-  const navigate = useNavigate();
+  const [requestInProgress, setRequestInProgress] = useState(false);
+  // const navigate = useNavigate();
 
   const fetchFollowedLakes = useCallback(async () => {
     setLoading(true);
@@ -39,6 +40,7 @@ function FollowedLakes({ setRefreshFollowedLakes }) {
   }, [fetchFollowedLakes]);
 
   const handleFavourite = async (postId, favourite) => {
+    setRequestInProgress(true);
     try {
       const res = await axios.put(
         `${baseUrl}/api/users/favourite`,
@@ -59,6 +61,8 @@ function FollowedLakes({ setRefreshFollowedLakes }) {
     } catch (error) {
       console.error("Error updating favorite status:", error);
       toast.error("Failed to update favorite status.");
+    } finally {
+      setRequestInProgress(false);
     }
   };
 
@@ -180,11 +184,12 @@ function FollowedLakes({ setRefreshFollowedLakes }) {
                           {post?.status === "caught" ? (
                             <>
                               <div className="absolute inset-0 bg-black bg-opacity-40 rounded-lg"></div>
-                              <div
+                              <button
                                 className="absolute top-0.5 right-0.5 rounded-full p-2 cursor-pointer"
                                 onClick={() =>
                                   handleFavourite(post?._id, !post?.favourite)
                                 }
+                                disabled={requestInProgress}
                               >
                                 <Star
                                   size={20}
@@ -194,7 +199,7 @@ function FollowedLakes({ setRefreshFollowedLakes }) {
                                       : "text-white"
                                   }`}
                                 />
-                              </div>
+                              </button>
                               <div className="absolute bottom-1.5 left-2 ">
                                 <p className="text-xs font-semibold bg-[#22c55e] rounded-full px-2 py-1 m-auto pt-0.5">
                                   Caught
@@ -221,7 +226,7 @@ function FollowedLakes({ setRefreshFollowedLakes }) {
                                   {post?.fish?.weight} lbs
                                 </p>
                               </div>
-                              <div className="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                              <div className="absolute pt-10 inset-0 bg-black bg-opacity-30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                                 <button
                                   className="bg-white text-white font-semibold bg-opacity-30 px-2 py-1.5 rounded-full text-md pt-1 transition-colors"
                                   onClick={() => setSelectedCatch(post)}
