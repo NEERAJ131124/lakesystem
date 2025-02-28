@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Disclosure } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
@@ -10,6 +10,7 @@ const NavBar = () => {
   const { user, logout } = useAuth();
   const location = useLocation();
   const currentPath = location.pathname;
+  const disclosureRef = useRef(null);
 
   const navigation = [
     { name: "Home", href: "/" },
@@ -17,6 +18,28 @@ const NavBar = () => {
     { name: "About", href: "/about" },
     { name: "Contact Us", href: "/contact" },
   ];
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        disclosureRef.current &&
+        !disclosureRef.current.contains(event.target)
+      ) {
+        // Find and click the close button if the panel is open
+        const closeButton = document.querySelector(
+          '[aria-label="Close main menu"]'
+        );
+        if (closeButton) {
+          closeButton.click();
+        }
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   return (
     <Disclosure as="nav" className="bg-carp-600">
@@ -26,7 +49,9 @@ const NavBar = () => {
             <div className="relative flex h-16 items-center justify-between">
               <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
                 <Disclosure.Button className="inline-flex items-center justify-center rounded-md p-2 text-carp-100 hover:bg-carp-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
-                  <span className="sr-only">Open main menu</span>
+                  <span className="sr-only">
+                    {open ? "Close main menu" : "Open main menu"}
+                  </span>
                   {open ? (
                     <XMarkIcon className="block h-6 w-6" aria-hidden="true" />
                   ) : (
@@ -38,7 +63,11 @@ const NavBar = () => {
                 <div className="flex flex-shrink-0 items-center">
                   <Link to="/" className="text-2xl font-bold text-white">
                     {/* Carpbook */}
-                    <img src={WhiteCarp} alt="Carpbook Logo" className="h-8 w-auto" />
+                    <img
+                      src={WhiteCarp}
+                      alt="Carpbook Logo"
+                      className="h-8 w-auto"
+                    />
                   </Link>
                 </div>
                 <div className="hidden sm:ml-6 sm:block">
@@ -47,10 +76,11 @@ const NavBar = () => {
                       <Link
                         key={item.name}
                         to={item.href}
-                        className={`${currentPath === item.href
-                          ? "bg-carp-700 text-white"
-                          : "text-carp-100 hover:bg-carp-700 hover:text-white"
-                          } rounded-md px-3 py-2 text-sm font-medium`}
+                        className={`${
+                          currentPath === item.href
+                            ? "bg-carp-700 text-white"
+                            : "text-carp-100 hover:bg-carp-700 hover:text-white"
+                        } rounded-md px-3 py-2 text-sm font-medium`}
                         aria-current={
                           currentPath === item.href ? "page" : undefined
                         }
@@ -72,10 +102,11 @@ const NavBar = () => {
                 ) : (
                   <Link
                     to="/login"
-                    className={`${currentPath === "/login"
-                      ? "bg-carp-700 text-white"
-                      : "text-carp-100 hover:bg-carp-700 hover:text-white"
-                      } rounded-md px-3 py-2 text-sm font-medium`}
+                    className={`${
+                      currentPath === "/login"
+                        ? "bg-carp-700 text-white"
+                        : "text-carp-100 hover:bg-carp-700 hover:text-white"
+                    } rounded-md px-3 py-2 text-sm font-medium`}
                     aria-current={currentPath === "/login" ? "page" : undefined}
                   >
                     Login
@@ -85,16 +116,17 @@ const NavBar = () => {
             </div>
           </div>
 
-          <Disclosure.Panel className="sm:hidden">
+          <Disclosure.Panel className="sm:hidden" ref={disclosureRef}>
             <div className="space-y-1 px-2 pb-3 pt-2">
               {navigation.map((item) => (
                 <Link
                   key={item.name}
                   to={item.href}
-                  className={`${currentPath === item.href
-                    ? "bg-carp-700 text-white"
-                    : "text-carp-100 hover:bg-carp-700 hover:text-white"
-                    } block rounded-md px-3 py-2 text-base font-medium`}
+                  className={`${
+                    currentPath === item.href
+                      ? "bg-carp-700 text-white"
+                      : "text-carp-100 hover:bg-carp-700 hover:text-white"
+                  } block rounded-md px-3 py-2 text-base font-medium`}
                   aria-current={currentPath === item.href ? "page" : undefined}
                   onClick={() => close()}
                 >
