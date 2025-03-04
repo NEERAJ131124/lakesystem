@@ -1,10 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { useAuth } from "../../contexts/AuthContext";
 import { baseUrl } from "../../../constants/APIs";
-import { handleFollowLake } from "../../contexts/Methods";
 import Modal from "../../Modal";
-import StarRating from "../../StarRating";
 import toast from "react-hot-toast";
 
 function AddCatch({
@@ -21,7 +19,6 @@ function AddCatch({
     fishName: "",
     weight: "",
     status: "caught",
-    // length: "",
     photo: null,
     lake: selectedLake ? selectedLake._id : "",
     description: "",
@@ -32,6 +29,9 @@ function AddCatch({
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { user } = useAuth();
+  const fileInputRef = useRef(null);
+  const previousFileRef = useRef(null);
+  const [previewImage, setPreviewImage] = useState(null);
 
   useEffect(() => {
     const fetchLakes = async () => {
@@ -66,12 +66,35 @@ function AddCatch({
   };
 
   const handleFileChange = (e) => {
-    setNewCatch({ ...newCatch, photo: e.target.files[0] });
-    if (errors.photo) {
-      setErrors({ ...errors, photo: "" });
+    const file = e.target.files[0];
+
+    if (file) {
+      setNewCatch((prevCatch) => ({
+        ...prevCatch,
+        photo: file,
+      }));
+      previousFileRef.current = file; // Store the previous valid file selection
+      setPreviewImage(URL.createObjectURL(file)); // Set preview image
+      if (errors.photo) {
+        setErrors((prevErrors) => ({ ...prevErrors, photo: "" }));
+      }
+    } else {
+      // Restore the previous file if user cancels file selection
+      setNewCatch((prevCatch) => ({
+        ...prevCatch,
+        photo: previousFileRef.current || null, // Keep previous file if available
+      }));
+      setPreviewImage(
+        previousFileRef.current
+          ? URL.createObjectURL(previousFileRef.current)
+          : null
+      ); // Set preview image
     }
   };
 
+  const handleFileInputClick = () => {
+    fileInputRef.current.value = ""; // Clear input before opening file selection
+  };
   const validateForm = () => {
     const newErrors = {};
 
@@ -83,10 +106,6 @@ function AddCatch({
       newErrors.weight = "Please enter a valid weight";
     }
 
-    // if (!newCatch.length || isNaN(newCatch.length) || newCatch.length <= 0) {
-    //   newErrors.length = "Please enter a valid length";
-    // }
-
     if (!newCatch.lake) {
       newErrors.lake = "Please select a lake";
     }
@@ -94,9 +113,6 @@ function AddCatch({
     if (!newCatch.photo) {
       newErrors.photo = "Please upload a photo";
     }
-    // if (newCatch.rating === 0 && (newCatch.rating < 1 || newCatch.rating > 5)) {
-    //   newErrors.rating = "Rating must be between 1 and 5";
-    // }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -115,7 +131,6 @@ function AddCatch({
     formData.append("name", newCatch.fishName);
     formData.append("weight", newCatch.weight);
     formData.append("status", newCatch.status);
-    // formData.append("length", newCatch.length);
     formData.append("image", newCatch.photo);
     formData.append("lake", newCatch.lake);
     formData.append("description", newCatch.description);
@@ -135,7 +150,6 @@ function AddCatch({
         fishName: "",
         weight: "",
         status: "caught",
-        // length: "",
         photo: null,
         lake: "",
         description: "",
@@ -143,6 +157,7 @@ function AddCatch({
         review: "",
         rating: 0,
       });
+      setPreviewImage(null); // Clear preview image
       toast.success("Catch added successfully!");
       onCatchAdded();
       onClose();
@@ -178,28 +193,6 @@ function AddCatch({
         </h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {/* <div className="mb-4">
-              <label
-                htmlFor="fishName"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Fish Name
-              </label>
-              <input
-                type="text"
-                id="fishName"
-                name="fishName"
-                value={newCatch.fishName}
-                onChange={handleInputChange}
-                className={`p-2 w-full border rounded-md text-base ${
-                  errors.fishName ? "border-red-500" : "border-gray-300"
-                }`}
-                maxLength={50}
-              />
-              {errors.fishName && (
-                <span className="text-red-500 text-sm">{errors.fishName}</span>
-              )}
-            </div> */}
             <div className="mb-4">
               <label
                 htmlFor="species"
@@ -287,29 +280,6 @@ function AddCatch({
               )}
             </div>
 
-            {/* <div className="mb-4">
-              <label
-                htmlFor="length"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Length (cm)
-              </label>
-              <input
-                type="number"
-                step="0.01"
-                id="length"
-                name="length"
-                value={newCatch.length}
-                onChange={handleInputChange}
-                required
-                className={`p-2 w-full border rounded-md text-base ${errors.length ? "border-red-500" : "border-gray-300"
-                  }`}
-              />
-              {errors.length && (
-                <span className="text-red-500 text-sm">{errors.length}</span>
-              )}
-            </div> */}
-
             <div className="mb-4">
               <label
                 htmlFor="lake"
@@ -335,22 +305,6 @@ function AddCatch({
                     </option>
                   ))}
                 </select>
-                {/* {newCatch.lake && (
-                  <button
-                    type="button"
-                    onClick={() => {
-                      handleFollowLake(
-                        newCatch.lake,
-                        true,
-                        setLoading,
-                        fetchFollowedLakes
-                      );
-                    }}
-                    className="mt-1 px-4 py-2 bg-[#ae7a31] hover:bg-[#8e6429] text-white rounded-md whitespace-nowrap"
-                  >
-                    Follow Lake
-                  </button>
-                )} */}
               </div>
               {errors.lake && (
                 <span className="text-red-500 text-sm">{errors.lake}</span>
@@ -369,13 +323,24 @@ function AddCatch({
                 id="photo"
                 name="photo"
                 onChange={handleFileChange}
+                onClick={handleFileInputClick}
                 accept="image/*"
                 className={`p-2 w-full border rounded-md text-base ${
                   errors.photo ? "border-red-500" : "border-gray-300"
                 }`}
+                ref={fileInputRef}
               />
               {errors.photo && (
                 <span className="text-red-500 text-sm">{errors.photo}</span>
+              )}
+              {previewImage && (
+                <div className="mt-2">
+                  <img
+                    src={previewImage}
+                    alt="Preview"
+                    className="w-full h-48 object-cover rounded-md"
+                  />
+                </div>
               )}
             </div>
 
@@ -403,45 +368,6 @@ function AddCatch({
                 </span>
               )}
             </div>
-
-            {/* <div className="mb-4 md:col-span-2">
-              <label
-                htmlFor="review"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Review
-              </label>
-              <textarea
-                id="review"
-                name="review"
-                value={newCatch.review}
-                onChange={handleInputChange}
-                rows={3}
-                className={`p-2 border w-full rounded-md text-base ${errors.review ? "border-red-500" : "border-gray-300"
-                  }`}
-              />
-              {errors.review && (
-                <span className="text-red-500 text-sm">{errors.review}</span>
-              )}
-            </div>
-
-            <div className="mb-4 md:col-span-2">
-              <label
-                htmlFor="rating"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Rating (1-5)
-              </label>
-              <StarRating
-                rating={newCatch.rating}
-                setRating={(value) =>
-                  setNewCatch({ ...newCatch, rating: value })
-                }
-              />
-              {errors.rating && (
-                <span className="text-red-500 text-sm">{errors.rating}</span>
-              )}
-            </div> */}
           </div>
 
           <div className="flex flex-row gap-3 w-full">
@@ -453,7 +379,6 @@ function AddCatch({
                   fishName: "",
                   weight: "",
                   status: "caught",
-                  // length: "",
                   photo: null,
                   lake: "",
                   description: "",

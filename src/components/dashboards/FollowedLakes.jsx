@@ -4,7 +4,6 @@ import { baseUrl } from "../../constants/APIs";
 import { handleFollowLake } from "../contexts/Methods";
 import Loader from "../Loader";
 import { Star, Trash2 } from "lucide-react";
-// import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import EditCatch from "./ManageCatch/EditCatch";
 import AddCatch from "./ManageCatch/AddCatch";
@@ -16,7 +15,6 @@ function FollowedLakes({ setRefreshFollowedLakes }) {
   const [selectedLake, setSelectedLake] = useState(null);
   const [isAddCatchOpen, setIsAddCatchOpen] = useState(false);
   const [requestInProgress, setRequestInProgress] = useState(false);
-  // const navigate = useNavigate();
 
   const fetchFollowedLakes = useCallback(async () => {
     setLoading(true);
@@ -27,7 +25,14 @@ function FollowedLakes({ setRefreshFollowedLakes }) {
         },
       });
       console.log(response?.data);
-      setLakes(response?.data?.followedLakes || []);
+      setLakes(
+        response?.data?.followedLakes.map((lake) => ({
+          ...lake,
+          catchPosts: lake.catchPosts.sort((a, b) =>
+            a?.status === "caught" ? -1 : 1
+          ),
+        })) || []
+      );
     } catch (error) {
       console.error("Error fetching followed lakes:", error);
     } finally {
@@ -57,7 +62,16 @@ function FollowedLakes({ setRefreshFollowedLakes }) {
           ? "The catch has been added to your favorites."
           : "The catch has been removed from your favorites."
       );
-      fetchFollowedLakes();
+
+      // Update the local state without refetching
+      setLakes((prevLakes) =>
+        prevLakes.map((lake) => ({
+          ...lake,
+          catchPosts: lake.catchPosts.map((post) =>
+            post._id === postId ? { ...post, favourite: favourite } : post
+          ),
+        }))
+      );
     } catch (error) {
       console.error("Error updating favorite status:", error);
       toast.error("Failed to update favorite status.");
@@ -171,73 +185,71 @@ function FollowedLakes({ setRefreshFollowedLakes }) {
                   </div>
                 ) : (
                   <div className="grid grid-cols-1 xs:grid-cols-3 sm:grid-cols-6 gap-4">
-                    {lake?.catchPosts
-                      ?.sort((a, b) => (a?.status === "caught" ? -1 : 1))
-                      ?.map((post) => (
-                        <div
-                          key={post?._id}
-                          className="relative bg-cover text-white bg-center rounded-lg shadow-md p-2 aspect-square group"
-                          style={{
-                            backgroundImage: `url(${post?.fish?.image})`,
-                          }}
-                        >
-                          {post?.status === "caught" ? (
-                            <>
-                              <div className="absolute inset-0 bg-black bg-opacity-40 rounded-lg"></div>
+                    {lake?.catchPosts?.map((post) => (
+                      <div
+                        key={post?._id}
+                        className="relative bg-cover text-white bg-center rounded-lg shadow-md p-2 aspect-square group"
+                        style={{
+                          backgroundImage: `url(${post?.fish?.image})`,
+                        }}
+                      >
+                        {post?.status === "caught" ? (
+                          <>
+                            <div className="absolute inset-0 bg-black bg-opacity-40 rounded-lg"></div>
+                            <button
+                              className="absolute top-0.5 right-0.5 rounded-full p-2 cursor-pointer"
+                              onClick={() =>
+                                handleFavourite(post?._id, !post?.favourite)
+                              }
+                              disabled={requestInProgress}
+                            >
+                              <Star
+                                size={20}
+                                className={`${
+                                  post?.favourite
+                                    ? "text-yellow-500 fill-yellow-500"
+                                    : "text-white"
+                                }`}
+                              />
+                            </button>
+                            <div className="absolute bottom-1.5 left-2 ">
+                              <p className="text-xs font-semibold bg-[#22c55e] rounded-full px-2 py-1 m-auto pt-0.5">
+                                Caught
+                              </p>
+                              <p className="text-lg font-semibold ml-0.5">
+                                {post?.fish?.species}
+                              </p>
+                              <p className="text-xs ml-0.5">
+                                {post?.fish?.weight} lbs
+                              </p>
+                            </div>
+                          </>
+                        ) : (
+                          <>
+                            <div className="absolute inset-0 bg-black bg-opacity-40 rounded-lg"></div>
+                            <div className="absolute top-1.5 left-1.5">
+                              <p className="text-xs font-semibold bg-[#3B82F6] rounded-full px-1.5 py-1 m-auto pt-0.5">
+                                Uncaught
+                              </p>
+                              <p className="text-lg font-semibold ml-0.5">
+                                {post?.fish?.species}
+                              </p>
+                              <p className="text-xs ml-0.5">
+                                {post?.fish?.weight} lbs
+                              </p>
+                            </div>
+                            <div className="absolute pt-10 inset-0 bg-black bg-opacity-30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                               <button
-                                className="absolute top-0.5 right-0.5 rounded-full p-2 cursor-pointer"
-                                onClick={() =>
-                                  handleFavourite(post?._id, !post?.favourite)
-                                }
-                                disabled={requestInProgress}
+                                className="bg-white text-white font-semibold bg-opacity-30 px-2 py-1.5 rounded-full text-md pt-1 transition-colors"
+                                onClick={() => setSelectedCatch(post)}
                               >
-                                <Star
-                                  size={20}
-                                  className={`${
-                                    post?.favourite
-                                      ? "text-yellow-500 fill-yellow-500"
-                                      : "text-white"
-                                  }`}
-                                />
+                                Catch Now
                               </button>
-                              <div className="absolute bottom-1.5 left-2 ">
-                                <p className="text-xs font-semibold bg-[#22c55e] rounded-full px-2 py-1 m-auto pt-0.5">
-                                  Caught
-                                </p>
-                                <p className="text-lg font-semibold ml-0.5">
-                                  {post?.fish?.species}
-                                </p>
-                                <p className="text-xs ml-0.5">
-                                  {post?.fish?.weight} lbs
-                                </p>
-                              </div>
-                            </>
-                          ) : (
-                            <>
-                              <div className="absolute inset-0 bg-black bg-opacity-40 rounded-lg"></div>
-                              <div className="absolute top-1.5 left-1.5">
-                                <p className="text-xs font-semibold bg-[#3B82F6] rounded-full px-1.5 py-1 m-auto pt-0.5">
-                                  Uncaught
-                                </p>
-                                <p className="text-lg font-semibold ml-0.5">
-                                  {post?.fish?.species}
-                                </p>
-                                <p className="text-xs ml-0.5">
-                                  {post?.fish?.weight} lbs
-                                </p>
-                              </div>
-                              <div className="absolute pt-10 inset-0 bg-black bg-opacity-30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                                <button
-                                  className="bg-white text-white font-semibold bg-opacity-30 px-2 py-1.5 rounded-full text-md pt-1 transition-colors"
-                                  onClick={() => setSelectedCatch(post)}
-                                >
-                                  Catch Now
-                                </button>
-                              </div>
-                            </>
-                          )}
-                        </div>
-                      ))}
+                            </div>
+                          </>
+                        )}
+                      </div>
+                    ))}
                   </div>
                 )}
               </div>
