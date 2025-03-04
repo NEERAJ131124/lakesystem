@@ -373,20 +373,22 @@ function AddCatch({
           <div className="flex flex-row gap-3 w-full">
             <button
               type="button"
-              onClick={() =>
+              onClick={() => {
                 setNewCatch({
                   species: "",
                   fishName: "",
                   weight: "",
                   status: "caught",
-                  photo: null,
+                  photo: "",
                   lake: "",
                   description: "",
                   taggedUsers: "",
                   review: "",
                   rating: 0,
-                })
-              }
+                });
+                setPreviewImage(null); // Clear preview image
+                fileInputRef.current.value = ""; // Clear file input
+              }}
               className="px-5 py-2.5 bg-gray-500 hover:bg-gray-600 text-white rounded-md cursor-pointer text-base flex-1 whitespace-nowrap"
               disabled={isSubmitting}
             >
