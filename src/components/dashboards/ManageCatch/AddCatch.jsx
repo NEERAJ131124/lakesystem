@@ -4,6 +4,7 @@ import { useAuth } from "../../contexts/AuthContext";
 import { baseUrl } from "../../../constants/APIs";
 import Modal from "../../Modal";
 import toast from "react-hot-toast";
+import { XCircle } from "lucide-react";
 
 function AddCatch({
   isOpen,
@@ -95,6 +96,16 @@ function AddCatch({
   const handleFileInputClick = () => {
     fileInputRef.current.value = ""; // Clear input before opening file selection
   };
+
+  const clearImage = () => {
+    setNewCatch((prevCatch) => ({
+      ...prevCatch,
+      photo: null,
+    }));
+    setPreviewImage(null);
+    fileInputRef.current.value = "";
+  };
+
   const validateForm = () => {
     const newErrors = {};
 
@@ -334,12 +345,19 @@ function AddCatch({
                 <span className="text-red-500 text-sm">{errors.photo}</span>
               )}
               {previewImage && (
-                <div className="mt-2">
+                <div className="mt-2 relative">
                   <img
                     src={previewImage}
                     alt="Preview"
                     className="w-full h-48 object-cover rounded-md"
                   />
+                  <button
+                    type="button"
+                    className="absolute top-2 right-2 text-white bg-black bg-opacity-50 rounded-full p-1"
+                    onClick={clearImage}
+                  >
+                    <XCircle className="w-6 h-6" />
+                  </button>
                 </div>
               )}
             </div>
