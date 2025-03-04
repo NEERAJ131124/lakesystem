@@ -3,14 +3,12 @@ import axios from "axios";
 import { baseUrl } from "../../constants/APIs";
 import Loader from "../Loader";
 import { Star } from "lucide-react";
-import { useAuth } from "../contexts/AuthContext";
 import toast from "react-hot-toast";
 
 function TopCatches() {
   const [favoriteCatches, setFavoriteCatches] = useState([]);
   const [loading, setLoading] = useState(false);
   const [requestInProgress, setRequestInProgress] = useState(false);
-  const { user } = useAuth();
 
   useEffect(() => {
     const fetchFavoriteCatches = async () => {
