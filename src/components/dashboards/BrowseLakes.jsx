@@ -9,6 +9,7 @@ import StarRating from "../StarRating";
 import AddCatch from "./ManageCatch/AddCatch";
 import l0 from "../../assets/wlake.jpg";
 import { useNavigate } from "react-router-dom";
+import ViewModal from "./ManageLakes/ViewLakeModal";
 
 function BrowseLakes({ setRefreshFollowedLakes, setActiveTab }) {
   const [lakes, setLakes] = useState([]);
@@ -84,6 +85,11 @@ function BrowseLakes({ setRefreshFollowedLakes, setActiveTab }) {
   //       <Loader />
   //     </div>
   //   );
+  const [showViewModal, setShowViewModal] = useState(false);
+  const handleView = (lake) => {
+    setSelectedLake(lake);
+    setShowViewModal(true);
+  };
 
   return (
     <div className="bg-white rounded-lg shadow-2xl p-6">
@@ -102,9 +108,10 @@ function BrowseLakes({ setRefreshFollowedLakes, setActiveTab }) {
               <img
                 src={lake.image || l0}
                 alt={lake.name}
-                className="w-full h-72 object-fill rounded-lg mb-4"
+                className="w-full h-72 object-fill rounded-lg mb-4 cursor-pointer"
+                onClick={() => handleView(lake)}
               />
-              <h3 className="font-semibold text-lg mb-4">{lake.name}</h3>
+              <h3 className="font-semibold text-lg mb-4 cursor-pointer" onClick={() => handleView(lake)}>{lake.name}</h3>
 
               <div className="grid grid-cols-2 gap-4">
                 <div className="flex flex-col">
@@ -151,8 +158,9 @@ function BrowseLakes({ setRefreshFollowedLakes, setActiveTab }) {
 
                 <div className="flex flex-col col-span-2">
                   <span className="font-medium text-gray-700">Description</span>
-                  <span className="text-gray-600 line-clamp-3 hover:line-clamp-none">
-                    {lake.description}
+                  {/* <span className="text-gray-600 line-clamp-1 hover:line-clamp-none"> */}
+                  <span className="text-gray-600 line-clamp-1" title={lake.description}>
+                    {lake.description?lake.description:<br/>}
                   </span>
                 </div>
               </div>
@@ -190,7 +198,7 @@ function BrowseLakes({ setRefreshFollowedLakes, setActiveTab }) {
         </div>
       )}
 
-      {selectedLake && (
+      {/* {selectedLake && (
         <Modal isOpen={!!selectedLake} onClose={() => setSelectedLake(null)}>
           <div className="bg-white rounded-lg shadow p-6">
             <h2 className="text-xl font-semibold text-gray-900 mb-4">
@@ -218,7 +226,7 @@ function BrowseLakes({ setRefreshFollowedLakes, setActiveTab }) {
             )}
           </div>
         </Modal>
-      )}
+      )} */}
 
       <AddCatch
         isOpen={isAddCatchOpen}
@@ -232,6 +240,13 @@ function BrowseLakes({ setRefreshFollowedLakes, setActiveTab }) {
         }}
         selectedLake={selectedLake}
       />
+
+      {showViewModal && (
+        <ViewModal
+          selectedLake={selectedLake}
+          setShowViewModal={setShowViewModal}
+        />
+      )}
     </div>
   );
 }

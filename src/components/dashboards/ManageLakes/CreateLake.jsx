@@ -362,7 +362,6 @@ function CreateLake() {
               value={newLake.description}
               onChange={handleInputChange}
               rows={3}
-              maxLength={500}
               className={`w-full rounded-xl border bg-white py-3 px-5 text-gray-800 text-lg shadow-md focus:ring-2 focus:outline-none transition duration-200 ease-in-out 
               ${
                 errors.description
@@ -415,7 +414,7 @@ function CreateLake() {
               htmlFor="image-label"
               className="block text-lg font-semibold text-gray-800 mb-2"
             >
-              Lake Image (Add Your Lake Image here)
+              Lake Image (Add a image of your lake here)
             </label>
 
             {/* File Input Wrapper */}

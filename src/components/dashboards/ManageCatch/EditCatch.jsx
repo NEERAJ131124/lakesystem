@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { useAuth } from "../../contexts/AuthContext";
 import { baseUrl } from "../../../constants/APIs";
@@ -55,12 +55,32 @@ function EditCatch({
     }
   };
 
+  // const handleFileChange = (e) => {
+  //   setUpdatedCatch({ ...updatedCatch, photo: e.target.files[0] });
+  //   if (errors.photo) {
+  //     setErrors({ ...errors, photo: "" });
+  //   }
+  // };
+
   const handleFileChange = (e) => {
-    setUpdatedCatch({ ...updatedCatch, photo: e.target.files[0] });
-    if (errors.photo) {
-      setErrors({ ...errors, photo: "" });
+    const file = e.target.files[0];
+  
+    if (file) {
+      setUpdatedCatch({ 
+        ...updatedCatch, 
+        photo: file // Store the file itself
+      });
+  
+      // Preview image using URL.createObjectURL
+      setShowImage(URL.createObjectURL(file));
+  
+      // Clear error if there was one
+      if (errors.photo) {
+        setErrors({ ...errors, photo: "" });
+      }
     }
   };
+  
 
   const validateForm = () => {
     const newErrors = {};
@@ -159,6 +179,13 @@ function EditCatch({
     { label: "Uncaught", value: "uncaught" },
   ];
 
+const fileInputRef = useRef(null);
+const [showimage,setShowImage]=useState(updatedCatch.photo)
+
+const handleButtonClick = () => {
+  fileInputRef.current.click();
+};
+
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <div className="bg-white rounded-lg shadow p-6">
@@ -168,7 +195,7 @@ function EditCatch({
             <div className="mb-4">
               <label
                 htmlFor="species"
-                className="block text-sm font-medium text-gray-700"
+                className="block text-sm font-medium text-gray-700 mb-2"
               >
                 Fish Species
               </label>
@@ -221,7 +248,7 @@ function EditCatch({
             <div className="mb-4">
               <label
                 htmlFor="status"
-                className="block text-sm font-medium text-gray-700"
+                className="block text-sm font-medium text-gray-700 mb-2"
               >
                 Status
               </label>
@@ -249,7 +276,7 @@ function EditCatch({
             <div className="mb-4">
               <label
                 htmlFor="weight"
-                className="block text-sm font-medium text-gray-700"
+                className="block text-sm font-medium text-gray-700 mb-2"
               >
                 Weight (lbs)
               </label>
@@ -296,7 +323,7 @@ function EditCatch({
             <div className="mb-4">
               <label
                 htmlFor="lake"
-                className="block text-sm font-medium text-gray-700"
+                className="block text-sm font-medium text-gray-700 mb-2"
               >
                 Lake
               </label>
@@ -341,7 +368,7 @@ function EditCatch({
               )}
             </div>
 
-            <div className="mb-4 md:col-span-2">
+            {/* <div className="mb-4 md:col-span-2">
               <label
                 htmlFor="photo"
                 className="block text-sm font-medium text-gray-700"
@@ -368,12 +395,60 @@ function EditCatch({
                   className="mt-4 w-full h-48 object-contain rounded-lg"
                 />
               )}
+            </div> */}
+
+
+
+            <div className="mb-4 md:col-span-2">
+              <label htmlFor="photo" className="block text-sm font-medium text-gray-700 mb-2">
+                Photo
+              </label>
+
+              {/* Hidden File Input */}
+              <input
+                type="file"
+                id="photo"
+                name="photo"
+                ref={fileInputRef}
+                onChange={handleFileChange}
+                accept="image/*"
+                className="hidden"
+              />
+
+              <div className="flex items-center gap-4">
+                {/* Upload Button */}
+                <button
+                  type="button"
+                  onClick={handleButtonClick}
+                  className="px-4 py-2 bg-[#ae7a31] hover:bg-[#8e6429] text-white rounded-md text-base"
+                >
+                  Select Image
+                </button>
+
+                {/* Show Selected File Name */}
+                {typeof updatedCatch.photo !== "string" && (
+                  <p className="mt-2 text-sm text-gray-600">{updatedCatch.photo.name}</p>
+                )}
+              </div>
+              
+
+              {/* Display Existing Image */}
+              {showimage && (
+                <img
+                  src={showimage}
+                  alt="Catch"
+                  className="mt-4 w-full h-48 object-contain rounded-lg"
+                />
+              )}
+
+              {errors.photo && <span className="text-red-500 text-sm">{errors.photo}</span>}
             </div>
+
 
             <div className="mb-4 md:col-span-2">
               <label
                 htmlFor="description"
-                className="block text-sm font-medium text-gray-700"
+                className="block text-sm font-medium text-gray-700 mb-2"
               >
                 Description
               </label>

@@ -206,7 +206,7 @@ function YourCatches({ setRefreshCatches }) {
               </p>
 
               {/* Fish Details */}
-              <div className="bg-gray-50 p-4 rounded-lg pb-0">
+              <div className="bg-gray-50 p-4 rounded-lg">
                 <h3 className="font-semibold text-lg mb-2">
                   {fish.fish.species}
                 </h3>

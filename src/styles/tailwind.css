@@ -868,6 +868,13 @@ body {
   -webkit-line-clamp: 4;
 }
 
+.line-clamp-1 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+}
+
 .block {
   display: block;
 }
@@ -983,6 +990,10 @@ body {
 
 .max-h-\[90vh\] {
   max-height: 90vh;
+}
+
+.max-h-40 {
+  max-height: 10rem;
 }
 
 .min-h-screen {

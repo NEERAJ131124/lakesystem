@@ -207,7 +207,7 @@ function AddCatch({
             <div className="mb-4">
               <label
                 htmlFor="species"
-                className="block text-sm font-medium text-gray-700"
+                className="block text-sm font-medium text-gray-700 mb-2"
               >
                 Fish Species
               </label>
@@ -236,7 +236,7 @@ function AddCatch({
             <div className="mb-4">
               <label
                 htmlFor="status"
-                className="block text-sm font-medium text-gray-700"
+                className="block text-sm font-medium text-gray-700 mb-2"
               >
                 Status
               </label>
@@ -264,7 +264,7 @@ function AddCatch({
             <div className="mb-4">
               <label
                 htmlFor="weight"
-                className="block text-sm font-medium text-gray-700"
+                className="block text-sm font-medium text-gray-700 mb-2"
               >
                 Weight (lbs)
               </label>
@@ -294,7 +294,7 @@ function AddCatch({
             <div className="mb-4">
               <label
                 htmlFor="lake"
-                className="block text-sm font-medium text-gray-700"
+                className="block text-sm font-medium text-gray-700 mb-2"
               >
                 Lake
               </label>
@@ -325,11 +325,43 @@ function AddCatch({
             <div className="mb-4 md:col-span-2">
               <label
                 htmlFor="photo"
-                className="block text-sm font-medium text-gray-700"
+                className="block text-sm font-medium text-gray-700 mb-2"
               >
                 Photo
               </label>
+
+               
+              <div className="flex items-center gap-4">
+                {/* Custom File Upload Button */}
+                <button
+                  type="button"
+                  onClick={() => fileInputRef.current.click()}
+                  className="px-4 py-2 bg-[#ae7a31] hover:bg-[#8e6429] text-white rounded-md text-base"
+                >
+                  Select Image
+                </button>
+
+                {/* Display Selected File Name */}
+                {newCatch.photo && (
+                  <span className="text-gray-700">{newCatch.photo.name}</span>
+                )}
+                
+              </div>
+              {errors.photo && (
+                <span className="text-red-500 text-sm">{errors.photo}</span>
+              )} 
+
+              {/* Hidden File Input */}
               <input
+                type="file"
+                id="photo"
+                name="photo"
+                onChange={handleFileChange}
+                accept="image/*"
+                ref={fileInputRef}
+                className="hidden"
+              />
+              {/* <input
                 type="file"
                 id="photo"
                 name="photo"
@@ -343,7 +375,7 @@ function AddCatch({
               />
               {errors.photo && (
                 <span className="text-red-500 text-sm">{errors.photo}</span>
-              )}
+              )} */}
               {previewImage && (
                 <div className="mt-2 relative">
                   <img
@@ -365,7 +397,7 @@ function AddCatch({
             <div className="mb-4 md:col-span-2">
               <label
                 htmlFor="description"
-                className="block text-sm font-medium text-gray-700"
+                className="block text-sm font-medium text-gray-700 mb-2"
               >
                 Description
               </label>
