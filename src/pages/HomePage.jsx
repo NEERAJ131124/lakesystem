@@ -104,7 +104,7 @@ const HomePage = () => {
     <div className="flex flex-col min-h-screen ">
       {/* Hero Section */}
       <div
-        className="relative overflow-hidden px-8 lg:px-16"
+        className="relative overflow-hidden"
         style={{ minHeight: "500px" }}
       >
         <img
@@ -113,16 +113,17 @@ const HomePage = () => {
           className="absolute inset-0 w-full h-full object-cover"
         />
         <div className="absolute inset-0 bg-black opacity-50" />
-        <div className="relative z-10 mx-auto py-24 sm:py-32  flex flex-col lg:flex-row items-center pb-0">
-          <div className="w-full md:w-2/3">
-            <h1 className="text-4xl font-bold tracking-tight text-white sm:text-6xl">
+        <div className="relative z-10 mx-auto py-12 flex flex-col lg:flex-row items-center pb-0">
+        {/* py-24 sm:py-32 */}
+          <div className="w-full md:w-2/3  px-8 lg:px-16">
+            <h1 className="text-4xl text-center md:text-left font-bold tracking-tight text-white sm:text-6xl">
               Welcome to Carpbook
             </h1>
-            <p className="mt-6 text-lg leading-8 text-gray-300">
+            <p className="mt-6 text-lg leading-8 text-gray-300 text-center md:text-left">
               Your Ultimate Platform for Carp Fishing Enthusiasts and Lake
               Owners
             </p>
-            <div className="mt-10 flex gap-x-6">
+            <div className="mt-10 flex gap-x-6 justify-center md:justify-start">
               <Link to="/register" className="btn-primary">
                 Sign Up
               </Link>
@@ -143,7 +144,7 @@ const HomePage = () => {
               </Link>
             </div>
           </div>
-          <div className="mt-10 lg:mt-0 lg:w-1/3">
+          <div className="mt-10 lg:mt-0 lg:w-1/2">
             <img
               src={homebanner}
               alt="Carp fishing scene"
