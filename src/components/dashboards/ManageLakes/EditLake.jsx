@@ -24,7 +24,8 @@ export default function EditLake() {
   const [isLoading, setIsLoading] = useState(true);
   const { user } = useAuth();
 
-  const fishTypeOptions = ["Common", "Mirror", "Grass", "Ghost"];
+  // const fishTypeOptions = ["Common", "Mirror", "Grass", "Ghost"];
+  const fishTypeOptions = ["Common", "Mirror", "Grass", "Ghost","Leather","Ghosty","Koi","Cat fish","Other"];;
 
   useEffect(() => {
     const fetchLake = async () => {

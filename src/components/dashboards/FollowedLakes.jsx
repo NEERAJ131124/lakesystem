@@ -3,12 +3,13 @@ import axios from "axios";
 import { baseUrl } from "../../constants/APIs";
 import { handleFollowLake } from "../contexts/Methods";
 import Loader from "../Loader";
-import { Star, Trash2 } from "lucide-react";
+import { Star, Trash2, View } from "lucide-react";
 import toast from "react-hot-toast";
 import EditCatch from "./ManageCatch/EditCatch";
 import AddCatch from "./ManageCatch/AddCatch";
+import { useNavigate, useParams } from "react-router-dom";
 
-function FollowedLakes({ setRefreshFollowedLakes }) {
+function FollowedLakes({ setRefreshFollowedLakes,onAddCatch,setFishData }) {
   const [lakes, setLakes] = useState([]);
   const [loading, setLoading] = useState(false);
   const [selectedCatch, setSelectedCatch] = useState(null);
@@ -24,7 +25,6 @@ function FollowedLakes({ setRefreshFollowedLakes }) {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
-      console.log(response?.data);
       setLakes(
         response?.data?.followedLakes.map((lake) => ({
           ...lake,
@@ -95,6 +95,20 @@ function FollowedLakes({ setRefreshFollowedLakes }) {
       toast.error("Failed to unfollow lake.");
     }
   };
+  
+  const handleAddCatch = (fish) => {
+    if (onAddCatch) {
+      onAddCatch(true);
+      setFishData(fish)
+    }
+  };
+
+  const navigate=useNavigate();
+  useEffect(()=>{
+    lakes.map((lake)=>{
+      console.log("fffffffff",lake?.catchPosts)
+    })
+  },[lakes])
 
   return (
     <div className="p-6 px-0 overflow-x-hidden">
@@ -108,7 +122,10 @@ function FollowedLakes({ setRefreshFollowedLakes }) {
             const caughtCount =
               lake?.catchPosts?.filter((post) => post?.status === "caught")
                 ?.length || 0;
-            const totalCount = lake?.catchPosts?.length || 0;
+            // const totalCount = lake?.catchPosts?.length || 0;
+            // const caughtPercentage =
+            //   totalCount > 0 ? (caughtCount / totalCount) * 100 : 0;
+            const totalCount = lake?.currentStock || 0;
             const caughtPercentage =
               totalCount > 0 ? (caughtCount / totalCount) * 100 : 0;
 
@@ -146,30 +163,7 @@ function FollowedLakes({ setRefreshFollowedLakes }) {
                   </div>
                 </div>
 
-                <div className="flex justify-between items-center mb-4">
-                  {/* <p className="text-gray-600">{lake?.location}</p> */}
-                  {/* <div className="flex items-center">
-                    <span className="text-gray-600 mr-2">
-                      <div className="w-32 bg-gray-200 rounded-full h-5 ">
-                        <div
-                          className="bg-green-500 h-5 rounded-full"
-                          style={{ width: `${caughtPercentage}%` }}
-                        ></div>
-                      </div>
-                    </span>
-                    <div className="flex items-center">
-                      <span className="text-green-500 font-semibold">
-                        {caughtCount}
-                      </span>
-                      <span className="text-gray-500 mx-1">/</span>
-                      <span className="text-gray-500 font-semibold">
-                        {totalCount}
-                      </span>
-                    </div>
-                  </div> */}
-                </div>
-
-                <h5 className="mb-2">Fish Stock : </h5>
+                {/* <h5 className="mb-2">Fish Stock : </h5>
                 {lake?.catchPosts?.length === 0 ? (
                   <div className="flex justify-center items-center h-24">
                     <p className="text-gray-500">No catches in this lake.</p>
@@ -251,7 +245,67 @@ function FollowedLakes({ setRefreshFollowedLakes }) {
                       </div>
                     ))}
                   </div>
+                )} */}
+
+                <h5 className="mb-2">Fish Stock :</h5>
+                {lake?.fishStocks?.length === 0 ? (
+                  <div className="flex justify-center items-center h-24">
+                    <p className="text-gray-500">No fish stocks available.</p>
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 xs:grid-cols-3 sm:grid-cols-6 gap-4">
+                    {lake?.fishStocks?.sort((a, b) => b.weight - a.weight).map((fish) => {
+                      // Check if the fish is caught
+                      const isCaught = lake?.catchPosts?.some(
+                        (post) => post?.lake?._id === fish?.lake && 
+                        post?.fish?.species===fish?.species
+                      );
+
+                      return (
+                        <div
+                          key={fish?._id}
+                          className="relative bg-cover text-white bg-center rounded-2xl shadow-lg overflow-hidden aspect-square group border border-gray-300"
+                          style={{
+                            backgroundImage: `url(${fish?.image})`,
+                            filter: !isCaught ? "grayscale(100%)" : "none",
+                          }}
+                        >
+                          {/* Dark overlay for better contrast */}
+                          <div className="absolute inset-0 bg-black bg-opacity-20 rounded-2xl"></div>
+
+                          {/* Fish Info Card */}
+                          <div className="absolute bottom-0 left-0 w-full bg-black bg-opacity-10 text-white text-black p-2 rounded-b-2xl flex justify-between ">
+                            <div>
+                              <p className="text-lg font-semibold">{fish?.species}</p>
+                              <p className="text-xs">Weight: {fish?.weight} lbs</p>
+                            </div>
+                            {/* <View size={36} className="cursor-pointer"/> */}
+                            <View size={36} className="cursor-pointer" onClick={()=>navigate("/catch")}/>
+                          </div>
+
+                          {/* Buttons for Catch & Uncatch */}
+                          <div className="absolute top-2 right-2 flex gap-2">
+                            {isCaught ? (
+                              <button className="bg-green-500 text-white px-3 py-1 rounded-lg shadow-md"  
+                              onClick={() => handleAddCatch(fish)}>
+                                 Caught
+                              </button>
+                            ) : (
+                              <button
+                                className="bg-green-500 text-white px-3 py-1 rounded-lg shadow-md"
+                                onClick={() => handleAddCatch(fish)}
+                              >
+                                uncaught
+                              </button>
+                            )}
+                          </div>
+                        </div>
+
+                      );
+                    })}
+                  </div>
                 )}
+                {/* end new 06-03-2025 */}
               </div>
             );
           })}

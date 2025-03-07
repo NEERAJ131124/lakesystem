@@ -154,7 +154,7 @@ function UserDetails({
         </div>
 
         {/* Total Catches */}
-        <div className="flex col-span-8 flex-col md:col-span-2 bg-gradient-to-r from-gray-500 to-gray-500 text-white rounded-xl shadow-md p-6 hover:shadow-lg transition-transform transform hover:scale-105">
+        {/* <div className="flex col-span-8 flex-col md:col-span-2 bg-gradient-to-r from-gray-500 to-gray-500 text-white rounded-xl shadow-md p-6 hover:shadow-lg transition-transform transform hover:scale-105">
           <div className="flex items-start justify-between flex-col">
             <div className="flex items-center justify-between gap-4 w-full">
               <p className="text-lg font-semibold">Total Catches</p>
@@ -172,10 +172,10 @@ function UserDetails({
               Add Catch
             </button>
           </div>
-        </div>
+        </div> */}
 
         {/* Followed Lakes */}
-        <div className="flex col-span-8 flex-col md:col-span-2 bg-gradient-to-r from-gray-900 to-gray-900 text-white rounded-xl shadow-md p-6 hover:shadow-lg transition-transform transform hover:scale-105">
+        <div className="flex col-span-8 flex-col md:col-span-4 bg-gradient-to-r from-gray-900 to-gray-900 text-white rounded-xl shadow-md p-6 hover:shadow-lg transition-transform transform hover:scale-105">
           <div className="flex items-start justify-between flex-col">
             <div className="flex items-center justify-between gap-4 w-full">
               <p className="text-lg font-semibold">Followed Lakes</p>
@@ -183,7 +183,7 @@ function UserDetails({
                 <Mountain className="h-8 w-8 text-white" />
               </div>
             </div>
-            <p className="text-3xl font-bold text-left">
+            {/* <p className="text-3xl font-bold text-left">
               {users?.following?.length || 0}
             </p>
             <button
@@ -191,7 +191,19 @@ function UserDetails({
               onClick={setActiveTab}
             >
               Followed Lakes
-            </button>
+            </button> */}
+            <div className="flex items-center justify-between gap-4 w-full">
+              <p className="text-3xl font-bold text-left">
+                {users?.following?.length || 0}
+              </p>
+              <button
+                className="mt-4 px-4 py-1 bg-white text-black font-medium rounded-lg hover:bg-gray-100 transition"
+                onClick={setActiveTab}
+              >
+                Followed Lakes
+              </button>
+            </div>
+            
           </div>
         </div>
       </div>

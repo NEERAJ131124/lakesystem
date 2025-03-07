@@ -13,6 +13,7 @@ function AddCatch({
   fetchFollowedLakes,
   setLoading,
   selectedLake,
+  fishData
 }) {
   const [lakes, setLakes] = useState([]);
   const [newCatch, setNewCatch] = useState({
@@ -27,6 +28,25 @@ function AddCatch({
     review: "",
     rating: 0,
   });
+
+  useEffect(()=>{
+    if(fishData){
+      setNewCatch({
+        species: fishData?.species,
+        fishName: "",
+        weight: "",
+        status: "caught",
+        photo: null,
+        lake: fishData?.lake,
+        description: "",
+        taggedUsers: "",
+        review: "",
+        rating: 0,
+      })
+    } 
+    console.log("fishddddData",fishData)
+  },[fishData])
+
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { user } = useAuth();
@@ -204,6 +224,37 @@ function AddCatch({
         </h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="mb-4">
+              <label
+                htmlFor="lake"
+                className="block text-sm font-medium text-gray-700 mb-2"
+              >
+                Lake
+              </label>
+              <div className="flex gap-2">
+                <select
+                  id="lake"
+                  name="lake"
+                  value={newCatch.lake}
+                  onChange={handleInputChange}
+                  required
+                  className={`p-2 border w-full rounded-md text-base ${
+                    errors.lake ? "border-red-500" : "border-gray-300"
+                  }`}
+                  disabled
+                >
+                  <option value="">Select a lake</option>
+                  {lakes.map((lake) => (
+                    <option key={lake._id} value={lake._id}>
+                      {lake.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              {errors.lake && (
+                <span className="text-red-500 text-sm">{errors.lake}</span>
+              )}
+            </div>
             <div className="mb-4">
               <label
                 htmlFor="species"
@@ -220,6 +271,7 @@ function AddCatch({
                 className={`p-2 border w-full rounded-md text-base ${
                   errors.species ? "border-red-500" : "border-gray-300"
                 }`}
+                disabled
               >
                 <option value="">Select a species</option>
                 {fishSpecies.map((species) => (
@@ -288,37 +340,6 @@ function AddCatch({
               />
               {errors.weight && (
                 <span className="text-red-500 text-sm">{errors.weight}</span>
-              )}
-            </div>
-
-            <div className="mb-4">
-              <label
-                htmlFor="lake"
-                className="block text-sm font-medium text-gray-700 mb-2"
-              >
-                Lake
-              </label>
-              <div className="flex gap-2">
-                <select
-                  id="lake"
-                  name="lake"
-                  value={newCatch.lake}
-                  onChange={handleInputChange}
-                  required
-                  className={`p-2 border w-full rounded-md text-base ${
-                    errors.lake ? "border-red-500" : "border-gray-300"
-                  }`}
-                >
-                  <option value="">Select a lake</option>
-                  {lakes.map((lake) => (
-                    <option key={lake._id} value={lake._id}>
-                      {lake.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              {errors.lake && (
-                <span className="text-red-500 text-sm">{errors.lake}</span>
               )}
             </div>
 

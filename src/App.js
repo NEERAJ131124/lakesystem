@@ -31,6 +31,7 @@ import Loader from "./components/Loader.jsx";
 import ScrollToTop from "./components/ScrollToTop.jsx";
 import Privacy from "./pages/Privacy.jsx";
 import Terms from "./pages/Terms.jsx";
+import Catch from "./components/dashboards/ManageCatch/Catch.jsx"
 
 const PrivateRoute = ({ children, allowedUserTypes }) => {
   const { user, loading } = useAuth();
@@ -84,6 +85,15 @@ const App = () => {
                   </PrivateRoute>
                 }
               />
+              <Route
+                path="/catch"
+                element={
+                  <PrivateRoute allowedUserTypes={["angler"]}>
+                    <Catch />
+                  </PrivateRoute>
+                }
+              />
+
               <Route
                 path="/new-lakes"
                 element={

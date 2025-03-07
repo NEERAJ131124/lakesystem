@@ -192,6 +192,53 @@ const handleButtonClick = () => {
         <h2 className="text-xl font-semibold text-gray-900 mb-4">Edit Catch</h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="mb-4">
+              <label
+                htmlFor="lake"
+                className="block text-sm font-medium text-gray-700 mb-2"
+              >
+                Lake
+              </label>
+              <div className="flex gap-2">
+                <select
+                  id="lake"
+                  name="lake"
+                  // disabled
+                  value={updatedCatch.lake}
+                  onChange={handleInputChange}
+                  required
+                  className={`p-2 border w-full rounded-md text-base ${
+                    errors.lake ? "border-red-500" : "border-gray-300"
+                  }`}
+                >
+                  <option value="">Select a lake</option>
+                  {lakes.map((lake) => (
+                    <option key={lake._id} value={lake._id}>
+                      {lake.name}
+                    </option>
+                  ))}
+                </select>
+                {/* {updatedCatch.lake && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      handleFollowLake(
+                        updatedCatch.lake,
+                        true,
+                        setLoading,
+                        fetchFollowedLakes
+                      );
+                    }}
+                    className="mt-1 px-4 py-2 bg-[#ae7a31] hover:bg-[#8e6429] text-white rounded-md whitespace-nowrap"
+                  >
+                    Follow Lake
+                  </button>
+                )} */}
+              </div>
+              {errors.lake && (
+                <span className="text-red-500 text-sm">{errors.lake}</span>
+              )}
+            </div>
             <div className="mb-4">
               <label
                 htmlFor="species"
@@ -319,54 +366,6 @@ const handleButtonClick = () => {
                 <span className="text-red-500 text-sm">{errors.length}</span>
               )}
             </div> */}
-
-            <div className="mb-4">
-              <label
-                htmlFor="lake"
-                className="block text-sm font-medium text-gray-700 mb-2"
-              >
-                Lake
-              </label>
-              <div className="flex gap-2">
-                <select
-                  id="lake"
-                  name="lake"
-                  // disabled
-                  value={updatedCatch.lake}
-                  onChange={handleInputChange}
-                  required
-                  className={`p-2 border w-full rounded-md text-base ${
-                    errors.lake ? "border-red-500" : "border-gray-300"
-                  }`}
-                >
-                  <option value="">Select a lake</option>
-                  {lakes.map((lake) => (
-                    <option key={lake._id} value={lake._id}>
-                      {lake.name}
-                    </option>
-                  ))}
-                </select>
-                {/* {updatedCatch.lake && (
-                  <button
-                    type="button"
-                    onClick={() => {
-                      handleFollowLake(
-                        updatedCatch.lake,
-                        true,
-                        setLoading,
-                        fetchFollowedLakes
-                      );
-                    }}
-                    className="mt-1 px-4 py-2 bg-[#ae7a31] hover:bg-[#8e6429] text-white rounded-md whitespace-nowrap"
-                  >
-                    Follow Lake
-                  </button>
-                )} */}
-              </div>
-              {errors.lake && (
-                <span className="text-red-500 text-sm">{errors.lake}</span>
-              )}
-            </div>
 
             {/* <div className="mb-4 md:col-span-2">
               <label

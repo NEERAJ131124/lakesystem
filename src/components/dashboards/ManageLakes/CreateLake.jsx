@@ -23,7 +23,7 @@ function CreateLake() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
 
-  const fishTypeOptions = ["Common", "Mirror", "Grass", "Ghost"];
+  const fishTypeOptions = ["Common", "Mirror", "Grass", "Ghost","Leather","Ghosty","Koi","Cat fish","Other"];
   // const fishTypeOptions = ["Carp", "Mirror Carp", "Common Carp"];
   // const facilityOptions = ["Parking", "Toilets", "Cafe"];
 

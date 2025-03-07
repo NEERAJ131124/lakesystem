@@ -98,6 +98,7 @@ function AnglerDashboard() {
   const [refresshUser, setRefresshUser] = useState(false);
   const [refreshCatches, setRefreshCatches] = useState(false);
   const [refreshFollowedLakes, setRefreshFollowedLakes] = useState(false);
+  const [fishData,setFishData]=useState(null)
 
   const renderTabContent = () => {
     switch (activeTab) {
@@ -110,7 +111,8 @@ function AnglerDashboard() {
         );
       case "followedLakes":
         return (
-          <FollowedLakes setRefreshFollowedLakes={setRefreshFollowedLakes} />
+          <FollowedLakes setRefreshFollowedLakes={setRefreshFollowedLakes}  onAddCatch={() => setIsAddCatchOpen(true)} 
+          setFishData={setFishData}/>
         );
       case "yourCatches":
         return <YourCatches setRefreshCatches={setRefreshCatches} />;
@@ -286,6 +288,7 @@ function AnglerDashboard() {
             fetchFollowedLakes={() => {
               // Refresh the followed lakes list or perform any other necessary actions
             }}
+            fishData={fishData}
           />
         </div>
       )}
