@@ -167,7 +167,7 @@ function FollowedLakes({ setRefreshFollowedLakes, onAddCatch, setFishData }) {
                     {lake?.stocks
                       ?.sort((a, b) => {
                         if (a.caught === b.caught) {
-                          return a.weight - b.weight; // Sort by weight if caught status is the same
+                          return b.weight - a.weight; // Sort by weight if caught status is the same
                         }
                         return a.caught === "caught" ? 1 : -1; // Caught fish first
                       })
