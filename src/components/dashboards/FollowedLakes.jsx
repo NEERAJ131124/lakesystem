@@ -169,7 +169,7 @@ function FollowedLakes({ setRefreshFollowedLakes, onAddCatch, setFishData }) {
                         if (a.caught === b.caught) {
                           return b.weight - a.weight; // Sort by weight if caught status is the same
                         }
-                        return a.caught === "caught" ? 1 : -1; // Caught fish first
+                        return a.caught === "caught" ? -1 : 1; // Caught fish first
                       })
                       .map((fish) => {
                         // Check if the fish is caught
