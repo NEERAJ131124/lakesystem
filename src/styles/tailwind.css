@@ -710,6 +710,10 @@ body {
   top: 5rem;
 }
 
+.bottom-2 {
+  bottom: 0.5rem;
+}
+
 .z-10 {
   z-index: 10;
 }

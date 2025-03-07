@@ -27,6 +27,7 @@ function AddCatch({
     taggedUsers: "",
     review: "",
     rating: 0,
+    stockID:0,
   });
 
   useEffect(()=>{
@@ -42,9 +43,10 @@ function AddCatch({
         taggedUsers: "",
         review: "",
         rating: 0,
+        stockID:fishData?._id
       })
     } 
-    console.log("fishddddData",fishData)
+    console.log("fishStocks",fishData)
   },[fishData])
 
   const [errors, setErrors] = useState({});
@@ -168,6 +170,7 @@ function AddCatch({
     formData.append("taggedUsers", newCatch.taggedUsers);
     formData.append("review", newCatch.review);
     formData.append("rating", newCatch.rating ? newCatch.rating : 4);
+    formData.append("stockID,", newCatch.stockID);
 
     try {
       const res = await axios.post(`${baseUrl}/api/catches`, formData, {
@@ -187,6 +190,7 @@ function AddCatch({
         taggedUsers: "",
         review: "",
         rating: 0,
+        stockID:0
       });
       setPreviewImage(null); // Clear preview image
       toast.success("Catch added successfully!");
@@ -285,7 +289,7 @@ function AddCatch({
               )}
             </div>
 
-            <div className="mb-4">
+            <div className="mb-4" style={{display:"none"}}>
               <label
                 htmlFor="status"
                 className="block text-sm font-medium text-gray-700 mb-2"
@@ -456,6 +460,7 @@ function AddCatch({
                   taggedUsers: "",
                   review: "",
                   rating: 0,
+                  stockID:0
                 });
                 setPreviewImage(null); // Clear preview image
                 fileInputRef.current.value = ""; // Clear file input

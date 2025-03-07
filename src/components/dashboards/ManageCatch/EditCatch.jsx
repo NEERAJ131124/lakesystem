@@ -292,7 +292,7 @@ const handleButtonClick = () => {
               )}
             </div> */}
 
-            <div className="mb-4">
+            <div className="mb-4" style={{display:"none"}}>
               <label
                 htmlFor="status"
                 className="block text-sm font-medium text-gray-700 mb-2"

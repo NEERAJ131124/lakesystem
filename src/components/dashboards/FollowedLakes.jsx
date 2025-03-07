@@ -3,7 +3,7 @@ import axios from "axios";
 import { baseUrl } from "../../constants/APIs";
 import { handleFollowLake } from "../contexts/Methods";
 import Loader from "../Loader";
-import { Star, Trash2, View } from "lucide-react";
+import { Eye, Star, Trash2, View } from "lucide-react";
 import toast from "react-hot-toast";
 import EditCatch from "./ManageCatch/EditCatch";
 import AddCatch from "./ManageCatch/AddCatch";
@@ -28,9 +28,9 @@ function FollowedLakes({ setRefreshFollowedLakes,onAddCatch,setFishData }) {
       setLakes(
         response?.data?.followedLakes.map((lake) => ({
           ...lake,
-          catchPosts: lake.catchPosts.sort((a, b) =>
-            a?.status === "caught" ? -1 : 1
-          ),
+          // catchPosts: lake.catchPosts.sort((a, b) =>
+          //   a?.status === "caught" ? -1 : 1
+          // ),
         })) || []
       );
     } catch (error) {
@@ -106,7 +106,7 @@ function FollowedLakes({ setRefreshFollowedLakes,onAddCatch,setFishData }) {
   const navigate=useNavigate();
   useEffect(()=>{
     lakes.map((lake)=>{
-      console.log("fffffffff",lake?.catchPosts)
+      console.log("lakes",lake)
     })
   },[lakes])
 
@@ -119,15 +119,10 @@ function FollowedLakes({ setRefreshFollowedLakes,onAddCatch,setFishData }) {
       ) : (
         <div className="grid gap-4">
           {lakes?.map((lake) => {
-            const caughtCount =
-              lake?.catchPosts?.filter((post) => post?.status === "caught")
-                ?.length || 0;
-            // const totalCount = lake?.catchPosts?.length || 0;
-            // const caughtPercentage =
-            //   totalCount > 0 ? (caughtCount / totalCount) * 100 : 0;
-            const totalCount = lake?.currentStock || 0;
+            const caughtCount = lake?.stocks.filter((data)=>data?.caught==="uncaught").length || 0;
+            const totalCount = lake?.stocks.length || 0;
             const caughtPercentage =
-              totalCount > 0 ? (caughtCount / totalCount) * 100 : 0;
+              totalCount > 0 ? (lake / totalCount) * 100 : 0;
 
             return (
               <div
@@ -248,18 +243,16 @@ function FollowedLakes({ setRefreshFollowedLakes,onAddCatch,setFishData }) {
                 )} */}
 
                 <h5 className="mb-2">Fish Stock :</h5>
-                {lake?.fishStocks?.length === 0 ? (
+                {lake?.stocks?.length === 0 ? (
                   <div className="flex justify-center items-center h-24">
                     <p className="text-gray-500">No fish stocks available.</p>
                   </div>
                 ) : (
                   <div className="grid grid-cols-1 xs:grid-cols-3 sm:grid-cols-6 gap-4">
-                    {lake?.fishStocks?.sort((a, b) => b.weight - a.weight).map((fish) => {
+                    {lake?.stocks?.sort((a, b) => b.weight - a.weight).map((fish) => {
                       // Check if the fish is caught
-                      const isCaught = lake?.catchPosts?.some(
-                        (post) => post?.lake?._id === fish?.lake && 
-                        post?.fish?.species===fish?.species
-                      );
+                      const isCaught = fish?.caught==="caught"?false:true;
+                      console.log("isCaught",isCaught)
 
                       return (
                         <div
@@ -276,11 +269,14 @@ function FollowedLakes({ setRefreshFollowedLakes,onAddCatch,setFishData }) {
                           {/* Fish Info Card */}
                           <div className="absolute bottom-0 left-0 w-full bg-black bg-opacity-10 text-white text-black p-2 rounded-b-2xl flex justify-between ">
                             <div>
-                              <p className="text-lg font-semibold">{fish?.species}</p>
+                              <p className="text-lg font-semibold">{fish?.name}</p>
                               <p className="text-xs">Weight: {fish?.weight} lbs</p>
                             </div>
                             {/* <View size={36} className="cursor-pointer"/> */}
-                            <View size={36} className="cursor-pointer" onClick={()=>navigate("/catch")}/>
+                            <Eye size={36} className="cursor-pointer" 
+                              onClick={() => 
+                                navigate(`/catch?stockID=${fish?._id}&lakeID=${fish.lake}`)}
+                            />
                           </div>
 
                           {/* Buttons for Catch & Uncatch */}
