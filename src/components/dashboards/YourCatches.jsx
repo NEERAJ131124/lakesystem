@@ -185,7 +185,7 @@ function YourCatches({ setRefreshCatches }) {
 
               {/* Location */}
               <div className="mb-4 text-gray-600 text-sm">
-                <i className="fas fa-map-marker-alt mr-2"></i>
+                {/* <i className="fas fa-map-marker-alt mr-2"></i> */}
                 {fish?.lake?.name}, {fish?.lake?.location}
               </div>
 

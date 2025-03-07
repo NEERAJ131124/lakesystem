@@ -12,6 +12,7 @@ const ManageFishStock = () => {
   const [showEditModal, setShowEditModal] = useState(false);
   const [selectedFish, setSelectedFish] = useState(null);
   const [hoveredImage, setHoveredImage] = useState(null);
+  const [selectedFileName,setSelectedFileName]=useState(null);
   const [editForm, setEditForm] = useState({
     name: "",
     species: "",
@@ -133,6 +134,7 @@ const ManageFishStock = () => {
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
+    setSelectedFileName(file.name)
     setEditForm({ ...editForm, image: file });
   };
 
@@ -158,7 +160,7 @@ const ManageFishStock = () => {
         {/* Buttons Container */}
         <div className="flex flex-col-reverse sm:flex-row items-center gap-3 sm:gap-6">
           <button
-            onClick={() => navigate(-1)}
+            onClick={() => navigate(`/lake-owner-dashboard/manage-lakes`)}
             className="w-full sm:w-auto px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
           >
             Back
@@ -436,7 +438,7 @@ flex items-center justify-center gap-2 transition-colors duration-200"
                     maxLength={500}
                   />
                 </div>
-                <div className="w-full px-2 mb-4">
+                {/* <div className="w-full px-2 mb-4">
                   <label className="block text-gray-700 mb-2">
                     Change Image
                   </label>
@@ -458,7 +460,47 @@ flex items-center justify-center gap-2 transition-colors duration-200"
                       />
                     </div>
                   )}
+                </div> */}
+
+                <div className="w-full px-2 mb-4">
+                  <label className="block text-gray-700 mb-2">Fish Image</label>
+
+                  {/* Hidden File Input */}
+                  <input
+                    type="file"
+                    id="editImage"
+                    accept="image/*"
+                    onChange={handleImageChange}
+                    className="hidden"
+                  />
+
+                  {/* Custom Button to Trigger File Input */}
+                  <button
+                    type="button"
+                    onClick={() => document.getElementById("editImage").click()}
+                    className="flex items-center gap-2 bg-blue-500 text-white px-4 py-2 rounded-md shadow-md hover:bg-blue-600 transition"
+                    style={{background:"#ae7a31"}}
+                  >
+                    Select Image 
+                  </button>
+
+                  {/* Image Preview */}
+                  {editForm.image && (
+                    <div className="mt-2">
+                      <img
+                        src={
+                          editForm.image instanceof File
+                            ? URL.createObjectURL(editForm.image)
+                            : editForm.image
+                        }
+                        alt="Preview"
+                        className="w-48 h-48 object-fill rounded border"
+                      />
+                      <p className="text-sm text-gray-600 mt-1">{selectedFileName}</p>
+                    </div>
+                  )}
                 </div>
+
               </div>
               <div className="flex justify-end space-x-2">
                 <button

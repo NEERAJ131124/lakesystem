@@ -83,11 +83,11 @@ const LakesPage = () => {
             </p>
           </div> */}
 
-          <div className="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-8 lg:mx-0 lg:max-w-none lg:grid-cols-3 ">
+          <div className="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-8 lg:mx-0 lg:max-w-none lg:grid-cols-3">
             {lakes.map((lake) => (
               <div
                 key={lake._id}
-                className="flex flex-col items-start cursor-pointer"
+                className="flex flex-col items-start cursor-pointer mt-4" 
                 onClick={() => navigate(`/fish-stock/${lake._id}`)}
               >
                 <div className="relative w-full">
@@ -98,7 +98,7 @@ const LakesPage = () => {
                   />
                 </div>
                 <div className="max-w-xl">
-                  <div className="mt-8 flex items-center gap-x-4 text-xs">
+                  <div className="mt-2 flex items-center gap-x-4 text-xs">
                     <time dateTime="2024-03-16" className="text-gray-500">
                       Available Now
                     </time>
@@ -107,11 +107,11 @@ const LakesPage = () => {
                     </span>
                   </div>
                   <div className="group relative">
-                    <h3 className="mt-3 text-lg font-semibold leading-6 text-gray-900 group-hover:text-carp-600">
+                    <h3 className="text-lg font-semibold leading-6 text-gray-900 group-hover:text-carp-600">
                       <span className="absolute inset-0" />
                       {lake.name}
                     </h3>
-                    <p className="mt-5 line-clamp-3 text-sm leading-6 text-gray-600">
+                    <p className="line-clamp-3 text-sm leading-6 text-gray-600">
                       {lake.description}
                     </p>
                   </div>

@@ -41,6 +41,7 @@ const AddingFishStock = () => {
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
+      setSelectedFileName(file.name)
       if (file.type.startsWith("image/")) {
         if (file.size > 5242880) {
           // 5MB limit
@@ -196,6 +197,8 @@ const AddingFishStock = () => {
       }
     }
   };
+
+  const [selectedFileName,setSelectedFileName]=useState(null);
 
   const fishSpecies = [
     { label: "Mirror", value: "Mirror" },
@@ -372,7 +375,7 @@ const AddingFishStock = () => {
           )}
         </div> */}
 
-        <div className="flex flex-col gap-2 w-full">
+        {/* <div className="flex flex-col gap-2 w-full">
           <label htmlFor="image" className="font-bold">
             Fish Image:
           </label>
@@ -398,6 +401,47 @@ const AddingFishStock = () => {
               />
             </div>
           )}
+        </div> */}
+
+        <div className="flex flex-col gap-2 w-full">
+          <label htmlFor="image" className="font-bold">
+            Fish Image:
+          </label>
+
+          {/* Hidden File Input */}
+          <input
+            type="file"
+            id="image"
+            name="image"
+            accept="image/*"
+            onChange={handleImageChange}
+            className="hidden"
+          />
+
+          {/* Custom Button to Trigger File Input */}
+          <button
+            type="button"
+            onClick={() => document.getElementById("image").click()}
+            className="flex items-center gap-2 bg-blue-500 text-white px-4 py-2 rounded-md shadow-md hover:bg-blue-600 transition"
+            style={{background:"#ae7a31"}}
+          >
+           Select Image
+          </button>
+
+          {/* Show Selected File Name */}
+          {imagePreview && (
+            <div className="mt-2 flex flex-col items-start">
+              <img
+                src={imagePreview}
+                alt="Fish preview"
+                className="max-w-[200px] max-h-[200px] object-fill rounded-md border"
+              />
+              <p className="text-sm text-gray-600 mt-1">{selectedFileName}</p>
+            </div>
+          )}
+
+          {/* Error Message */}
+          {errors.image && <span className="text-red-500 text-sm">{errors.image}</span>}
         </div>
 
         <div className="flex flex-col gap-2 w-full">

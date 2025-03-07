@@ -726,6 +726,10 @@ body {
   grid-column: span 8 / span 8;
 }
 
+.m-0 {
+  margin: 0px;
+}
+
 .mx-1 {
   margin-left: 0.25rem;
   margin-right: 0.25rem;
@@ -1202,6 +1206,14 @@ body {
 
 .gap-8 {
   gap: 2rem;
+}
+
+.gap-1 {
+  gap: 0.25rem;
+}
+
+.gap-10 {
+  gap: 2.5rem;
 }
 
 .gap-x-4 {
@@ -2553,6 +2565,11 @@ body {
     aspect-ratio: 2/1;
   }
 
+  .sm\:size-24 {
+    width: 6rem;
+    height: 6rem;
+  }
+
   .sm\:h-56 {
     height: 14rem;
   }
@@ -2704,11 +2721,6 @@ body {
     padding-bottom: 8rem;
   }
 
-  .sm\:py-8 {
-    padding-top: 2rem;
-    padding-bottom: 2rem;
-  }
-
   .sm\:pr-0 {
     padding-right: 0px;
   }
@@ -2799,6 +2811,11 @@ body {
     display: grid;
   }
 
+  .md\:size-28 {
+    width: 7rem;
+    height: 7rem;
+  }
+
   .md\:h-40 {
     height: 10rem;
   }
@@ -2883,12 +2900,17 @@ body {
     gap: 2rem;
   }
 
+  .md\:gap-2 {
+    gap: 0.5rem;
+  }
+
   .md\:p-8 {
     padding: 2rem;
   }
 
-  .md\:pt-8 {
-    padding-top: 2rem;
+  .md\:px-3 {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
   }
 
   .md\:text-left {
@@ -2903,6 +2925,11 @@ body {
   .md\:text-7xl {
     font-size: 4.5rem;
     line-height: 1;
+  }
+
+  .md\:text-sm {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
   }
 }
 
@@ -2942,6 +2969,11 @@ body {
 
   .lg\:aspect-\[3\/2\] {
     aspect-ratio: 3/2;
+  }
+
+  .lg\:size-36 {
+    width: 9rem;
+    height: 9rem;
   }
 
   .lg\:w-1\/2 {
@@ -2991,6 +3023,10 @@ body {
 
   .lg\:justify-start {
     justify-content: flex-start;
+  }
+
+  .lg\:gap-3 {
+    gap: 0.75rem;
   }
 
   .lg\:px-16 {

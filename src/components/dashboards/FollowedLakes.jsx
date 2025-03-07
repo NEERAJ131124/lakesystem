@@ -205,13 +205,13 @@ function FollowedLakes({ setRefreshFollowedLakes, onAddCatch, setFishData }) {
 
                             {/* Buttons for Catch & Uncatch */}
                             <div className="absolute top-2 right-2 flex gap-2">
-                            <CirclePlus 
-                                size={36}
+                              <CirclePlus
+                                size={24}
                                 className="cursor-pointer"
-                                 onClick={() => handleAddCatch(fish)}
-                            />
-                            <Eye
-                                size={36}
+                                onClick={() => handleAddCatch(fish)}
+                              />
+                              <Eye
+                                size={24}
                                 className="cursor-pointer"
                                 onClick={() => {
                                   if (isCaught) {
@@ -224,19 +224,19 @@ function FollowedLakes({ setRefreshFollowedLakes, onAddCatch, setFishData }) {
                                 }}
                               />
                               {isCaught ? (
-                                <button
-                                  className="bg-green-500 text-white px-3 py-1 rounded-full shadow-md"
-                                  // onClick={() => handleAddCatch(fish)}
+                                <span
+                                  className="bg-green-500 text-white text-sm px-2 p-1 rounded-full shadow-md"
+                                // onClick={() => handleAddCatch(fish)}
                                 >
                                   Caught
-                                </button>
+                                </span>
                               ) : (
-                                <button
-                                  className="bg-green-500 text-white px-3 py-1 rounded-full shadow-md"
-                                  // onClick={() => handleAddCatch(fish)}
+                                <span
+                                  className="bg-green-500 text-white text-sm  px-2 p-1 rounded-full shadow-md"
+                                // onClick={() => handleAddCatch(fish)}
                                 >
                                   uncaught
-                                </button>
+                                </span>
                               )}
                             </div>
                           </div>
