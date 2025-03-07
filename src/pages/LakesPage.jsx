@@ -71,7 +71,7 @@ const LakesPage = () => {
       </div>
 
       {/* Lakes Section */}
-      <div className="bg-white py-24 sm:py-8 pt-0">
+      <div className="bg-white py-8">
         <div className="mx-auto max-w-7xl px-6 lg:px-8 pt-0">
           {/* <div className="mx-auto max-w-2xl text-center">
             <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
