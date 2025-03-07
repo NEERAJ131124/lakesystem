@@ -117,7 +117,7 @@ function FollowedLakes({ setRefreshFollowedLakes, onAddCatch, setFishData }) {
         <div className="grid gap-4">
           {lakes?.map((lake) => {
             const caughtCount =
-              lake?.stocks.filter((data) => data?.caught === "uncaught")
+              lake?.stocks.filter((data) => data?.caught === "caught")
                 .length || 0;
             const totalCount = lake?.stocks.length || 0;
             const caughtPercentage =
