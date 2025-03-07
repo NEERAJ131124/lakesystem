@@ -9,7 +9,7 @@ import EditCatch from "./ManageCatch/EditCatch";
 import AddCatch from "./ManageCatch/AddCatch";
 import { useNavigate, useParams } from "react-router-dom";
 
-function FollowedLakes({ setRefreshFollowedLakes,onAddCatch,setFishData }) {
+function FollowedLakes({ setRefreshFollowedLakes, onAddCatch, setFishData }) {
   const [lakes, setLakes] = useState([]);
   const [loading, setLoading] = useState(false);
   const [selectedCatch, setSelectedCatch] = useState(null);
@@ -28,9 +28,6 @@ function FollowedLakes({ setRefreshFollowedLakes,onAddCatch,setFishData }) {
       setLakes(
         response?.data?.followedLakes.map((lake) => ({
           ...lake,
-          // catchPosts: lake.catchPosts.sort((a, b) =>
-          //   a?.status === "caught" ? -1 : 1
-          // ),
         })) || []
       );
     } catch (error) {
@@ -95,20 +92,20 @@ function FollowedLakes({ setRefreshFollowedLakes,onAddCatch,setFishData }) {
       toast.error("Failed to unfollow lake.");
     }
   };
-  
+
   const handleAddCatch = (fish) => {
     if (onAddCatch) {
       onAddCatch(true);
-      setFishData(fish)
+      setFishData(fish);
     }
   };
 
-  const navigate=useNavigate();
-  useEffect(()=>{
-    lakes.map((lake)=>{
-      console.log("lakes",lake)
-    })
-  },[lakes])
+  const navigate = useNavigate();
+  useEffect(() => {
+    lakes.map((lake) => {
+      console.log("lakes", lake);
+    });
+  }, [lakes]);
 
   return (
     <div className="p-6 px-0 overflow-x-hidden">
@@ -119,7 +116,9 @@ function FollowedLakes({ setRefreshFollowedLakes,onAddCatch,setFishData }) {
       ) : (
         <div className="grid gap-4">
           {lakes?.map((lake) => {
-            const caughtCount = lake?.stocks.filter((data)=>data?.caught==="uncaught").length || 0;
+            const caughtCount =
+              lake?.stocks.filter((data) => data?.caught === "uncaught")
+                .length || 0;
             const totalCount = lake?.stocks.length || 0;
             const caughtPercentage =
               totalCount > 0 ? (lake / totalCount) * 100 : 0;
@@ -158,90 +157,6 @@ function FollowedLakes({ setRefreshFollowedLakes,onAddCatch,setFishData }) {
                   </div>
                 </div>
 
-                {/* <h5 className="mb-2">Fish Stock : </h5>
-                {lake?.catchPosts?.length === 0 ? (
-                  <div className="flex justify-center items-center h-24">
-                    <p className="text-gray-500">No catches in this lake.</p>
-                    <button
-                      className="ml-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-                      onClick={() => {
-                        setSelectedLake(lake);
-                        setIsAddCatchOpen(true);
-                      }}
-                    >
-                      Add Catch
-                    </button>
-                  </div>
-                ) : (
-                  <div className="grid grid-cols-1 xs:grid-cols-3 sm:grid-cols-6 gap-4">
-                    {lake?.catchPosts?.map((post) => (
-                      <div
-                        key={post?._id}
-                        className="relative bg-cover text-white bg-center rounded-lg shadow-md p-2 aspect-square group"
-                        style={{
-                          backgroundImage: `url(${post?.fish?.image})`,
-                        }}
-                      >
-                        {post?.status === "caught" ? (
-                          <>
-                            <div className="absolute inset-0 bg-black bg-opacity-40 rounded-lg"></div>
-                            <button
-                              className="absolute top-0.5 right-0.5 rounded-full p-2 cursor-pointer"
-                              onClick={() =>
-                                handleFavourite(post?._id, !post?.favourite)
-                              }
-                              disabled={requestInProgress}
-                            >
-                              <Star
-                                size={20}
-                                className={`${
-                                  post?.favourite
-                                    ? "text-yellow-500 fill-yellow-500"
-                                    : "text-white"
-                                }`}
-                              />
-                            </button>
-                            <div className="absolute bottom-1.5 left-2 ">
-                              <p className="text-xs font-semibold bg-[#22c55e] rounded-full px-2 py-1 m-auto pt-0.5">
-                                Caught
-                              </p>
-                              <p className="text-lg font-semibold ml-0.5">
-                                {post?.fish?.species}
-                              </p>
-                              <p className="text-xs ml-0.5">
-                                {post?.fish?.weight} lbs
-                              </p>
-                            </div>
-                          </>
-                        ) : (
-                          <>
-                            <div className="absolute inset-0 bg-black bg-opacity-40 rounded-lg"></div>
-                            <div className="absolute top-1.5 left-1.5">
-                              <p className="text-xs font-semibold bg-[#3B82F6] rounded-full px-1.5 py-1 m-auto pt-0.5">
-                                Uncaught
-                              </p>
-                              <p className="text-lg font-semibold ml-0.5">
-                                {post?.fish?.species}
-                              </p>
-                              <p className="text-xs ml-0.5">
-                                {post?.fish?.weight} lbs
-                              </p>
-                            </div>
-                            <div className="absolute pt-10 inset-0 bg-black bg-opacity-30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                              <button
-                                className="bg-white text-white font-semibold bg-opacity-30 px-2 py-1.5 rounded-full text-md pt-1 transition-colors"
-                                onClick={() => setSelectedCatch(post)}
-                              >
-                                Catch Now
-                              </button>
-                            </div>
-                          </>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                )} */}
-
                 <h5 className="mb-2">Fish Stock :</h5>
                 {lake?.stocks?.length === 0 ? (
                   <div className="flex justify-center items-center h-24">
@@ -249,56 +164,74 @@ function FollowedLakes({ setRefreshFollowedLakes,onAddCatch,setFishData }) {
                   </div>
                 ) : (
                   <div className="grid grid-cols-1 xs:grid-cols-3 sm:grid-cols-6 gap-4">
-                    {lake?.stocks?.sort((a, b) => b.weight - a.weight).map((fish) => {
-                      // Check if the fish is caught
-                      const isCaught = fish?.caught==="caught"?false:true;
-                      console.log("isCaught",isCaught)
+                    {lake?.stocks
+                      ?.sort((a, b) => {
+                        if (a.caught === b.caught) {
+                          return a.weight - b.weight; // Sort by weight if caught status is the same
+                        }
+                        return a.caught === "caught" ? 1 : -1; // Caught fish first
+                      })
+                      .map((fish) => {
+                        // Check if the fish is caught
+                        const isCaught =
+                          fish?.caught === "caught" ? false : true;
+                        console.log("isCaught", isCaught);
 
-                      return (
-                        <div
-                          key={fish?._id}
-                          className="relative bg-cover text-white bg-center rounded-2xl shadow-lg overflow-hidden aspect-square group border border-gray-300"
-                          style={{
-                            backgroundImage: `url(${fish?.image})`,
-                            filter: !isCaught ? "grayscale(100%)" : "none",
-                          }}
-                        >
-                          {/* Dark overlay for better contrast */}
-                          <div className="absolute inset-0 bg-black bg-opacity-20 rounded-2xl"></div>
+                        return (
+                          <div
+                            key={fish?._id}
+                            className="relative bg-cover text-white bg-center rounded-2xl shadow-lg overflow-hidden aspect-square group border border-gray-300"
+                            style={{
+                              backgroundImage: `url(${fish?.image})`,
+                              filter: !isCaught ? "grayscale(100%)" : "none",
+                            }}
+                          >
+                            {/* Dark overlay for better contrast */}
+                            <div className="absolute inset-0 bg-black bg-opacity-20 rounded-2xl"></div>
 
-                          {/* Fish Info Card */}
-                          <div className="absolute bottom-0 left-0 w-full bg-black bg-opacity-10 text-white text-black p-2 rounded-b-2xl flex justify-between ">
-                            <div>
-                              <p className="text-lg font-semibold">{fish?.name}</p>
-                              <p className="text-xs">Weight: {fish?.weight} lbs</p>
+                            {/* Fish Info Card */}
+                            <div className="absolute bottom-0 left-0 w-full bg-black bg-opacity-10 text-white text-black p-2 rounded-b-2xl flex justify-between ">
+                              <div>
+                                <p className="text-lg font-semibold">
+                                  {fish?.name}
+                                </p>
+                                <p className="text-xs">
+                                  Weight: {fish?.weight} lbs
+                                </p>
+                              </div>
+                              {/* <View size={36} className="cursor-pointer"/> */}
+                              <Eye
+                                size={36}
+                                className="cursor-pointer"
+                                onClick={() =>
+                                  navigate(
+                                    `/catch?stockID=${fish?._id}&lakeID=${fish.lake}`
+                                  )
+                                }
+                              />
                             </div>
-                            {/* <View size={36} className="cursor-pointer"/> */}
-                            <Eye size={36} className="cursor-pointer" 
-                              onClick={() => 
-                                navigate(`/catch?stockID=${fish?._id}&lakeID=${fish.lake}`)}
-                            />
-                          </div>
 
-                          {/* Buttons for Catch & Uncatch */}
-                          <div className="absolute top-2 right-2 flex gap-2">
-                            {isCaught ? (
-                              <button className="bg-green-500 text-white px-3 py-1 rounded-lg shadow-md"  
-                              onClick={() => handleAddCatch(fish)}>
-                                 Caught
-                              </button>
-                            ) : (
-                              <button
-                                className="bg-green-500 text-white px-3 py-1 rounded-lg shadow-md"
-                                onClick={() => handleAddCatch(fish)}
-                              >
-                                uncaught
-                              </button>
-                            )}
+                            {/* Buttons for Catch & Uncatch */}
+                            <div className="absolute top-2 right-2 flex gap-2">
+                              {isCaught ? (
+                                <button
+                                  className="bg-green-500 text-white px-3 py-1 rounded-lg shadow-md"
+                                  onClick={() => handleAddCatch(fish)}
+                                >
+                                  Caught
+                                </button>
+                              ) : (
+                                <button
+                                  className="bg-green-500 text-white px-3 py-1 rounded-lg shadow-md"
+                                  onClick={() => handleAddCatch(fish)}
+                                >
+                                  uncaught
+                                </button>
+                              )}
+                            </div>
                           </div>
-                        </div>
-
-                      );
-                    })}
+                        );
+                      })}
                   </div>
                 )}
                 {/* end new 06-03-2025 */}
