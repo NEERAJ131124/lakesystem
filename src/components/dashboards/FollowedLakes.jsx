@@ -25,6 +25,8 @@ function FollowedLakes({ setRefreshFollowedLakes, onAddCatch, setFishData }) {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
+
+      console.log(response);
       setLakes(
         response?.data?.followedLakes.map((lake) => ({
           ...lake,
@@ -101,11 +103,9 @@ function FollowedLakes({ setRefreshFollowedLakes, onAddCatch, setFishData }) {
   };
 
   const navigate = useNavigate();
-  useEffect(() => {
-    lakes.map((lake) => {
-      console.log("lakes", lake);
-    });
-  }, [lakes]);
+  // useEffect(() => {
+  //   lakes.map((lake) => {});
+  // }, [lakes]);
 
   return (
     <div className="p-6 px-0 overflow-x-hidden">
@@ -174,7 +174,7 @@ function FollowedLakes({ setRefreshFollowedLakes, onAddCatch, setFishData }) {
                       .map((fish) => {
                         // Check if the fish is caught
                         const isCaught =
-                          fish?.caught === "caught" ? false : true;
+                          fish?.caught === "caught" ? true : false;
                         console.log("isCaught", isCaught);
 
                         return (

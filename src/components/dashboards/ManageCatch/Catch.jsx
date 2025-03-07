@@ -6,35 +6,34 @@ import axios from "axios";
 
 const Catch = () => {
   const location = useLocation();
-  const navigate=useNavigate();
+  const navigate = useNavigate();
   const queryParams = new URLSearchParams(location.search);
   const stockID = queryParams.get("stockID");
   const lakeID = queryParams.get("lakeID");
-  const [catchPosts,setCatchPosts]=useState([])
+  const [catchPosts, setCatchPosts] = useState([]);
 
-useEffect(() => {
-  const getCatch = async () => {
-    try {
-      const res = await axios.get(
-        `${baseUrl}/api/users/catchpost?stockID=${stockID}&lakeID=${lakeID}}`, 
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
-      setCatchPosts(res?.data?.catchPosts);
-      console.log("catchPosts",catchPosts);
-    } catch (error) {
-      console.error(error);
+  useEffect(() => {
+    const getCatch = async () => {
+      try {
+        const res = await axios.get(
+          `${baseUrl}/api/users/catchpost?stockID=${stockID}&lakeID=${lakeID}}`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+        setCatchPosts(res?.data?.catchPosts);
+        console.log("catchPosts", res);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    if (stockID) {
+      getCatch();
     }
-  };
-
-  if (stockID) {
-    getCatch(); 
-  }
-}, [stockID]); 
-
+  }, [stockID]);
 
   return (
     <div className="p-4">
@@ -49,35 +48,38 @@ useEffect(() => {
         </button>
       </div>
       <div>
-      {/* <p><strong>Stock ID:</strong> {stockID}</p> */}
-    
-      <div>
-      <h5 className="mb-2">Fish Stock :</h5>
-      {catchPosts.length === 0 ? (
-        <div className="flex justify-center items-center h-24">
-          <p className="text-gray-500">No catches in this lake.</p>
-        </div>
-      ) : (
-        <div className="grid grid-cols-1 xs:grid-cols-3 sm:grid-cols-6 gap-4">
-          {catchPosts.map((post) => (
-            <div
-              key={post._id}
-              className="relative bg-cover text-white bg-center rounded-lg shadow-md p-2 aspect-square"
-              style={{ backgroundImage: `url(${post.fish.image})` }}
-            >
-              <div className="absolute inset-0 bg-black bg-opacity-40 rounded-lg"></div>
-              <div className="absolute bottom-1.5 left-2">
-                <p className="text-lg font-semibold ml-0.5">{post.fish.species}</p>
-                <p className="text-xs ml-0.5">{post.fish.weight} lbs</p>
-                <p className="text-xs ml-0.5 overflow-hidden">{post.description}</p>
-              </div>
+        {/* <p><strong>Stock ID:</strong> {stockID}</p> */}
+
+        <div>
+          <h5 className="mb-2">Fish Stock :</h5>
+          {catchPosts.length === 0 ? (
+            <div className="flex justify-center items-center h-24">
+              <p className="text-gray-500">No catches in this lake.</p>
             </div>
-          ))}
+          ) : (
+            <div className="grid grid-cols-1 xs:grid-cols-3 sm:grid-cols-6 gap-4">
+              {catchPosts.map((post) => (
+                <div
+                  key={post._id}
+                  className="relative bg-cover text-white bg-center rounded-lg shadow-md p-2 aspect-square"
+                  style={{ backgroundImage: `url(${post.fish.image})` }}
+                >
+                  <div className="absolute inset-0 bg-black bg-opacity-40 rounded-lg"></div>
+                  <div className="absolute bottom-1.5 left-2">
+                    <p className="text-lg font-semibold ml-0.5">
+                      {post.fish.species}
+                    </p>
+                    <p className="text-xs ml-0.5">{post.fish.weight} lbs</p>
+                    <p className="text-xs ml-0.5 overflow-hidden">
+                      {post.description}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
-      )}
-    </div>
-    
-    </div>
+      </div>
     </div>
   );
 };

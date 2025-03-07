@@ -31,7 +31,7 @@ import Loader from "./components/Loader.jsx";
 import ScrollToTop from "./components/ScrollToTop.jsx";
 import Privacy from "./pages/Privacy.jsx";
 import Terms from "./pages/Terms.jsx";
-import Catch from "./components/dashboards/ManageCatch/Catch.jsx"
+import Catch from "./components/dashboards/ManageCatch/Catch.jsx";
 
 const PrivateRoute = ({ children, allowedUserTypes }) => {
   const { user, loading } = useAuth();

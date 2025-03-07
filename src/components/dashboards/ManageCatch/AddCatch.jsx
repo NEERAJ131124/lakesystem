@@ -13,7 +13,7 @@ function AddCatch({
   fetchFollowedLakes,
   setLoading,
   selectedLake,
-  fishData
+  fishData,
 }) {
   const [lakes, setLakes] = useState([]);
   const [newCatch, setNewCatch] = useState({
@@ -27,11 +27,11 @@ function AddCatch({
     taggedUsers: "",
     review: "",
     rating: 0,
-    stockID:0,
+    stockID: 0,
   });
 
-  useEffect(()=>{
-    if(fishData){
+  useEffect(() => {
+    if (fishData) {
       setNewCatch({
         species: fishData?.species,
         fishName: "",
@@ -43,11 +43,11 @@ function AddCatch({
         taggedUsers: "",
         review: "",
         rating: 0,
-        stockID:fishData?._id
-      })
-    } 
-    console.log("fishStocks",fishData)
-  },[fishData])
+        stockID: fishData?._id,
+      });
+    }
+    console.log("fishStocks", fishData);
+  }, [fishData]);
 
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -170,7 +170,7 @@ function AddCatch({
     formData.append("taggedUsers", newCatch.taggedUsers);
     formData.append("review", newCatch.review);
     formData.append("rating", newCatch.rating ? newCatch.rating : 4);
-    formData.append("stockID,", newCatch.stockID);
+    formData.append("stockID", newCatch.stockID);
 
     try {
       const res = await axios.post(`${baseUrl}/api/catches`, formData, {
@@ -190,7 +190,7 @@ function AddCatch({
         taggedUsers: "",
         review: "",
         rating: 0,
-        stockID:0
+        stockID: 0,
       });
       setPreviewImage(null); // Clear preview image
       toast.success("Catch added successfully!");
@@ -228,7 +228,7 @@ function AddCatch({
         </h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="mb-4">
+            <div className="mb-4">
               <label
                 htmlFor="lake"
                 className="block text-sm font-medium text-gray-700 mb-2"
@@ -289,7 +289,7 @@ function AddCatch({
               )}
             </div>
 
-            <div className="mb-4" style={{display:"none"}}>
+            <div className="mb-4" style={{ display: "none" }}>
               <label
                 htmlFor="status"
                 className="block text-sm font-medium text-gray-700 mb-2"
@@ -355,7 +355,6 @@ function AddCatch({
                 Photo
               </label>
 
-               
               <div className="flex items-center gap-4">
                 {/* Custom File Upload Button */}
                 <button
@@ -370,11 +369,10 @@ function AddCatch({
                 {newCatch.photo && (
                   <span className="text-gray-700">{newCatch.photo.name}</span>
                 )}
-                
               </div>
               {errors.photo && (
                 <span className="text-red-500 text-sm">{errors.photo}</span>
-              )} 
+              )}
 
               {/* Hidden File Input */}
               <input
@@ -460,7 +458,7 @@ function AddCatch({
                   taggedUsers: "",
                   review: "",
                   rating: 0,
-                  stockID:0
+                  stockID: 0,
                 });
                 setPreviewImage(null); // Clear preview image
                 fileInputRef.current.value = ""; // Clear file input
