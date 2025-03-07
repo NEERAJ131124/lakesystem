@@ -3,7 +3,7 @@ import axios from "axios";
 import { baseUrl } from "../../constants/APIs";
 import { handleFollowLake } from "../contexts/Methods";
 import Loader from "../Loader";
-import { Eye, Star, Trash2, View } from "lucide-react";
+import { CirclePlus, Eye, Plus, SquarePlus, SquarePlusIcon, Star, Trash2, View } from "lucide-react";
 import toast from "react-hot-toast";
 import EditCatch from "./ManageCatch/EditCatch";
 import AddCatch from "./ManageCatch/AddCatch";
@@ -200,7 +200,17 @@ function FollowedLakes({ setRefreshFollowedLakes, onAddCatch, setFishData }) {
                                 </p>
                               </div>
                               {/* <View size={36} className="cursor-pointer"/> */}
-                              <Eye
+                             
+                            </div>
+
+                            {/* Buttons for Catch & Uncatch */}
+                            <div className="absolute top-2 right-2 flex gap-2">
+                            <CirclePlus 
+                                size={36}
+                                className="cursor-pointer"
+                                 onClick={() => handleAddCatch(fish)}
+                            />
+                            <Eye
                                 size={36}
                                 className="cursor-pointer"
                                 onClick={() => {
@@ -213,21 +223,17 @@ function FollowedLakes({ setRefreshFollowedLakes, onAddCatch, setFishData }) {
                                   }
                                 }}
                               />
-                            </div>
-
-                            {/* Buttons for Catch & Uncatch */}
-                            <div className="absolute top-2 right-2 flex gap-2">
                               {isCaught ? (
                                 <button
                                   className="bg-green-500 text-white px-3 py-1 rounded-full shadow-md"
-                                  onClick={() => handleAddCatch(fish)}
+                                  // onClick={() => handleAddCatch(fish)}
                                 >
                                   Caught
                                 </button>
                               ) : (
                                 <button
                                   className="bg-green-500 text-white px-3 py-1 rounded-full shadow-md"
-                                  onClick={() => handleAddCatch(fish)}
+                                  // onClick={() => handleAddCatch(fish)}
                                 >
                                   uncaught
                                 </button>
