@@ -49,13 +49,10 @@ useEffect(() => {
         </button>
       </div>
       <div>
-      {/* <p><strong>Stock ID:</strong> {stockID}</p> */}
-    
       <div>
-      <h5 className="mb-2">Fish Stock :</h5>
       {catchPosts.length === 0 ? (
         <div className="flex justify-center items-center h-24">
-          <p className="text-gray-500">No catches in this lake.</p>
+          <p className="text-gray-500">No catches in this stock.</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 xs:grid-cols-3 sm:grid-cols-6 gap-4">
