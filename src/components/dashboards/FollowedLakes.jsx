@@ -204,9 +204,15 @@ function FollowedLakes({ setRefreshFollowedLakes, onAddCatch, setFishData }) {
                                 size={36}
                                 className="cursor-pointer"
                                 onClick={() =>
-                                  navigate(
-                                    `/catch?stockID=${fish?._id}&lakeID=${fish.lake}`
-                                  )
+                                 {
+                                  if(isCaught){
+                                    navigate(
+                                      `/catch?stockID=${fish?._id}&lakeID=${fish.lake}`
+                                    )
+                                   }else{
+                                    toast.error("No catches in this stock.")
+                                   }
+                                 }
                                 }
                               />
                             </div>

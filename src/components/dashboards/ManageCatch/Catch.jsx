@@ -3,6 +3,7 @@ import { Toaster } from "react-hot-toast";
 import { useLocation, useNavigate } from "react-router-dom";
 import { baseUrl } from "../../../constants/APIs";
 import axios from "axios";
+import Loader from "../../Loader";
 
 const Catch = () => {
   const location = useLocation();
@@ -11,9 +12,11 @@ const Catch = () => {
   const stockID = queryParams.get("stockID");
   const lakeID = queryParams.get("lakeID");
   const [catchPosts, setCatchPosts] = useState([]);
+  const [loading,setLoading]=useState(false)
 
   useEffect(() => {
     const getCatch = async () => {
+      setLoading(true)
       try {
         const res = await axios.get(
           `${baseUrl}/api/users/catchpost?stockID=${stockID}&lakeID=${lakeID}}`,
@@ -28,12 +31,19 @@ const Catch = () => {
       } catch (error) {
         console.error(error);
       }
+      finally{
+        setLoading(false)
+      }
     };
 
     if (stockID) {
       getCatch();
     }
   }, [stockID]);
+
+  if(loading){
+    return    <Loader />
+  }
 
   return (
     <div className="p-4">
