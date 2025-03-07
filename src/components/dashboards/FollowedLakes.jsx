@@ -117,8 +117,8 @@ function FollowedLakes({ setRefreshFollowedLakes, onAddCatch, setFishData }) {
         <div className="grid gap-4">
           {lakes?.map((lake) => {
             const caughtCount =
-              lake?.stocks.filter((data) => data?.caught === "caught")
-                .length || 0;
+              lake?.stocks.filter((data) => data?.caught === "caught").length ||
+              0;
             const totalCount = lake?.stocks.length || 0;
             const caughtPercentage =
               totalCount > 0 ? (lake / totalCount) * 100 : 0;
@@ -203,17 +203,15 @@ function FollowedLakes({ setRefreshFollowedLakes, onAddCatch, setFishData }) {
                               <Eye
                                 size={36}
                                 className="cursor-pointer"
-                                onClick={() =>
-                                 {
-                                  if(isCaught){
+                                onClick={() => {
+                                  if (isCaught) {
                                     navigate(
                                       `/catch?stockID=${fish?._id}&lakeID=${fish.lake}`
-                                    )
-                                   }else{
-                                    toast.error("No catches in this stock.")
-                                   }
-                                 }
-                                }
+                                    );
+                                  } else {
+                                    toast.error("No catches in this stock.");
+                                  }
+                                }}
                               />
                             </div>
 
@@ -221,14 +219,14 @@ function FollowedLakes({ setRefreshFollowedLakes, onAddCatch, setFishData }) {
                             <div className="absolute top-2 right-2 flex gap-2">
                               {isCaught ? (
                                 <button
-                                  className="bg-green-500 text-white px-3 py-1 rounded-lg shadow-md"
+                                  className="bg-green-500 text-white px-3 py-1 rounded-full shadow-md"
                                   onClick={() => handleAddCatch(fish)}
                                 >
                                   Caught
                                 </button>
                               ) : (
                                 <button
-                                  className="bg-green-500 text-white px-3 py-1 rounded-lg shadow-md"
+                                  className="bg-green-500 text-white px-3 py-1 rounded-full shadow-md"
                                   onClick={() => handleAddCatch(fish)}
                                 >
                                   uncaught

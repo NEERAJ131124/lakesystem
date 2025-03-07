@@ -1220,6 +1220,10 @@ body {
   row-gap: 3rem;
 }
 
+.gap-y-8 {
+  row-gap: 2rem;
+}
+
 .space-x-2 > :not([hidden]) ~ :not([hidden]) {
   --tw-space-x-reverse: 0;
   margin-right: calc(0.5rem * var(--tw-space-x-reverse));
@@ -2700,6 +2704,16 @@ body {
     padding-bottom: 8rem;
   }
 
+  .sm\:py-16 {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+  }
+
+  .sm\:py-8 {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
+
   .sm\:pr-0 {
     padding-right: 0px;
   }
@@ -2818,6 +2832,10 @@ body {
     width: 12rem;
   }
 
+  .md\:w-2\/3 {
+    width: 66.666667%;
+  }
+
   .md\:max-w-2xl {
     max-width: 42rem;
   }
@@ -2899,6 +2917,10 @@ body {
     margin-top: 6rem;
   }
 
+  .lg\:mt-0 {
+    margin-top: 0px;
+  }
+
   .lg\:block {
     display: block;
   }
@@ -2927,6 +2949,10 @@ body {
     width: 16rem;
   }
 
+  .lg\:w-1\/2 {
+    width: 50%;
+  }
+
   .lg\:max-w-none {
     max-width: none;
   }
@@ -2952,6 +2978,10 @@ body {
     grid-template-columns: repeat(8, minmax(0, 1fr));
   }
 
+  .lg\:flex-row {
+    flex-direction: row;
+  }
+
   .lg\:justify-start {
     justify-content: flex-start;
   }
@@ -2959,6 +2989,11 @@ body {
   .lg\:px-8 {
     padding-left: 2rem;
     padding-right: 2rem;
+  }
+
+  .lg\:px-16 {
+    padding-left: 4rem;
+    padding-right: 4rem;
   }
 
   .lg\:pl-4 {

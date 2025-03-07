@@ -8,6 +8,7 @@ import axios from "axios";
 import { baseUrl } from "../constants/APIs";
 import Loader from "../components/Loader";
 import l0 from "../assets/wlake.jpg";
+import homebanner from "../assets/homebanner.png";
 
 const FeatureCard = ({
   icon,
@@ -100,17 +101,20 @@ const HomePage = () => {
     return <Loader />;
   }
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen ">
       {/* Hero Section */}
-      <div className="relative overflow-hidden" style={{ minHeight: "500px" }}>
+      <div
+        className="relative overflow-hidden px-8 lg:px-16"
+        style={{ minHeight: "500px" }}
+      >
         <img
           src="/images/hero-image.jpeg"
           alt="Carp fishing scene"
-          className="absolute inset-0 w-full h-full object-fill object-center"
+          className="absolute inset-0 w-full h-full object-cover"
         />
         <div className="absolute inset-0 bg-black opacity-50" />
-        <div className="relative z-10 mx-auto max-w-7xl px-6 py-24 sm:py-32 lg:px-8">
-          <div className="max-w-2xl">
+        <div className="relative z-10 mx-auto py-24 sm:py-32  flex flex-col lg:flex-row items-center pb-0">
+          <div className="w-full md:w-2/3">
             <h1 className="text-4xl font-bold tracking-tight text-white sm:text-6xl">
               Welcome to Carpbook
             </h1>
@@ -122,7 +126,7 @@ const HomePage = () => {
               <Link to="/register" className="btn-primary">
                 Sign Up
               </Link>
-              <Link to="/about" className="flex items-center  btn-primary">
+              <Link to="/about" className="flex items-center btn-primary">
                 Learn More
                 <svg
                   className="ml-2 -mr-1 w-4 h-4"
@@ -138,6 +142,13 @@ const HomePage = () => {
                 </svg>
               </Link>
             </div>
+          </div>
+          <div className="mt-10 lg:mt-0 lg:w-1/3">
+            <img
+              src={homebanner}
+              alt="Carp fishing scene"
+              className="w-full h-full object-cover rounded-lg shadow-lg"
+            />
           </div>
         </div>
       </div>
