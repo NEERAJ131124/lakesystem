@@ -8,6 +8,7 @@ import toast from "react-hot-toast";
 import EditCatch from "./ManageCatch/EditCatch";
 import AddCatch from "./ManageCatch/AddCatch";
 import { useNavigate, useParams } from "react-router-dom";
+import CatchModal from "./ManageCatch/Catch";
 
 function FollowedLakes({ setRefreshFollowedLakes, onAddCatch, setFishData }) {
   const [lakes, setLakes] = useState([]);
@@ -26,7 +27,6 @@ function FollowedLakes({ setRefreshFollowedLakes, onAddCatch, setFishData }) {
         },
       });
 
-      console.log(response);
       setLakes(
         response?.data?.followedLakes.map((lake) => ({
           ...lake,
@@ -103,9 +103,9 @@ function FollowedLakes({ setRefreshFollowedLakes, onAddCatch, setFishData }) {
   };
 
   const navigate = useNavigate();
-  // useEffect(() => {
-  //   lakes.map((lake) => {});
-  // }, [lakes]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [stockID,setStockID]=useState(0);
+  const [lakeID,setLakeID]=useState(0);
 
   return (
     <div className="p-6 px-0 overflow-x-hidden">
@@ -175,22 +175,26 @@ function FollowedLakes({ setRefreshFollowedLakes, onAddCatch, setFishData }) {
                         // Check if the fish is caught
                         const isCaught =
                           fish?.caught === "caught" ? true : false;
-                        console.log("isCaught", isCaught);
-
                         return (
                           <div
                             key={fish?._id}
-                            className="relative bg-cover text-white bg-center rounded-2xl shadow-lg overflow-hidden aspect-square group border border-gray-300"
+                            className="relative bg-cover text-white bg-center rounded-2xl shadow-lg overflow-hidden aspect-square group border border-gray-300 cursor-pointer"
                             style={{
                               backgroundImage: `url(${fish?.image})`,
                               filter: !isCaught ? "grayscale(100%)" : "none",
                             }}
+                            onClick={() => {
+                              if (isCaught) {
+                                setLakeID(fish?.lake);
+                                setStockID(fish?._id);
+                                setIsModalOpen(true)
+                              } else {
+                                toast.error("No catches in this stock.");
+                              }
+                            }}
                           >
-                            {/* Dark overlay for better contrast */}
-                            <div className="absolute inset-0 bg-black bg-opacity-20 rounded-2xl"></div>
-
                             {/* Fish Info Card */}
-                            <div className="absolute bottom-0 left-0 w-full bg-black bg-opacity-10 text-white text-black p-2 rounded-b-2xl flex justify-between ">
+                            <div className="absolute bottom-0 left-0 w-full bg-black bg-opacity-10 text-white p-2 rounded-b-2xl flex justify-between ">
                               <div>
                                 <p className="text-lg font-semibold">
                                   {fish?.name}
@@ -199,8 +203,6 @@ function FollowedLakes({ setRefreshFollowedLakes, onAddCatch, setFishData }) {
                                   Weight: {fish?.weight} lbs
                                 </p>
                               </div>
-                              {/* <View size={36} className="cursor-pointer"/> */}
-                             
                             </div>
 
                             {/* Buttons for Catch & Uncatch */}
@@ -208,32 +210,20 @@ function FollowedLakes({ setRefreshFollowedLakes, onAddCatch, setFishData }) {
                               <CirclePlus
                                 size={24}
                                 className="cursor-pointer"
-                                onClick={() => handleAddCatch(fish)}
-                              />
-                              <Eye
-                                size={24}
-                                className="cursor-pointer"
-                                onClick={() => {
-                                  if (isCaught) {
-                                    navigate(
-                                      `/catch?stockID=${fish?._id}&lakeID=${fish.lake}`
-                                    );
-                                  } else {
-                                    toast.error("No catches in this stock.");
-                                  }
+                                onClick={(e) => {
+                                  e.stopPropagation(); 
+                                  handleAddCatch(fish);
                                 }}
                               />
                               {isCaught ? (
                                 <span
                                   className="bg-green-500 text-white text-sm px-2 p-1 rounded-full shadow-md"
-                                // onClick={() => handleAddCatch(fish)}
                                 >
                                   Caught
                                 </span>
                               ) : (
                                 <span
                                   className="bg-green-500 text-white text-sm  px-2 p-1 rounded-full shadow-md"
-                                // onClick={() => handleAddCatch(fish)}
                                 >
                                   uncaught
                                 </span>
@@ -270,6 +260,12 @@ function FollowedLakes({ setRefreshFollowedLakes, onAddCatch, setFishData }) {
           selectedLake={selectedLake}
         />
       )}
+      <CatchModal
+        stockID={stockID}
+        lakeID={lakeID}
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
     </div>
   );
 }

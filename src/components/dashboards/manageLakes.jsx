@@ -81,7 +81,8 @@ function ManageLakes() {
     return matchesSearch && matchesFishType && matchesFacility && matchesPrice;
   });
 
-  const allowedFishTypes = ["Common", "Mirror", "Grass", "Ghost"];
+  // const allowedFishTypes = ["Common", "Mirror", "Grass", "Ghost"];
+  const allowedFishTypes =  ["Common", "Mirror", "Grass", "Ghost","Leather","Ghosty","Koi","Cat fish","Other"]
 
   const uniqueFishTypes = [
     ...new Set(

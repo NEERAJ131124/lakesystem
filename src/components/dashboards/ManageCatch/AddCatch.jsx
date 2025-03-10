@@ -46,7 +46,7 @@ function AddCatch({
         stockID: fishData?._id,
       });
     }
-    console.log("fishStocks", fishData);
+    // console.log("fishStocks", fishData);
   }, [fishData]);
 
   const [errors, setErrors] = useState({});
