@@ -51,14 +51,14 @@ const HomePage = () => {
   const nextSlide = () => {
     setSlideDirection("slide-left");
     setCurrentIndex((prevIndex) =>
-      prevIndex + 1 >= lakes.length ? 0 : prevIndex + 1
+      prevIndex + 1 >= lakes?.length ? 0 : prevIndex + 1
     );
   };
 
   const prevSlide = () => {
     setSlideDirection("slide-right");
     setCurrentIndex((prevIndex) =>
-      prevIndex - 1 < 0 ? lakes.length - 1 : prevIndex - 1
+      prevIndex - 1 < 0 ? lakes?.length - 1 : prevIndex - 1
     );
   };
 
@@ -67,7 +67,7 @@ const HomePage = () => {
       try {
         const response = await axios.get(`${baseUrl}/api/lakes/all`);
         console.log(response);
-        setLakes(response.data);
+        setLakes(response?.data);
       } catch (error) {
         console.error("Error fetching lakes:", error);
       } finally {
@@ -103,10 +103,7 @@ const HomePage = () => {
   return (
     <div className="flex flex-col min-h-screen ">
       {/* Hero Section */}
-      <div
-        className="relative overflow-hidden"
-        style={{ minHeight: "500px" }}
-      >
+      <div className="relative overflow-hidden" style={{ minHeight: "500px" }}>
         <img
           src="/images/hero-image.jpeg"
           alt="Carp fishing scene"
@@ -114,7 +111,7 @@ const HomePage = () => {
         />
         <div className="absolute inset-0 bg-black opacity-50" />
         <div className="relative z-10 mx-auto py-12 flex flex-col lg:flex-row items-center pb-0">
-        {/* py-24 sm:py-32 */}
+          {/* py-24 sm:py-32 */}
           <div className="w-full md:w-2/3  px-8 lg:px-16">
             <h1 className="text-4xl text-center md:text-left font-bold tracking-tight text-white sm:text-6xl">
               Welcome to Carpbook
@@ -172,8 +169,7 @@ const HomePage = () => {
             <FeatureCard
               icon={<Fish className="w-6 h-6 text-carp-600" />}
               title="View Lake Stock"
-              description="Get up-to-date information on lake stocks, including various species, sizes, and recent catches."
-              // description="Get up-to-date information on lake stocks, including species, sizes, and recent catches."
+              description="Get up-to-date information on lake stocks, including species, sizes, and recent catches."
               imageSrc="/images/lake-stock.jpg"
               buttonText="View Stock"
               buttonLink="/lake-stock"
@@ -181,8 +177,7 @@ const HomePage = () => {
             <FeatureCard
               icon={<Target className="w-6 h-6 text-carp-600" />}
               title="Capture Your Goals"
-              description="Set personal fishing goals, track your ongoing progress, and proudly celebrate your achievements."
-              // description="Set personal fishing goals, track your progress, and celebrate your achievements."
+              description="Set personal fishing goals, track your progress, and celebrate your achievements."
               imageSrc="/images/goals.jpg"
               buttonText="Set Goals"
               buttonLink="/goals"
@@ -220,36 +215,36 @@ const HomePage = () => {
               className={`mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-12 lg:mx-0 lg:max-w-none lg:grid-cols-3 transition-transform duration-500 ease-in-out ${slideDirection}`}
             >
               {[...Array(3)].map((_, idx) => {
-                const lakeIndex = (currentIndex + idx) % lakes.length;
-                const lake = lakes[lakeIndex];
+                const lakeIndex = (currentIndex + idx) % lakes?.length;
+                const lake = lakes?.[lakeIndex];
                 return (
-                  <div key={lake._id} className="flex flex-col items-start">
+                  <div key={lake?._id} className="flex flex-col items-start">
                     <div className="relative w-full">
                       <img
-                        src={lake.image || l0}
-                        alt={lake.name}
+                        src={lake?.image || l0}
+                        alt={lake?.name}
                         className="aspect-[16/9] w-full rounded-lg bg-gray-100 object-fill sm:aspect-[2/1] lg:aspect-[3/2]"
                       />
                     </div>
                     <div className="max-w-xl">
                       <div className="mt-8 flex items-center gap-x-4 text-xs">
                         <time
-                          dateTime={lake.availableFrom}
+                          dateTime={lake?.availableFrom}
                           className="text-gray-500"
                         >
-                          {lake.isAvailable ? "Available Now" : "Coming Soon"}
+                          {lake?.isAvailable ? "Available Now" : "Coming Soon"}
                         </time>
                         <span className="relative z-10 rounded-full bg-gray-50 px-3 py-1.5 font-medium text-gray-600 hover:bg-gray-100">
-                          {lake.ticketType}
+                          {lake?.ticketType}
                         </span>
                       </div>
                       <div className="group relative">
                         <h3 className="mt-3 text-lg font-semibold leading-6 text-gray-900 group-hover:text-carp-600">
                           <span className="absolute inset-0" />
-                          {lake.name}
+                          {lake?.name}
                         </h3>
                         <p className="mt-5 line-clamp-3 text-sm leading-6 text-gray-600">
-                          {lake.description}
+                          {lake?.description}
                         </p>
                       </div>
                     </div>
