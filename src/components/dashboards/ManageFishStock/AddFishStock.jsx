@@ -218,270 +218,159 @@ const AddingFishStock = () => {
   return (
     <div className="max-w-[1200px] mx-auto p-5">
       <h2 className="text-2xl font-bold mb-4">Add Fish Stock</h2>
-      <form onSubmit={handleSubmit} className="flex flex-wrap gap-5">
-        <div className="flex flex-col gap-2 flex-1 min-w-[300px]">
-          <label htmlFor="name" className="font-bold">
-            Name:
-          </label>
-          <input
-            type="text"
-            id="name"
-            name="name"
-            value={formData.name}
-            onChange={handleInputChange}
-            placeholder="Enter fish name"
-            className={`p-2 border rounded-md text-base ${
-              errors.name ? "border-red-500" : "border-gray-300"
-            }`}
-            maxLength={100}
-          />
-          {errors.name && (
-            <span className="text-red-500 text-sm">{errors.name}</span>
-          )}
-        </div>
+      <form onSubmit={handleSubmit} className="gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="flex flex-col gap-2">
+            <label htmlFor="name" className="font-bold">
+              Name:
+            </label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              value={formData.name}
+              onChange={handleInputChange}
+              placeholder="Enter fish name"
+              className={`p-2 border rounded-md text-base ${errors.name ? "border-red-500" : "border-gray-300"
+                }`}
+              maxLength={100}
+            />
+            {errors.name && (
+              <span className="text-red-500 text-sm">{errors.name}</span>
+            )}
+          </div>
 
-        <div className="flex flex-col gap-2 flex-1 min-w-[300px]">
-          <label htmlFor="species" className="font-bold">
-            Species:
-          </label>
-          <select
-            id="species"
-            name="species"
-            value={formData.species}
-            onChange={handleInputChange}
-            className={`p-2 border rounded-md text-base ${
-              errors.species ? "border-red-500" : "border-gray-300"
-            }`}
-          >
-            <option value="">Select a species</option>
-            {fishSpecies.map((species) => (
-              <option key={species.value} value={species.value}>
-                {species.label}
-              </option>
-            ))}
-          </select>
+          <div className="flex flex-col gap-2">
+            <label htmlFor="species" className="font-bold">
+              Species:
+            </label>
+            <select
+              id="species"
+              name="species"
+              value={formData.species}
+              onChange={handleInputChange}
+              className={`p-2 border rounded-md text-base ${errors.species ? "border-red-500" : "border-gray-300"
+                }`}
+            >
+              <option value="">Select a species</option>
+              {fishSpecies.map((species) => (
+                <option key={species.value} value={species.value}>
+                  {species.label}
+                </option>
+              ))}
+            </select>
 
-          {errors.species && (
-            <span className="text-red-500 text-sm">{errors.species}</span>
-          )}
-        </div>
+            {errors.species && (
+              <span className="text-red-500 text-sm">{errors.species}</span>
+            )}
+          </div>
 
-        {/* <div className="flex flex-col gap-2 flex-1 min-w-[300px]">
-          <label htmlFor="species" className="font-bold">
-            Species:
-          </label>
-          <input
-            type="text"
-            id="species"
-            name="species"
-            value={formData.species}
-            onChange={handleInputChange}
-            placeholder="Enter species name"
-            className={`p-2 border rounded-md text-base ${errors.species ? "border-red-500" : "border-gray-300"
-              }`}
-          />
-          {errors.species && (
-            <span className="text-red-500 text-sm">{errors.species}</span>
-          )}
-        </div> */}
+          <div className="flex flex-col gap-2">
+            <label htmlFor="weight" className="font-bold">
+              Weight (lbs):
+            </label>
+            <input
+              type="text"
+              id="weight"
+              name="weight"
+              value={formData.weight}
+              onChange={handleInputChange}
+              placeholder="Enter weight"
+              className={`p-2 border rounded-md text-base ${errors.weight ? "border-red-500" : "border-gray-300"
+                }`}
+              onInput={(e) => {
+                e.target.value = e.target.value.replace(/[^0-9.]/g, ""); // Allow numbers and decimal
+                if ((e.target.value.match(/\./g) || []).length > 1) {
+                  e.target.value = e.target.value.replace(/\.+$/, ""); // Prevent multiple decimals
+                }
+                if (e.target.value.length > 10) {
+                  e.target.value = e.target.value.slice(0, 10); // Limit input to 10 characters
+                }
+              }}
+            />
+            {errors.weight && (
+              <span className="text-red-500 text-sm">{errors.weight}</span>
+            )}
+          </div>
 
-        {/* <div className="flex flex-col gap-2 flex-1 min-w-[300px]">
-          <label htmlFor="quantity" className="font-bold">
-            Quantity:
-          </label>
-          <input
-            type="number"
-            id="quantity"
-            name="quantity"
-            value={formData.quantity}
-            onChange={handleInputChange}
-            placeholder="Enter quantity"
-            min="1"
-            step="1"
-            className={`p-2 border rounded-md text-base ${errors.quantity ? "border-red-500" : "border-gray-300"
-              }`}
-          />
-          {errors.quantity && (
-            <span className="text-red-500 text-sm">{errors.quantity}</span>
-          )}
-        </div> */}
+          <div className="flex flex-col gap-2">
+            <label htmlFor="image" className="font-bold">
+              Fish Image:
+            </label>
 
-        <div className="flex flex-col gap-2 flex-1 min-w-[300px]">
-          <label htmlFor="weight" className="font-bold">
-            Weight (lbs):
-          </label>
-          <input
-            type="text"
-            id="weight"
-            name="weight"
-            value={formData.weight}
-            onChange={handleInputChange}
-            placeholder="Enter weight"
-            className={`p-2 border rounded-md text-base ${
-              errors.weight ? "border-red-500" : "border-gray-300"
-            }`}
-            onInput={(e) => {
-              e.target.value = e.target.value.replace(/[^0-9.]/g, ""); // Allow numbers and decimal
-              if ((e.target.value.match(/\./g) || []).length > 1) {
-                e.target.value = e.target.value.replace(/\.+$/, ""); // Prevent multiple decimals
-              }
-              if (e.target.value.length > 10) {
-                e.target.value = e.target.value.slice(0, 10); // Limit input to 10 characters
-              }
-            }}
-          />
-          {errors.weight && (
-            <span className="text-red-500 text-sm">{errors.weight}</span>
-          )}
-        </div>
+            {/* Hidden File Input */}
+            <input
+              type="file"
+              id="image"
+              name="image"
+              accept="image/*"
+              onChange={handleImageChange}
+              className="hidden"
+            />
 
-        {/* <div className="flex flex-col gap-2 flex-1 min-w-[300px]">
-          <label htmlFor="location" className="font-bold">
-            Location:
-          </label>
-          <input
-            type="text"
-            id="location"
-            name="location"
-            value={formData.location}
-            onChange={handleInputChange}
-            placeholder="Enter location"
-            className={`p-2 border rounded-md text-base ${errors.location ? "border-red-500" : "border-gray-300"
-              }`}
-          />
-          {errors.location && (
-            <span className="text-red-500 text-sm">{errors.location}</span>
-          )}
-        </div>
+            {/* Custom Button to Trigger File Input */}
+            <button
+              type="button"
+              onClick={() => document.getElementById("image").click()}
+              className="flex items-center gap-2 sm:w-[12.5rem] bg-blue-500 text-white px-4 py-2 btn rounded-md shadow-md hover:bg-blue-600 transition"
+              style={{ background: "#ae7a31" }}
+            >
+              Select Image
+            </button>
 
-        <div className="flex flex-col gap-2 flex-1 min-w-[300px]">
-          <label htmlFor="averageSize" className="font-bold">
-            Average Size (cm):
-          </label>
-          <input
-            type="number"
-            id="averageSize"
-            name="averageSize"
-            value={formData.averageSize}
-            onChange={handleInputChange}
-            placeholder="Enter average size"
-            min="0.01"
-            step="0.01"
-            className={`p-2 border rounded-md text-base ${errors.averageSize ? "border-red-500" : "border-gray-300"
-              }`}
-          />
-          {errors.averageSize && (
-            <span className="text-red-500 text-sm">{errors.averageSize}</span>
-          )}
-        </div> */}
+            {/* Show Selected File Name */}
+            {imagePreview && (
+              <div className="mt-2 flex flex-col items-start">
+                <img
+                  src={imagePreview}
+                  alt="Fish preview"
+                  className="max-w-[200px] max-h-[200px] object-fill rounded-md border"
+                />
+                <p className="text-sm text-gray-600 mt-1">{selectedFileName}</p>
+              </div>
+            )}
 
-        {/* <div className="flex flex-col gap-2 w-full">
-          <label htmlFor="image" className="font-bold">
-            Fish Image:
-          </label>
-          <input
-            type="file"
-            id="image"
-            name="image"
-            accept="image/*"
-            onChange={handleImageChange}
-            className={`p-2 border rounded-md text-base ${
-              errors.image ? "border-red-500" : "border-gray-300"
-            }`}
-          />
-          {errors.image && (
-            <span className="text-red-500 text-sm">{errors.image}</span>
-          )}
-          {imagePreview && (
-            <div className="mt-2">
-              <img
-                src={imagePreview}
-                alt="Fish preview"
-                className="max-w-[200px] max-h-[200px] object-fill"
-              />
-            </div>
-          )}
-        </div> */}
-
-        <div className="flex flex-col gap-2 w-full">
-          <label htmlFor="image" className="font-bold">
-            Fish Image:
-          </label>
-
-          {/* Hidden File Input */}
-          <input
-            type="file"
-            id="image"
-            name="image"
-            accept="image/*"
-            onChange={handleImageChange}
-            className="hidden"
-          />
-
-          {/* Custom Button to Trigger File Input */}
-          <button
-            type="button"
-            onClick={() => document.getElementById("image").click()}
-            className="flex items-center gap-2 bg-blue-500 text-white px-4 py-2 rounded-md shadow-md hover:bg-blue-600 transition"
-            style={{background:"#ae7a31"}}
-          >
-           Select Image
-          </button>
-
-          {/* Show Selected File Name */}
-          {imagePreview && (
-            <div className="mt-2 flex flex-col items-start">
-              <img
-                src={imagePreview}
-                alt="Fish preview"
-                className="max-w-[200px] max-h-[200px] object-fill rounded-md border"
-              />
-              <p className="text-sm text-gray-600 mt-1">{selectedFileName}</p>
-            </div>
-          )}
-
-          {/* Error Message */}
-          {errors.image && <span className="text-red-500 text-sm">{errors.image}</span>}
-        </div>
-
-        <div className="flex flex-col gap-2 w-full">
-          <label htmlFor="notes" className="font-bold">
-            Notes:
-          </label>
-          <textarea
-            id="notes"
-            name="notes"
-            value={formData.notes}
-            onChange={handleInputChange}
-            placeholder="Enter additional notes"
-            rows="4"
-            maxLength="500"
-            className={`p-2 border rounded-md text-base ${
-              errors.notes ? "border-red-500" : "border-gray-300"
-            }`}
-          />
-          {errors.notes && (
-            <span className="text-red-500 text-sm">{errors.notes}</span>
-          )}
-          <span className="text-sm text-gray-500">
-            {formData.notes.length}/500 characters
-          </span>
-        </div>
-
-        <div className="flex flex-row gap-3 w-full">
-          <button
-            type="button"
-            onClick={() => navigate(-1)}
-            className="px-5 py-2.5 bg-gray-500 hover:bg-gray-600 text-white rounded-md cursor-pointer text-base flex-1 whitespace-nowrap"
-          >
-            Cancel
-          </button>
-          <button
-            type="submit"
-            className="px-5 py-2.5 bg-[#ae7a31] hover:bg-[#8e6429] text-white rounded-md cursor-pointer text-base flex-1 whitespace-nowrap"
-          >
-            Add Fish Stock
-          </button>
+            {/* Error Message */}
+            {errors.image && <span className="text-red-500 text-sm">{errors.image}</span>}
+          </div>
+          <div className="flex flex-col gap-2 col-span-1 md:col-span-3">
+         
+            <label htmlFor="notes" className="font-bold">
+              Notes:
+            </label>
+            <textarea
+              id="notes"
+              name="notes"
+              value={formData.notes}
+              onChange={handleInputChange}
+              placeholder="Enter additional notes"
+              rows="4"
+              maxLength="500"
+              className={`p-2 border rounded-md text-base ${errors.notes ? "border-red-500" : "border-gray-300"
+                }`}
+            />
+            {errors.notes && (
+              <span className="text-red-500 text-sm">{errors.notes}</span>
+            )}
+            <span className="text-sm text-gray-500">
+              {formData.notes.length}/500 characters
+            </span>
+          </div>
+          <div className="flex flex-row gap-3 col-span-1 md:col-span-3">
+            <button
+              type="button"
+              onClick={() => navigate(-1)}
+              className="px-5 py-2.5 bg-gray-500 hover:bg-gray-600 text-white rounded-md cursor-pointer text-base flex-1 whitespace-nowrap"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              className="px-5 py-2.5 bg-[#ae7a31] hover:bg-[#8e6429] text-white rounded-md cursor-pointer text-base flex-1 whitespace-nowrap"
+            >
+              Add Fish Stock
+            </button>
+          </div>
         </div>
       </form>
     </div>

@@ -448,17 +448,17 @@ function AddCatch({
               type="button"
               onClick={() => {
                 setNewCatch({
-                  species: "",
+                  species: fishData?.species,
                   fishName: "",
                   weight: "",
                   status: "caught",
                   photo: "",
-                  lake: "",
+                  lake: fishData?.lake,
                   description: "",
                   taggedUsers: "",
                   review: "",
                   rating: 0,
-                  stockID: 0,
+                  stockID: fishData?._id,
                 });
                 setPreviewImage(null); // Clear preview image
                 fileInputRef.current.value = ""; // Clear file input

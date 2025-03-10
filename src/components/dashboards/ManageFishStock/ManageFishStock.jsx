@@ -229,7 +229,7 @@ flex items-center justify-center gap-2 transition-colors duration-200"
           {fishStocks.map((fish) => (
             <div
               key={fish?._id}
-              className="bg-white rounded-lg shadow-md p-4 flex flex-col md:flex-row items-center md:items-start"
+              className="bg-white rounded-lg shadow-md p-4 flex flex-col md:flex-row items-start"
             >
               {fish?.image && (
                 <img
@@ -257,7 +257,21 @@ flex items-center justify-center gap-2 transition-colors duration-200"
                   <p className="text-gray-600">Notes: {fish?.notes}</p>
                 )}
               </div>
-              <div className="mt-4 md:mt-0 md:ml-4 flex flex-col space-y-2">
+              {/* <div className="mt-4 md:mt-0 md:ml-4 flex flex-row md:flex-col space-y-2">
+                <button
+                  onClick={() => handleEdit(fish)}
+                  className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600"
+                >
+                  Edit
+                </button>
+                <button
+                  onClick={() => handleDelete(fish?._id)}
+                  className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
+                >
+                  Delete
+                </button>
+              </div> */}
+              <div className="mt-4 md:mt-0 md:ml-4 flex flex-row md:flex-col space-x-2 md:space-x-0 md:space-y-2">
                 <button
                   onClick={() => handleEdit(fish)}
                   className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600"
@@ -271,6 +285,7 @@ flex items-center justify-center gap-2 transition-colors duration-200"
                   Delete
                 </button>
               </div>
+
             </div>
           ))}
         </div>
@@ -333,30 +348,7 @@ flex items-center justify-center gap-2 transition-colors duration-200"
                     ))}
                   </select>
                 </div>
-                {/* <div className="w-full md:w-1/2 px-2 mb-4">
-                  <label className="block text-gray-700 mb-2">Species</label>
-                  <input
-                    type="text"
-                    value={editForm.species}
-                    onChange={(e) =>
-                      setEditForm({ ...editForm, species: e.target.value })
-                    }
-                    className="w-full border rounded px-3 py-2"
-                    required
-                  />
-                </div> */}
-                {/* <div className="w-full md:w-1/2 px-2 mb-4">
-                  <label className="block text-gray-700 mb-2">Quantity</label>
-                  <input
-                    type="number"
-                    value={editForm.quantity}
-                    onChange={(e) =>
-                      setEditForm({ ...editForm, quantity: e.target.value })
-                    }
-                    className="w-full border rounded px-3 py-2"
-                    required
-                  />
-                </div> */}
+              
                 <div className="w-full md:w-1/2 px-2 mb-4">
                   <label className="block text-gray-700 mb-2">
                     Weight (lbs)
@@ -380,53 +372,7 @@ flex items-center justify-center gap-2 transition-colors duration-200"
                     }}
                   />
                 </div>
-                {/* <div className="w-full md:w-1/2 px-2 mb-4">
-                  <label className="block text-gray-700 mb-2">Location</label>
-                  <input
-                    type="text"
-                    value={editForm.location}
-                    onChange={(e) =>
-                      setEditForm({ ...editForm, location: e.target.value })
-                    }
-                    className="w-full border rounded px-3 py-2"
-                    required
-                  />
-                </div> */}
-                {/* <div className="w-full md:w-1/2 px-2 mb-4 hidden">
-                  <label className="block text-gray-700 mb-2">Date Added</label>
-                  <input
-                    type="date"
-                    value={editForm.dateAdded}
-                    onChange={(e) =>
-                      setEditForm({ ...editForm, dateAdded: e.target.value })
-                    }
-                    className="w-full border rounded px-3 py-2"
-                  />
-                </div> */}
-                {/* <div className="w-full md:w-1/2 px-2 mb-4">
-                  <label className="block text-gray-700 mb-2">
-                    Average Size (cm)
-                  </label>
-                  <input
-                    type="number"
-                    value={editForm.averageSize}
-                    onChange={(e) =>
-                      setEditForm({ ...editForm, averageSize: e.target.value })
-                    }
-                    className="w-full border rounded px-3 py-2"
-                  />
-                </div> */}
-                {/* <div className="w-full md:w-1/2 px-2 mb-4">
-                  <label className="block text-gray-700 mb-2">Image URL</label>
-                  <input
-                    type="text"
-                    value={editForm.image}
-                    onChange={(e) =>
-                      setEditForm({ ...editForm, image: e.target.value })
-                    }
-                    className="w-full border rounded px-3 py-2"
-                  />
-                </div> */}
+               
                 <div className="w-full px-2 mb-4">
                   <label className="block text-gray-700 mb-2">Notes</label>
                   <textarea
@@ -438,29 +384,6 @@ flex items-center justify-center gap-2 transition-colors duration-200"
                     maxLength={500}
                   />
                 </div>
-                {/* <div className="w-full px-2 mb-4">
-                  <label className="block text-gray-700 mb-2">
-                    Change Image
-                  </label>
-                  <input
-                    type="file"
-                    onChange={handleImageChange}
-                    className="w-full border rounded px-3 py-2"
-                  />
-                  {editForm.image && (
-                    <div className="mt-2">
-                      <img
-                        src={
-                          editForm.image instanceof File
-                            ? URL.createObjectURL(editForm.image)
-                            : editForm.image
-                        }
-                        alt="Preview"
-                        className="w-48 h-48 object-fill rounded"
-                      />
-                    </div>
-                  )}
-                </div> */}
 
                 <div className="w-full px-2 mb-4">
                   <label className="block text-gray-700 mb-2">Fish Image</label>
@@ -478,7 +401,7 @@ flex items-center justify-center gap-2 transition-colors duration-200"
                   <button
                     type="button"
                     onClick={() => document.getElementById("editImage").click()}
-                    className="flex items-center gap-2 bg-blue-500 text-white px-4 py-2 rounded-md shadow-md hover:bg-blue-600 transition"
+                    className="flex items-center gap-2 bg-blue-500 text-white px-4 py-2 rounded-md shadow-md hover:bg-blue-600 transition w-full sm:w-[12rem]"
                     style={{background:"#ae7a31"}}
                   >
                     Select Image 
