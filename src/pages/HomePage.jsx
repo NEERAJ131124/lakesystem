@@ -172,7 +172,8 @@ const HomePage = () => {
             <FeatureCard
               icon={<Fish className="w-6 h-6 text-carp-600" />}
               title="View Lake Stock"
-              description="Get up-to-date information on lake stocks, including species, sizes, and recent catches."
+              description="Get up-to-date information on lake stocks, including various species, sizes, and recent catches."
+              // description="Get up-to-date information on lake stocks, including species, sizes, and recent catches."
               imageSrc="/images/lake-stock.jpg"
               buttonText="View Stock"
               buttonLink="/lake-stock"
@@ -180,7 +181,8 @@ const HomePage = () => {
             <FeatureCard
               icon={<Target className="w-6 h-6 text-carp-600" />}
               title="Capture Your Goals"
-              description="Set personal fishing goals, track your progress, and celebrate your achievements."
+              description="Set personal fishing goals, track your ongoing progress, and proudly celebrate your achievements."
+              // description="Set personal fishing goals, track your progress, and celebrate your achievements."
               imageSrc="/images/goals.jpg"
               buttonText="Set Goals"
               buttonLink="/goals"
