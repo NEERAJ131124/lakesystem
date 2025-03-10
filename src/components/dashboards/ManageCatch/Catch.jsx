@@ -13,6 +13,7 @@ const CatchModal = ({ stockID, lakeID, isOpen, onClose }) => {
     if (!isOpen || !stockID) return;
 
     const getCatch = async () => {
+      setCatchPosts([]); 
       setLoading(true);
       try {
         const res = await axios.get(
@@ -64,7 +65,9 @@ const CatchModal = ({ stockID, lakeID, isOpen, onClose }) => {
         >
           &times;
         </button>
-        <h2 className="text-2xl font-bold text-gray-800 mb-4">Catch Details</h2>
+        <h2 className="text-xl font-semibold text-gray-900 mb-4">
+          Catch Details
+        </h2>
         {loading ? (
           <Loader />
         ) : catchPosts.length === 0 ? (
