@@ -4,6 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { baseUrl } from "../../../constants/APIs";
 import toast from "react-hot-toast";
 import Loader from "../../Loader";
+import { compressImage } from "../../../constants/imageCompressor";
 
 const AddingFishStock = () => {
   const { id } = useParams();
@@ -38,12 +39,14 @@ const AddingFishStock = () => {
     }
   };
 
-  const handleImageChange = (e) => {
+  const [loading, setLoading] = useState(false);
+  const handleImageChange = async(e) => {
     const file = e.target.files[0];
     if (file) {
-      setSelectedFileName(file.name)
-      if (file.type.startsWith("image/")) {
-        if (file.size > 5242880) {
+      const compressedFile = await compressImage(file, setLoading);
+      setSelectedFileName(compressedFile.name)
+      if (compressedFile.type.startsWith("image/")) {
+        if (compressedFile.size > 5242880) {
           // 5MB limit
           setErrors({
             ...errors,
@@ -53,9 +56,9 @@ const AddingFishStock = () => {
         }
         setFormData({
           ...formData,
-          image: file,
+          image: compressedFile,
         });
-        setImagePreview(URL.createObjectURL(file));
+        setImagePreview(URL.createObjectURL(compressedFile));
         setErrors({
           ...errors,
           image: "",
@@ -306,16 +309,21 @@ const AddingFishStock = () => {
               accept="image/*"
               onChange={handleImageChange}
               className="hidden"
+              disabled={loading}
             />
 
             {/* Custom Button to Trigger File Input */}
             <button
               type="button"
               onClick={() => document.getElementById("image").click()}
-              className="flex items-center gap-2 sm:w-[12.5rem] bg-blue-500 text-white px-4 py-2 btn rounded-md shadow-md hover:bg-blue-600 transition"
+              className="flex items-center gap-2 sm:w-[12.5rem] bg-blue-500 text-white px-4 py-2 btn rounded-md shadow-md hover:bg-blue-600 transition text-center"
               style={{ background: "#ae7a31" }}
             >
-              Select Image
+              {loading ? "Uploading..." : (
+                <>
+                  <span>Select Image</span>
+                </>
+              )}
             </button>
 
             {/* Show Selected File Name */}
@@ -366,6 +374,7 @@ const AddingFishStock = () => {
             </button>
             <button
               type="submit"
+              disabled={loading}
               className="px-5 py-2.5 bg-[#ae7a31] hover:bg-[#8e6429] text-white rounded-md cursor-pointer text-base flex-1 whitespace-nowrap"
             >
               Add Fish Stock

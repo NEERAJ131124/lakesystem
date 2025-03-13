@@ -6,6 +6,7 @@ import Modal from "../../Modal";
 import StarRating from "../../StarRating";
 import { handleFollowLake } from "../../contexts/Methods";
 import toast from "react-hot-toast";
+import { compressImage } from "../../../constants/imageCompressor";
 
 function EditCatch({
   isOpen,
@@ -62,17 +63,19 @@ function EditCatch({
   //   }
   // };
 
-  const handleFileChange = (e) => {
+  const [imageloading,setImageLoading]=useState(false)
+  const handleFileChange = async(e) => {
     const file = e.target.files[0];
   
     if (file) {
+      const compressedFile = await compressImage(file, setImageLoading);
       setUpdatedCatch({ 
         ...updatedCatch, 
-        photo: file // Store the file itself
+        photo: compressedFile // Store the file itself
       });
   
       // Preview image using URL.createObjectURL
-      setShowImage(URL.createObjectURL(file));
+      setShowImage(URL.createObjectURL(compressedFile));
   
       // Clear error if there was one
       if (errors.photo) {
@@ -218,22 +221,6 @@ const handleButtonClick = () => {
                     </option>
                   ))}
                 </select>
-                {/* {updatedCatch.lake && (
-                  <button
-                    type="button"
-                    onClick={() => {
-                      handleFollowLake(
-                        updatedCatch.lake,
-                        true,
-                        setLoading,
-                        fetchFollowedLakes
-                      );
-                    }}
-                    className="mt-1 px-4 py-2 bg-[#ae7a31] hover:bg-[#8e6429] text-white rounded-md whitespace-nowrap"
-                  >
-                    Follow Lake
-                  </button>
-                )} */}
               </div>
               {errors.lake && (
                 <span className="text-red-500 text-sm">{errors.lake}</span>
@@ -268,29 +255,6 @@ const handleButtonClick = () => {
                 <span className="text-red-500 text-sm">{errors.species}</span>
               )}
             </div>
-
-            {/* <div className="mb-4">
-              <label
-                htmlFor="fishName"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Fish Name
-              </label>
-              <input
-                type="text"
-                id="fishName"
-                name="fishName"
-                value={updatedCatch.fishName}
-                onChange={handleInputChange}
-                className={`p-2 w-full border rounded-md text-base ${
-                  errors.fishName ? "border-red-500" : "border-gray-300"
-                }`}
-                maxLength={50}
-              />
-              {errors.fishName && (
-                <span className="text-red-500 text-sm">{errors.fishName}</span>
-              )}
-            </div> */}
 
             <div className="mb-4" style={{display:"none"}}>
               <label
@@ -344,60 +308,6 @@ const handleButtonClick = () => {
               )}
             </div>
 
-            {/* <div className="mb-4">
-              <label
-                htmlFor="length"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Length (cm)
-              </label>
-              <input
-                type="number"
-                step="0.01"
-                id="length"
-                name="length"
-                value={updatedCatch.length}
-                onChange={handleInputChange}
-                required
-                className={`p-2 w-full border rounded-md text-base ${errors.length ? "border-red-500" : "border-gray-300"
-                  }`}
-              />
-              {errors.length && (
-                <span className="text-red-500 text-sm">{errors.length}</span>
-              )}
-            </div> */}
-
-            {/* <div className="mb-4 md:col-span-2">
-              <label
-                htmlFor="photo"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Photo
-              </label>
-              <input
-                type="file"
-                id="photo"
-                name="photo"
-                onChange={handleFileChange}
-                accept="image/*"
-                className={`p-2 w-full border rounded-md text-base ${
-                  errors.photo ? "border-red-500" : "border-gray-300"
-                }`}
-              />
-              {errors.photo && (
-                <span className="text-red-500 text-sm">{errors.photo}</span>
-              )}
-              {updatedCatch.photo && typeof updatedCatch.photo === "string" && (
-                <img
-                  src={updatedCatch.photo}
-                  alt="Catch"
-                  className="mt-4 w-full h-48 object-contain rounded-lg"
-                />
-              )}
-            </div> */}
-
-
-
             <div className="mb-4 md:col-span-2">
               <label htmlFor="photo" className="block text-sm font-medium text-gray-700 mb-2">
                 Photo
@@ -412,6 +322,7 @@ const handleButtonClick = () => {
                 onChange={handleFileChange}
                 accept="image/*"
                 className="hidden"
+                disabled={imageloading}
               />
 
               <div className="flex items-center gap-4">
@@ -421,7 +332,11 @@ const handleButtonClick = () => {
                   onClick={handleButtonClick}
                   className="px-4 py-2 bg-[#ae7a31] hover:bg-[#8e6429] text-white rounded-md text-base"
                 >
-                  Select Image
+                 {imageloading ? "Uploading..." : (
+                    <>
+                      <span>Select Image</span>
+                    </>
+                  )}
                 </button>
 
                 {/* Show Selected File Name */}
@@ -467,45 +382,6 @@ const handleButtonClick = () => {
                 </span>
               )}
             </div>
-
-            {/* <div className="mb-4 md:col-span-2">
-              <label
-                htmlFor="review"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Review
-              </label>
-              <textarea
-                id="review"
-                name="review"
-                value={updatedCatch.review}
-                onChange={handleInputChange}
-                rows={3}
-                className={`p-2 border w-full rounded-md text-base ${errors.review ? "border-red-500" : "border-gray-300"
-                  }`}
-              />
-              {errors.review && (
-                <span className="text-red-500 text-sm">{errors.review}</span>
-              )}
-            </div>
-
-            <div className="mb-4">
-              <label
-                htmlFor="rating"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Rating (1-5)
-              </label>
-              <StarRating
-                rating={updatedCatch.rating}
-                setRating={(value) =>
-                  setUpdatedCatch({ ...updatedCatch, rating: value })
-                }
-              />
-              {errors.rating && (
-                <span className="text-red-500 text-sm">{errors.rating}</span>
-              )}
-            </div> */}
           </div>
 
           <div className="flex flex-row gap-3 w-full">
@@ -513,17 +389,6 @@ const handleButtonClick = () => {
               type="button"
               onClick={
                 () => onClose()
-                // setUpdatedCatch({
-                //   species: catchData.fish.species,
-                //   weight: catchData.fish.weight,
-                //   // length: catchData.fish.length,
-                //   photo: null,
-                //   lake: catchData.lake._id,
-                //   description: catchData.description,
-                //   taggedUsers: catchData.taggedUsers.join(", "),
-                //   review: catchData.review || "",
-                //   rating: catchData.rating || 0,
-                // })
               }
               className="px-5 py-2.5 bg-gray-500 hover:bg-gray-600 text-white rounded-md cursor-pointer text-base flex-1 whitespace-nowrap"
             >
@@ -531,6 +396,7 @@ const handleButtonClick = () => {
             </button>
             <button
               type="submit"
+              disabled={imageloading}
               className="px-5 py-2.5 bg-[#ae7a31] hover:bg-[#8e6429] text-white rounded-md cursor-pointer text-base flex-1 whitespace-nowrap"
             >
               Update Catch

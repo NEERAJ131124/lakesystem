@@ -5,6 +5,7 @@ import { baseUrl } from "../../../constants/APIs";
 import Modal from "../../Modal";
 import toast from "react-hot-toast";
 import { XCircle } from "lucide-react";
+import { compressImage } from "../../../constants/imageCompressor";
 
 function AddCatch({
   isOpen,
@@ -88,16 +89,18 @@ function AddCatch({
     }
   };
 
-  const handleFileChange = (e) => {
+  const [imageloading,setImageLoading]=useState(false)
+  const handleFileChange = async(e) => {
     const file = e.target.files[0];
 
     if (file) {
+      const compressedFile = await compressImage(file, setImageLoading);
       setNewCatch((prevCatch) => ({
         ...prevCatch,
-        photo: file,
+        photo: compressedFile,
       }));
-      previousFileRef.current = file; // Store the previous valid file selection
-      setPreviewImage(URL.createObjectURL(file)); // Set preview image
+      previousFileRef.current = compressedFile; // Store the previous valid file selection
+      setPreviewImage(URL.createObjectURL(compressedFile)); // Set preview image
       if (errors.photo) {
         setErrors((prevErrors) => ({ ...prevErrors, photo: "" }));
       }
@@ -362,7 +365,11 @@ function AddCatch({
                   onClick={() => fileInputRef.current.click()}
                   className="px-4 py-2 bg-[#ae7a31] hover:bg-[#8e6429] text-white rounded-md text-base"
                 >
-                  Select Image
+                  {imageloading ? "Uploading..." : (
+                    <>
+                      <span>Select Image</span>
+                    </>
+                  )}
                 </button>
 
                 {/* Display Selected File Name */}
@@ -383,6 +390,7 @@ function AddCatch({
                 accept="image/*"
                 ref={fileInputRef}
                 className="hidden"
+                disabled={imageloading}
               />
               {/* <input
                 type="file"
@@ -464,7 +472,7 @@ function AddCatch({
                 fileInputRef.current.value = ""; // Clear file input
               }}
               className="px-5 py-2.5 bg-gray-500 hover:bg-gray-600 text-white rounded-md cursor-pointer text-base flex-1 whitespace-nowrap"
-              disabled={isSubmitting}
+              disabled={isSubmitting || imageloading}
             >
               Clear
             </button>
@@ -475,7 +483,7 @@ function AddCatch({
                   ? "bg-gray-400 cursor-not-allowed"
                   : "bg-[#ae7a31] hover:bg-[#8e6429] cursor-pointer"
               } text-white rounded-md text-base flex-1 whitespace-nowrap`}
-              disabled={isSubmitting}
+              disabled={isSubmitting || imageloading}
             >
               {isSubmitting ? "Adding..." : "Add Catch"}
             </button>

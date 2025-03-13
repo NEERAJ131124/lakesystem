@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { baseUrl } from "../../../constants/APIs";
 import toast, { Toaster } from "react-hot-toast";
+import { compressImage } from "../../../constants/imageCompressor";
 
 const ManageFishStock = () => {
   const params = useParams();
@@ -66,6 +67,7 @@ const ManageFishStock = () => {
       image: fish.image || "",
     });
     setShowEditModal(true);
+    setImagePreview(fish.image)
   };
 
   const handleDelete = async (fishId) => {
@@ -101,11 +103,19 @@ const ManageFishStock = () => {
     formData.append("location", editForm.location);
     formData.append("averageSize", editForm.averageSize);
     formData.append("notes", editForm.notes);
-    if (editForm.image instanceof File) {
-      formData.append("image", editForm.image);
-    } else {
-      formData.append("imageUrl", editForm.image);
+    
+    if (editForm.image && typeof editForm.image !== "string") {
+      formData.append("image", editForm.image); 
+      
+      const imageUrl = URL.createObjectURL(editForm.image);
+      formData.append("imageUrl", imageUrl);
     }
+    
+    // if (editForm.image instanceof File) {
+    //   formData.append("image", editForm.image);
+    // } else {
+    //   formData.append("imageUrl", editForm.image);
+    // }
 
     try {
       const res = await axios.put(
@@ -132,10 +142,16 @@ const ManageFishStock = () => {
     setCurrentPage(page);
   };
 
-  const handleImageChange = (e) => {
+  const [imageloading,setImageLoading]=useState(false)
+  const [imagePreview, setImagePreview] = useState(null);
+  const handleImageChange = async(e) => {
     const file = e.target.files[0];
-    setSelectedFileName(file.name)
-    setEditForm({ ...editForm, image: file });
+    if(file){
+      const compressedFile = await compressImage(file, setImageLoading);
+      setSelectedFileName(compressedFile.name)
+      setEditForm({ ...editForm, image: compressedFile });
+      setImagePreview(URL.createObjectURL(compressedFile));
+    }
   };
 
   const fishSpecies = [
@@ -257,20 +273,7 @@ flex items-center justify-center gap-2 transition-colors duration-200"
                   <p className="text-gray-600">Notes: {fish?.notes}</p>
                 )}
               </div>
-              {/* <div className="mt-4 md:mt-0 md:ml-4 flex flex-row md:flex-col space-y-2">
-                <button
-                  onClick={() => handleEdit(fish)}
-                  className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600"
-                >
-                  Edit
-                </button>
-                <button
-                  onClick={() => handleDelete(fish?._id)}
-                  className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
-                >
-                  Delete
-                </button>
-              </div> */}
+
               <div className="mt-4 md:mt-0 md:ml-4 flex flex-row md:flex-col space-x-2 md:space-x-0 md:space-y-2">
                 <button
                   onClick={() => handleEdit(fish)}
@@ -395,6 +398,7 @@ flex items-center justify-center gap-2 transition-colors duration-200"
                     accept="image/*"
                     onChange={handleImageChange}
                     className="hidden"
+                    disabled={imageloading}
                   />
 
                   {/* Custom Button to Trigger File Input */}
@@ -404,17 +408,21 @@ flex items-center justify-center gap-2 transition-colors duration-200"
                     className="flex items-center gap-2 bg-blue-500 text-white px-4 py-2 rounded-md shadow-md hover:bg-blue-600 transition w-full sm:w-[12rem]"
                     style={{background:"#ae7a31"}}
                   >
-                    Select Image 
+                    {imageloading ? "Uploading..." : (
+                      <>
+                        <span>Select Image</span>
+                      </>
+                    )}
                   </button>
 
-                  {/* Image Preview */}
-                  {editForm.image && (
+                  {/* Image Preview editForm.image*/}
+                  {imagePreview && (
                     <div className="mt-2">
                       <img
                         src={
                           editForm.image instanceof File
-                            ? URL.createObjectURL(editForm.image)
-                            : editForm.image
+                            ? URL.createObjectURL(imagePreview)
+                            : imagePreview
                         }
                         alt="Preview"
                         className="w-48 h-48 object-fill rounded border"
@@ -435,6 +443,7 @@ flex items-center justify-center gap-2 transition-colors duration-200"
                 </button>
                 <button
                   type="submit"
+                  disabled={imageloading}
                   className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
                 >
                   Save

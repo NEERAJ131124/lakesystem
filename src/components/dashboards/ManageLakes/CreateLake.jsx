@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import { PlusCircle } from "lucide-react";
+import { Loader2, LoaderCircle, PlusCircle } from "lucide-react";
 import axios from "axios";
 import { baseUrl } from "../../../constants/APIs";
 import toast, { Toaster } from "react-hot-toast";
 import Loader from "../../Loader";
 import { useNavigate } from "react-router-dom";
+import { compressImage } from "../../../constants/imageCompressor";
 
 function CreateLake() {
   const [errors, setErrors] = useState({});
@@ -65,9 +66,11 @@ function CreateLake() {
     //   tempErrors.facilities = "At least one facility must be selected";
     // }
 
-    if (!newLake.image) {
+    if (loading) {
+      tempErrors.image = "Please wait, image is uploading";
+    } else if (!newLake.image) {
       tempErrors.image = "Lake image is required";
-    }
+    }    
 
     setErrors(tempErrors);
     return Object.keys(tempErrors).length === 0;
@@ -95,20 +98,23 @@ function CreateLake() {
       setErrors({ ...errors, [type]: null });
     }
   };
-
-  const handleImageChange = (e) => {
+  const [loading, setLoading] = useState(false);
+  const handleImageChange = async(e) => {
     const file = e.target.files[0];
+
     if (file) {
-      if (file.size > 5242880) {
+      const compressedFile = await compressImage(file, setLoading);
+
+      if (compressedFile.size > 5242880) {
         setErrors({ ...errors, image: "Image size should not exceed 5MB" });
         return;
       }
-      if (!file.type.startsWith("image/")) {
+      if (!compressedFile.type.startsWith("image/")) {
         setErrors({ ...errors, image: "Please upload a valid image file" });
         return;
       }
-      setNewLake({ ...newLake, image: file });
-      setPreviewImage(URL.createObjectURL(file));
+      setNewLake({ ...newLake, image: compressedFile });
+      setPreviewImage(URL.createObjectURL(compressedFile));
       setErrors({ ...errors, image: null });
     }
   };
@@ -203,7 +209,7 @@ function CreateLake() {
               name="name"
               value={newLake.name}
               onChange={handleInputChange}
-              required
+              
               minLength={3}
               maxLength={100}
               className={`w-full rounded-xl border bg-white py-3 px-5 text-gray-800 text-lg shadow-md focus:ring-2 focus:outline-none transition duration-200 ease-in-out 
@@ -234,7 +240,7 @@ function CreateLake() {
               value={newLake.location}
               maxLength={100}
               onChange={handleInputChange}
-              required
+              
               className={`w-full rounded-xl border bg-white py-3 px-5 text-gray-800 text-lg shadow-md focus:ring-2 focus:outline-none transition duration-200 ease-in-out 
               ${
                 errors.location
@@ -263,7 +269,7 @@ function CreateLake() {
               value={newLake.currentStock}
               onChange={handleInputChange}
               min="0"
-              required
+              
               onInput={(e) => {
                 e.target.value = e.target.value.replace(/[^0-9]/g, ""); // Allow numbers and decimal
                 if ((e.target.value.match(/\./g) || []).length > 1) {
@@ -309,7 +315,7 @@ function CreateLake() {
                   e.target.value = e.target.value.slice(0, 10); // Limit input to 10 characters
                 }
               }}
-              required
+              
               className={`w-full rounded-xl border bg-white py-3 px-5 text-gray-800 text-lg shadow-md focus:ring-2 focus:outline-none transition duration-200 ease-in-out 
             ${
               errors.maxWeight
@@ -371,7 +377,7 @@ function CreateLake() {
               placeholder="Description"
             />
             {errors.description && (
-              <p className="text-red-500 mt-2">{errors.description}</p>
+              <p className="text-red-500 text-xs mt-2">{errors.description}</p>
             )}
           </div>
 
@@ -405,7 +411,7 @@ function CreateLake() {
               ))}
             </div>
             {errors.fishTypes && (
-              <p className="text-red-500 mt-2">{errors.fishTypes}</p>
+              <p className="text-red-500 text-xs mt-2">{errors.fishTypes}</p>
             )}
           </div>
           <div className="col-span-12">
@@ -427,6 +433,7 @@ function CreateLake() {
                 onChange={handleImageChange}
                 accept="image/*"
                 className="hidden"
+                disabled={loading} 
               />
 
               {/* Custom Button */}
@@ -438,14 +445,18 @@ function CreateLake() {
                     : "border border-transparent"
                 }`}
               >
-                <PlusCircle className="h-6 w-6" />
-                <span>Upload Image</span>
+                {loading ? "Uploading..." : (
+                  <>
+                    <PlusCircle className="h-6 w-6" />
+                    <span>Upload Image</span>
+                  </>
+                )}
               </label>
             </div>
 
             {/* Error Message */}
             {errors.image && (
-              <p className="text-red-500 text-sm mt-2">{errors.image}</p>
+              <p className="text-red-500 text-xs mt-2">{errors.image}</p>
             )}
 
             {/* Image Preview */}
@@ -463,7 +474,7 @@ function CreateLake() {
           <div className="col-span-12 md:col-span-6 xl:col-span-2">
             <button
               type="submit"
-              disabled={isSubmitting}
+              disabled={isSubmitting || loading}
               className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#ae7a31] hover:bg-[#8e6429] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#ae7a31] disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isSubmitting ? "Creating Lake..." : "Add Lake"}
