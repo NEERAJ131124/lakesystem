@@ -51,12 +51,12 @@ function EditProfileModal({ isOpen, onClose, setLoading, setRefresshUser }) {
     // Date of Birth validation
     if (!dateOfBirth) newErrors.dateOfBirth = "Date of Birth is required";
 
-    // Mobile Number validation (only numbers, exactly 10 digits)
-    const mobilePattern = /^[0-9]{10}$/;
+    // Mobile Number validation (only numbers, exactly 11 digits)
+    const mobilePattern = /^[0-9]{11}$/;
     if (!mobileNumber.trim()) {
       newErrors.mobileNumber = "Mobile Number is required";
     } else if (!mobilePattern.test(mobileNumber)) {
-      newErrors.mobileNumber = "Mobile Number must be 10 digits";
+      newErrors.mobileNumber = "Mobile Number must be 11 digits";
     }
 
     if (Object.keys(newErrors).length > 0) {
@@ -160,7 +160,7 @@ function EditProfileModal({ isOpen, onClose, setLoading, setRefresshUser }) {
               onInput={(e) => {
                 e.target.value = e.target.value.replace(/[^0-9]/g, "");
               }}
-              maxLength={10}
+              maxLength={11}
               ref={mobileNumberRef}
             />
             {errors.mobileNumber && <span className="text-red-500 text-sm">{errors.mobileNumber}</span>}

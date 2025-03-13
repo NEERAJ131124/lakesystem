@@ -285,16 +285,14 @@ function Register() {
               <input
                 type="tel"
                 name="mobileNumber"
-                minLength={10}
-                maxLength={10}
                 id="mobileNumber"
                 value={formData.mobileNumber}
                 onChange={(event) => {
-                  // Allow backspace/delete and only numbers up to 10 digits
+                  // Allow backspace/delete and only numbers up to 11 digits
                   const value = event.target.value;
                   if (
                     value === "" || // Allow empty string for backspace
-                    (/^\d+$/.test(value) && value.length <= 10)
+                    (/^\d+$/.test(value) && value.length <= 11)
                   ) {
                     handleChange(event);
                   }

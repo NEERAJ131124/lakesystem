@@ -39,11 +39,11 @@ function UserProfile() {
       newErrors.email = "Invalid email format";
     }
 
-    const mobilePattern = /^[0-9]{10}$/;
+    const mobilePattern = /^[0-9]{11}$/;
     if (!editedUser.mobileNumber.trim()) {
       newErrors.mobileNumber = "Mobile Number is required";
     } else if (!mobilePattern.test(editedUser.mobileNumber)) {
-      newErrors.mobileNumber = "Mobile Number must be 10 digits";
+      newErrors.mobileNumber = "Mobile Number must be 11 digits";
     }
 
     if (!editedUser.complexName.trim()) newErrors.complexName = "Complex Name is required";
@@ -314,7 +314,7 @@ function UserProfile() {
                   type="text"
                   id="mobileNumber"
                   name="mobileNumber"
-                  maxLength={10}
+                  maxLength={11}
                   ref={mobileNumberRef}
                   value={editedUser.mobileNumber}
                   onChange={handleInputChange}
