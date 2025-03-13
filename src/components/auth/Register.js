@@ -71,13 +71,17 @@ function Register() {
       setErrorMessage("Date of Birth is required");
       return false;
     }
+    if(formData.mobileNumber.length!==11){
+      console.log("Mobile Number must be 11 digits");
+      setErrorMessage("Mobile Number must be 11 digits");
+      return false;
+    }
 
     // console.log('Form validation passed');
     return true;
   };
 
   const handleSubmit = async (e) => {
-    setLoading(true);
     e.preventDefault();
     // console.log('handleSubmit called. isAngler:', isAngler, 'formData:', formData);
     setErrorMessage("");
@@ -93,6 +97,7 @@ function Register() {
     if (!validateForm()) {
       return;
     }
+    setLoading(true);
 
     try {
       const userType = isAngler ? "angler" : "lakeOwner";
