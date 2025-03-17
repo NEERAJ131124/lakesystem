@@ -172,20 +172,25 @@ function BrowseLakes({ setRefreshFollowedLakes, setActiveTab }) {
                 >
                   See Stock
                 </button>
-                <button
-                  className="px-4 py-2 bg-[#ae7a31] text-white rounded hover:bg-blue-600"
-                  onClick={() => {
-                    handleFollowLake(
-                      lake._id,
-                      true,
-                      setLoading,
-                      handleFollow,
-                      setRefreshFollowedLakes
-                    );
-                  }}
-                >
-                  Add to Profile
-                </button>
+                {
+                  !lake?.isFollowing &&
+                  (
+                    <button
+                    className="px-4 py-2 bg-[#ae7a31] text-white rounded hover:bg-blue-600"
+                    onClick={() => {
+                      handleFollowLake(
+                        lake._id,
+                        true,
+                        setLoading,
+                        handleFollow,
+                        setRefreshFollowedLakes
+                      );
+                    }}
+                  >
+                    Add to Profile
+                  </button>
+                  )
+                }
                 {/* <button
                   className="mt-2 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
                   onClick={() => handleAddCatch(lake)}
