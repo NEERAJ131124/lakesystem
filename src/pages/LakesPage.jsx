@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { baseUrl } from "../constants/APIs";
 import { MapPin, Fish, Target } from "lucide-react";
-import Loader from "../components/Loader";
+import { CardGridLoader } from "../components/ApiDataLoader";
 import l0 from "../assets/wlake.jpg";
 import l1 from "../assets/l1.png";
 import l2 from "../assets/l2.png";
@@ -26,26 +26,23 @@ const FeatureCard = ({ icon, title, description, imageSrc }) => {
 
 const LakesPage = () => {
   const [lakes, setLakes] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [lakesLoading, setLakesLoading] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchLakes = async () => {
+      setLakesLoading(true);
       try {
         const response = await axios.get(`${baseUrl}/api/lakes/all`);
         setLakes(response.data);
       } catch (error) {
         console.error("Error fetching lakes:", error);
       } finally {
-        setLoading(false);
+        setLakesLoading(false);
       }
     };
     fetchLakes();
   }, []);
-
-  if (loading) {
-    return <Loader />;
-  }
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -73,52 +70,46 @@ const LakesPage = () => {
       {/* Lakes Section */}
       <div className="bg-white py-8">
         <div className="mx-auto max-w-7xl px-6 lg:px-8 pt-0">
-          {/* <div className="mx-auto max-w-2xl text-center">
-            <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-              Our Lakes
-            </h2>
-            <p className="mt-2 text-lg leading-8 text-gray-600">
-              Explore a variety of lakes, each offering unique fishing
-              experiences and beautiful surroundings.
-            </p>
-          </div> */}
-
-          <div className="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-8 lg:mx-0 lg:max-w-none lg:grid-cols-3">
-            {lakes.map((lake) => (
-              <div
-                key={lake._id}
-                className="flex flex-col items-start cursor-pointer mt-4" 
-                onClick={() => navigate(`/fish-stock/${lake._id}`)}
-              >
-                <div className="relative w-full">
-                  <img
-                    src={lake.image || l0}
-                    alt={lake.name}
-                    className="aspect-[16/9] w-full rounded-lg bg-gray-100 object-fill sm:aspect-[2/1] lg:aspect-[3/2]"
-                  />
-                </div>
-                <div className="max-w-xl">
-                  <div className="mt-2 flex items-center gap-x-4 text-xs">
-                    <time dateTime="2024-03-16" className="text-gray-500">
-                      Available Now
-                    </time>
-                    <span className="relative z-10 rounded-full bg-gray-50 px-3 py-1.5 font-medium text-gray-600 hover:bg-gray-100">
-                      Day Tickets
-                    </span>
+          {lakesLoading ? (
+            <CardGridLoader />
+          ) : (
+            <div className="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-8 lg:mx-0 lg:max-w-none lg:grid-cols-3">
+              {lakes.map((lake) => (
+                <div
+                  key={lake._id}
+                  className="flex flex-col items-start cursor-pointer mt-4" 
+                  onClick={() => navigate(`/fish-stock/${lake._id}`)}
+                >
+                  <div className="relative w-full">
+                    <img
+                      src={lake.image || l0}
+                      alt={lake.name}
+                      className="aspect-[16/9] w-full rounded-lg bg-gray-100 object-fill sm:aspect-[2/1] lg:aspect-[3/2]"
+                    />
                   </div>
-                  <div className="group relative">
-                    <h3 className="text-lg font-semibold leading-6 text-gray-900 group-hover:text-carp-600">
-                      <span className="absolute inset-0" />
-                      {lake.name}
-                    </h3>
-                    <p className="line-clamp-3 text-sm leading-6 text-gray-600">
-                      {lake.description}
-                    </p>
+                  <div className="max-w-xl">
+                    <div className="mt-2 flex items-center gap-x-4 text-xs">
+                      <time dateTime="2024-03-16" className="text-gray-500">
+                        Available Now
+                      </time>
+                      <span className="relative z-10 rounded-full bg-gray-50 px-3 py-1.5 font-medium text-gray-600 hover:bg-gray-100">
+                        Day Tickets
+                      </span>
+                    </div>
+                    <div className="group relative">
+                      <h3 className="text-lg font-semibold leading-6 text-gray-900 group-hover:text-carp-600">
+                        <span className="absolute inset-0" />
+                        {lake.name}
+                      </h3>
+                      <p className="line-clamp-3 text-sm leading-6 text-gray-600">
+                        {lake.description}
+                      </p>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
 
