@@ -215,7 +215,7 @@ function FollowedLakes({ setRefreshFollowedLakes, onAddCatch, setFishData }) {
                                   handleAddCatch(fish);
                                 }}
                               />
-                              {isCaught ? (
+                              {/* {isCaught ? (
                                 <span
                                   className="bg-green-500 text-white text-sm px-2 p-1 rounded-full shadow-md"
                                 >
@@ -227,7 +227,7 @@ function FollowedLakes({ setRefreshFollowedLakes, onAddCatch, setFishData }) {
                                 >
                                   uncaught
                                 </span>
-                              )}
+                              )} */}
                             </div>
                           </div>
                         );

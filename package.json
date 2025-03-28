@@ -39,15 +39,15 @@
     "yocto-queue": "^1.2.0"
   },
   "scripts": {
-    "start": "react-app-rewired start",
-    "build": "CI=false && react-app-rewired build",
+    "start": "node api.js && react-app-rewired start",
+    "build": "node api.js && CI=false && react-app-rewired build",
     "test": "react-app-rewired test",
     "eject": "react-scripts eject",
     "lint": "eslint src/**/*.{js,jsx}",
     "lint:fix": "eslint src/**/*.{js,jsx} --fix",
     "format": "prettier --write src/**/*.{js,jsx,css,scss}",
     "coverage": "npm test -- --coverage --watchAll=false",
-    "dev": "concurrently \"npm run start\" \"npm run build:css\"",
+    "dev": "node api.js && concurrently \"npm run start\" \"npm run build:css\"",
     "build:css": "tailwindcss -i src/index.css -o src/styles/tailwind.css --watch"
   },
   "eslintConfig": {
